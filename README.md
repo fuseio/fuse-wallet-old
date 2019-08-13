@@ -1,6 +1,6 @@
 # Fuse Wallet
 
-https://img.shields.io/badge/License-MIT-lightgrey
+[![License](https://img.shields.io/badge/License-MIT-lightgrey)](https://img.shields.io/badge/License-MIT-lightgrey)
 
 ## Getting Started
 
