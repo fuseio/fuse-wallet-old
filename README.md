@@ -2,17 +2,6 @@
 
 [![License](https://img.shields.io/badge/License-MIT-lightgrey)](https://img.shields.io/badge/License-MIT-lightgrey)
 
-## Getting Started
+The Fuse wallet is a cross platform Ethereum wallet built on [Flutter](http://https://flutter.dev/) and plugs into an any EVM comptible blockchain. The app is managing the user's private key using Flutter web3.0 plug-in and stores user's private information encrypted locally on the device and IPFS for easy sharing the data trough web3.0 interfaces. Fuse wallet is meant to be used with the Fuse Studio and can integrate any ERC-20 token by changing the default contract address. Fuse wallet is using Redux and is easily customizable and allows for easy localization. Check out our translation progress and feel free to help with transaltion trough [Lokalize](https://lokalise.co/public/783082135d36f14996c804.53212944/)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
-# FuseWallet
 
