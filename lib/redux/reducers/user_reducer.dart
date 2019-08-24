@@ -10,6 +10,7 @@ final userReducer = combineReducers<UserState>([
   TypedReducer<UserState, LoginFailedAction>(_loginFailed),
   TypedReducer<UserState, StartLoadingAction>(_startLoading),
   TypedReducer<UserState, UpdateUserAction>(_walletCreated),
+  TypedReducer<UserState, LogoutAction>(_logout),
 ]);
 
 UserState _loadUserState(UserState state, LoadUserAction action) {
@@ -30,4 +31,8 @@ UserState _startLoading(UserState state, StartLoadingAction action) {
 
 UserState _walletCreated(UserState state, UpdateUserAction action) {
   return state.copyWith(isLoading: false, user: action.user);
+}
+
+UserState _logout(UserState state, LogoutAction action) {
+  return new UserState(user: null, );
 }

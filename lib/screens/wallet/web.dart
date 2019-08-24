@@ -1,15 +1,6 @@
 import 'dart:async';
-import 'package:barcode_scan/barcode_scan.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fusewallet/logic/crypto.dart';
-import 'package:fusewallet/logic/wallet_logic.dart';
 import 'dart:core';
-import 'package:fusewallet/screens/signup/signup.dart';
-import 'package:fusewallet/widgets/widgets.dart';
-import 'package:fusewallet/logic/common.dart';
-import 'package:country_code_picker/country_code_picker.dart';
-//import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 String injectScript = "";
@@ -33,13 +24,8 @@ class _WebPageState extends State<WebPage> {
 
 
   Future getInjectString() async {
-    String mnemonic = await WalletLogic.getMnemonic();
+    String mnemonic = "myth budget song skin carbon general electric swift gadget size right onion"; //await WalletLogic.getMnemonic();
     String userName = "test";
-    FirebaseAuth.instance.currentUser().then((user) {
-      setState(() {
-        userName = user.displayName + " " + user.photoUrl;
-      });
-    });
 
     return ("""
   var script1 = document.createElement('script');
@@ -100,11 +86,23 @@ document.head.appendChild(script1);
   Future initState() {
     super.initState();
 
+    flutterWebviewPlugin.onStateChanged.listen((viewState) async {
+      if (viewState.type == WebViewState.startLoad ) { //WebViewState.finishLoad
+         getInjectString().then((str) {
+          flutterWebviewPlugin.evalJavascript(str);
+          
+        });
+        //flutterWebviewPlugin.evalJavascript("alert(document.documentElement.innerHTML);");
+      }
+    });
+/*
     flutterWebviewPlugin.onUrlChanged.listen((String url) {
       getInjectString().then((str) {
         flutterWebviewPlugin.evalJavascript(str);
       });
     });
+    */
+
   }
 
   Widget favoriteButton() {
@@ -130,7 +128,7 @@ document.head.appendChild(script1);
       ),
       backgroundColor: const Color(0xFFF8F8F8),
       body: new WebviewScaffold(
-        url: "https://communities-qa.cln.network",
+        url: "https://studio-qa.fusenet.io",
         withJavascript: true,
         hidden: true,
       ),

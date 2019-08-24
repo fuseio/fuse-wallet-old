@@ -1,19 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:fusewallet/logic/crypto.dart';
 import 'dart:core';
-import 'package:fusewallet/globals.dart' as globals;
+import 'package:fusewallet/logic/globals.dart' as globals;
 import 'package:fusewallet/modals/views/wallet_viewmodel.dart';
 import 'package:fusewallet/redux/actions/wallet_actions.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
-import 'package:fusewallet/screens/send.dart';
+import 'package:fusewallet/screens/wallet/send.dart';
 import 'package:fusewallet/widgets/drawer.dart';
 import 'package:fusewallet/widgets/transactions_list.dart';
-import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/widgets/widgets.dart';
-import 'package:fusewallet/localizations/localizations.dart'
-    show MyLocalizations, MyLocalizationsDelegate;
 import 'package:fusewallet/generated/i18n.dart';
 
 class WalletPage extends StatefulWidget {
@@ -36,7 +31,6 @@ class _WalletPageState extends State<WalletPage> {
 
   @override
   Widget build(BuildContext _context) {
-    GlobalKey<ScaffoldState> scaffoldState;
 
     return new Scaffold(
         key: globals.scaffoldKey,

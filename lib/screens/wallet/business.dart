@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'dart:core';
 import 'package:fusewallet/logic/common.dart';
-import 'package:fusewallet/globals.dart' as globals;
+import 'package:fusewallet/logic/globals.dart' as globals;
 import 'package:fusewallet/modals/businesses.dart';
-import 'package:fusewallet/screens/send.dart';
+import 'package:fusewallet/screens/wallet/send.dart';
 
-class ShopPage extends StatefulWidget {
-  ShopPage({Key key, this.title, this.business}) : super(key: key);
+class BusinessPage extends StatefulWidget {
+  BusinessPage({Key key, this.title, this.business}) : super(key: key);
 
   final String title;
   final Business business;
 
   @override
-  _ShopPageState createState() => _ShopPageState();
+  _BusinessPageState createState() => _BusinessPageState();
 }
 
-class _ShopPageState extends State<ShopPage> {
+class _BusinessPageState extends State<BusinessPage> {
   GlobalKey<ScaffoldState> scaffoldState;
   bool isLoading = false;
   final addressController = TextEditingController(text: "");

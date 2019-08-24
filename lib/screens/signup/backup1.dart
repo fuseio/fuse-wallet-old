@@ -8,7 +8,7 @@ import 'package:fusewallet/redux/state/app_state.dart';
 import 'dart:core';
 import 'package:fusewallet/screens/signup/backup2.dart';
 import 'package:fusewallet/logic/common.dart';
-import 'package:fusewallet/screens/wallet.dart';
+import 'package:fusewallet/screens/wallet/wallet.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 
 class Backup1Page extends StatefulWidget {
@@ -111,6 +111,7 @@ class _Backup1PageState extends State<Backup1Page> {
                                           CopyToClipboard(
                                             context: context,
                                             scaffoldState: scaffoldState,
+                                            content: viewModel.user.publicKey,
                                           ),
                                           const SizedBox(width: 4.0),
                                           Icon(

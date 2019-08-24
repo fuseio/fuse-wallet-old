@@ -14,6 +14,7 @@ class SignInViewModel {
   final Function(BuildContext, String) signInWithPhoneNumber;
   final Function(BuildContext, String, String, String) signUp;
   final Function() generateWallet;
+  final Function() logout;
 
   SignInViewModel({
     this.isLoading,
@@ -23,7 +24,8 @@ class SignInViewModel {
     this.sendCodeToPhoneNumber,
     this.signInWithPhoneNumber,
     this.signUp,
-    this.generateWallet
+    this.generateWallet,
+    this.logout,
   });
 
   static SignInViewModel fromStore(Store<AppState> store) {
@@ -42,6 +44,9 @@ class SignInViewModel {
       },
       generateWallet: () {
         store.dispatch(generateWalletCall());
+      },
+      logout: () {
+        store.dispatch(logoutCall());
       },
     );
   }

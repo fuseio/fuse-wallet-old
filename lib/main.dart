@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:core';
-import 'package:fusewallet/logic/common.dart';
-import 'package:flutter/services.dart';
-import 'package:fusewallet/logic/navigation.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
-//import 'package:fusewallet/app.dart';
-import 'package:fusewallet/screens/wallet.dart';
-import 'package:fusewallet/screens/receive.dart';
-import 'package:fusewallet/screens/send.dart';
-import 'package:fusewallet/screens/buy.dart';
 import 'package:fusewallet/splash.dart';
 import 'package:fusewallet/themes/fuse.dart';
 import 'package:redux/redux.dart';
-import 'globals.dart' as globals;
-import 'dart:io';
 import 'redux/reducers/app_reducer.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux_persist/redux_persist.dart';
@@ -26,7 +16,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 void main() async {
 
   final persistor = Persistor<AppState>(
-    storage: FlutterStorage(key: "app2"),
+    storage: FlutterStorage(key: "app4"),
     serializer: JsonSerializer<AppState>(AppState.fromJson),
   );
 
@@ -93,7 +83,7 @@ class _MyAppState extends State<MyApp> {
             store: store,
             child: new MaterialApp(
               title: 'Fuse Wallet',
-              navigatorKey: Keys.navKey,
+              //navigatorKey: Keys.navKey,
               theme: getTheme(),
               home: SplashScreen(), //WalletPage(title: 'Fuse Wallet'),
               localizationsDelegates: [

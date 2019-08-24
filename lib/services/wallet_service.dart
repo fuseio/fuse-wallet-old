@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:fusewallet/modals/user.dart';
 import 'crypto_service.dart';

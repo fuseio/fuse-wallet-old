@@ -129,7 +129,7 @@ class _SignInPageState extends State<SignInPage> {
                         onPressed: () async {
                           viewModel.sendCodeToPhoneNumber(
                               context,
-                              countryCode.dialCode +
+                              "+972" + //countryCode.dialCode +
                                   phoneController.text.trim());
                         },
                         preload: viewModel.isLoading,

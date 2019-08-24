@@ -47,6 +47,12 @@
 	<string>Camera permission is required for barcode scanning.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Why is my app authenticating using face id?</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Reason why app needs location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Reason why app needs location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Reason why app needs location</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -66,5 +72,20 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
+
+	<key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <!-- Insert your reversed client ID here -->
+                <string>com.googleusercontent.apps.698826184039-ebhmj0thjgq2aj74jhfi5g33rb7otjci</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>

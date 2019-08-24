@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>698826184039-ebhmj0thjgq2aj74jhfi5g33rb7otjci.apps.googleusercontent.com</string>
+	<string>714005083204-3nilikdptrulj6b0mo22kqcppusp70aa.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.698826184039-ebhmj0thjgq2aj74jhfi5g33rb7otjci</string>
+	<string>com.googleusercontent.apps.714005083204-3nilikdptrulj6b0mo22kqcppusp70aa</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>714005083204-2d10gksdg0smpudn1invsntke1aenkfh.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCI_U15b2GKd3CmSUazSZRKWS6vkYQWCzI</string>
+	<string>AIzaSyDh13x7u_MOGv4i5mf8nM-751ZDppeVlRU</string>
 	<key>GCM_SENDER_ID</key>
-	<string>698826184039</string>
+	<string>714005083204</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>io.fusenet.fusewallet</string>
+	<string>com.creatix.fusewallet</string>
 	<key>PROJECT_ID</key>
-	<string>fuse-wallet-2</string>
+	<string>fuse-wallet</string>
 	<key>STORAGE_BUCKET</key>
-	<string>fuse-wallet-2.appspot.com</string>
+	<string>fuse-wallet.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:698826184039:ios:2becd900ee517d9a</string>
+	<string>1:714005083204:ios:ff67d29924926e6f</string>
 	<key>DATABASE_URL</key>
-	<string>https://fuse-wallet-2.firebaseio.com</string>
+	<string>https://fuse-wallet.firebaseio.com</string>
 </dict>
 </plist>

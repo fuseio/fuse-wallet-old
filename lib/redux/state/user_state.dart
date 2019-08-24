@@ -10,11 +10,11 @@ class UserState {
   final User user;
 
   UserState({
-    @required this.isLoading,
-    @required this.loginError,
-    @required this.isUserLogged,
-    @required this.verificationCode,
     @required this.user,
+    this.isLoading,
+    this.loginError,
+    this.isUserLogged,
+    this.verificationCode,
   });
 
   factory UserState.initial() {
@@ -25,7 +25,7 @@ class UserState {
     //  }
     //});
     
-    return new UserState(isLoading: false, loginError: false, user: null, isUserLogged: false, verificationCode: "");
+    return new UserState(isLoading: false, loginError: false, user: new User(), isUserLogged: false, verificationCode: "");
   }
 
   UserState copyWith({bool isLoading, bool loginError, bool isUserLogged, User user, String verificationCode}) {

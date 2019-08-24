@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:core';
-import 'package:fusewallet/globals.dart' as globals;
+import 'package:fusewallet/logic/globals.dart' as globals;
 import 'package:fusewallet/logic/common.dart';
-import 'package:fusewallet/logic/wallet_logic.dart';
-import 'package:fusewallet/screens/buy.dart';
-import 'package:fusewallet/screens/receive.dart';
-import 'package:fusewallet/screens/send.dart';
+import 'package:fusewallet/screens/wallet/buy.dart';
+import 'package:fusewallet/screens/wallet/receive.dart';
+import 'package:fusewallet/screens/wallet/send.dart';
 import 'package:fusewallet/generated/i18n.dart';
 
 class CustomScaffold extends StatelessWidget {
@@ -205,9 +204,10 @@ Widget bottomBarItem(String img, String text, ontap) {
 }
 
 class CopyToClipboard extends StatelessWidget {
-  CopyToClipboard({this.scaffoldState, this.context});
+  CopyToClipboard({this.scaffoldState, this.context, this.content});
   final GlobalKey<ScaffoldState> scaffoldState;
   final BuildContext context;
+  final String content;
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +219,7 @@ class CopyToClipboard extends StatelessWidget {
               fontWeight: FontWeight.w500)),
       onTap: () async {
         Clipboard.setData(
-            new ClipboardData(text: await WalletLogic.getMnemonic()));
+            new ClipboardData(text: content));
         Scaffold.of(context).showSnackBar(new SnackBar(
           content: new Text(
             "Copied to Clipboard",

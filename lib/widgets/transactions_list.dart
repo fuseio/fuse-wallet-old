@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:core';
 import 'package:fusewallet/modals/transactions.dart';
-import 'package:fusewallet/globals.dart' as globals;
 import 'package:intl/intl.dart';
 import 'package:fusewallet/generated/i18n.dart';
 
@@ -66,7 +65,7 @@ class _TransactionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var type = _transaction.to == globals.publicKey ? "Received" : "Sent";
+    var type = "Received"; //_transaction.to == globals.publicKey ? "Received" : "Sent";
     var color = type == "Received" ? 0xFF71C84D : 0xFFfc6e4c;
     var img = type == "Received" ? "send.png" : "recieve.png";
     return Container(

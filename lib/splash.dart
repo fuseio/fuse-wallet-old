@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/logic/common.dart';
@@ -58,7 +60,8 @@ class _SplashScreenState extends State<SplashScreen> {
           .setMinorId(100)
           .start();
     });
-
+*/
+/*
     await flutterBeacon.initializeScanning;
     final regions = <Region>[];
 
@@ -70,7 +73,8 @@ class _SplashScreenState extends State<SplashScreen> {
       // android platform, it can ranging out of beacon that filter all of Proximity UUID
       regions.add(Region(identifier: 'com.beacon'));
     }
-
+*/
+/*
     flutterBeacon.ranging(regions).listen((RangingResult result) {
       if (!isOpen &&
           result.beacons.length > 0 &&
@@ -113,6 +117,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // list can be empty if no matching beacons were found in range
     });
     */
+    
   }
 
   @override

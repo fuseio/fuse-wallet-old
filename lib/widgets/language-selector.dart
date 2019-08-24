@@ -28,9 +28,9 @@ class _LanguageSelectorState extends State<LanguageSelector> {
     I18n.delegate.supportedLocales.forEach((lang) {
       list.add(new ListTile(
         title: new Text(lang.languageCode),
-        trailing: new Icon(Icons.check, color: Colors.green), //_transl.currentLanguage == lang
-            //? new Icon(Icons.check, color: Colors.green)
-            //: null,
+        trailing: Localizations.localeOf(context).languageCode == lang.languageCode
+            ? new Icon(Icons.check, color: Colors.green)
+            : null,
         selected: false, //_transl.currentLanguage == lang,
         onTap: () {
            //I18n.._locale.locale(new Locale("he"));
@@ -51,7 +51,7 @@ class _LanguageSelectorState extends State<LanguageSelector> {
       key: new Key(_key.toString()),
       initiallyExpanded: false,
       title: new Row(
-        children: [new Text("language")],
+        children: [new Text("Language", style: TextStyle(fontSize: 16))],
       ),
       children: _languageItems(),
     );

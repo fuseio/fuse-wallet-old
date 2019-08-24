@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "714005083204",
-    "firebase_url": "https://fuse-wallet.firebaseio.com",
-    "project_id": "fuse-wallet",
-    "storage_bucket": "fuse-wallet.appspot.com"
+    "project_number": "698826184039",
+    "firebase_url": "https://fuse-wallet-2.firebaseio.com",
+    "project_id": "fuse-wallet-2",
+    "storage_bucket": "fuse-wallet-2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:714005083204:android:ff67d29924926e6f",
+        "mobilesdk_app_id": "1:698826184039:android:2becd900ee517d9a",
         "android_client_info": {
-          "package_name": "com.creatix.fusewallet"
+          "package_name": "io.fusenet.fusewallet"
         }
       },
       "oauth_client": [
         {
-          "client_id": "714005083204-pji6a82j3ee8p56ilds6hiimjkkk0ku0.apps.googleusercontent.com",
+          "client_id": "698826184039-jc08sa65l2kaaml7nqq51pt06e2d5jus.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDO1f403W-MnMDM-LcCNKDJhG1oD0h4fbk"
+          "current_key": "AIzaSyComwMzmDx91NRTAJwR0PHXMaGXKz_Jckw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "714005083204-pji6a82j3ee8p56ilds6hiimjkkk0ku0.apps.googleusercontent.com",
+              "client_id": "698826184039-jc08sa65l2kaaml7nqq51pt06e2d5jus.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

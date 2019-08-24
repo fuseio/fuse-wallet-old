@@ -4,7 +4,7 @@ import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/modals/views/signin_viewmodel.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
 import 'dart:core';
-import 'package:fusewallet/screens/wallet.dart';
+import 'package:fusewallet/screens/wallet/wallet.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 
 class Backup2Page extends StatefulWidget {

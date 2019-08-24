@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:fusewallet/logic/crypto.dart';
 import 'package:fusewallet/modals/views/signin_viewmodel.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
 import 'dart:core';
-import 'package:fusewallet/screens/signup/backup1.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 import 'package:fusewallet/logic/common.dart';
 
@@ -59,7 +56,7 @@ class _SignUpPageState extends State<SignUpPage> {
       new StoreConnector<AppState, SignInViewModel>(converter: (store) {
         return SignInViewModel.fromStore(store);
       }, builder: (_, viewModel) {
-        Padding(
+        return Padding(
           padding: EdgeInsets.only(top: 10, left: 30, right: 30),
           child: Form(
             key: _formKey,
