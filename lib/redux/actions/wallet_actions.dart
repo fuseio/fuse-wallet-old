@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fusewallet/modals/businesses.dart';
 import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/services/wallet_service.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:fusewallet/logic/crypto.dart' as crypto;
@@ -9,6 +10,12 @@ import 'package:flutter/widgets.dart';
 
 ThunkAction initWalletCall() {
   return (Store store) async {
+
+    var localAuth = LocalAuthentication();
+    bool didAuthenticate =
+    await localAuth.authenticateWithBiometrics(
+        localizedReason: 'Please authenticate to open the wallet');
+        
     loadCommunity(store);
     store.dispatch(new WalletLoadedAction());
   };

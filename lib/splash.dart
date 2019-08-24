@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/screens/signup/recovery.dart';
 import 'package:fusewallet/screens/signup/signin.dart';
 import 'package:fusewallet/widgets/widgets.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:redux/redux.dart';
 import 'redux/actions/signin_actions.dart';
 import 'redux/state/app_state.dart';
@@ -35,10 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
   logon() async {
     //WalletLogic.init();
 
-    //var localAuth = LocalAuthentication();
-    //bool didAuthenticate =
-    //await localAuth.authenticateWithBiometrics(
-    //    localizedReason: 'Please authenticate to show account balance');
+
 
 /*
     WalletLogic.isLogged().then((isLogged) {
