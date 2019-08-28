@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:core';
@@ -51,6 +52,18 @@ class _WebPageState extends State<WebPage> {
       window.web3.eth.defaultAccount = provider.addresses[0];
       window.chrome = {webstore: {}};
       console.log('provider.addresses ' + provider.addresses[0]);
+
+      window.ethereum.enable = () =>
+            new Promise((resolve, reject) => {
+              provider.sendAsync({ method: 'eth_accounts', params: [] }, (error, response) => {
+                if (error) {
+                  reject(error)
+                  } else {
+                    resolve(response.result)
+                    }
+                    })
+                    })
+
       var script3 = document.createElement('script');
       script3.type='module';
       script3.src = 'https://unpkg.com/3box/dist/3box.js';
@@ -136,3 +149,4 @@ document.head.appendChild(script1);
     );
   }
 }
+*/

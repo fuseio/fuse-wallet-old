@@ -4,7 +4,7 @@ import 'package:fusewallet/logic/common.dart';
 //import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:fusewallet/screens/signup/backup1.dart';
 import 'package:fusewallet/screens/wallet/switch_community.dart';
-import 'package:fusewallet/screens/wallet/web.dart';
+import 'package:fusewallet/screens/wallet/web2.dart';
 //import 'package:local_auth/local_auth.dart';
 
 import 'package:fusewallet/splash.dart';
@@ -169,6 +169,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           */
 
+                      
+                      ListTile(
+                        title: Text(
+                          'Web',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        onTap: () {
+                          openPage(context, WebViewExample());
+                        },
+                      ),
+                      Divider(),
+                      new LanguageSelector(),
+                      Divider(),
                       ListTile(
                         title: Text(
                           'Log out',
@@ -179,18 +192,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           openPageReplace(context, SplashScreen());
                         },
                       ),
-                      Divider(),
-                      ListTile(
-                        title: Text(
-                          'Web',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        onTap: () {
-                          openPage(context, WebPage());
-                        },
-                      ),
-                      Divider(),
-                      new LanguageSelector()
                     ],
                   ));
         },

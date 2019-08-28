@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/logic/common.dart';
@@ -26,10 +28,10 @@ class _SplashScreenState extends State<SplashScreen> {
   bool isOpen = false;
 
   var _pages = <Widget>[
-    Center(child: Image.asset('images/fuselogo3.png', width: 160)),
-    Center(child: Image.asset('images/fuselogo3.png', width: 160)),
-    Center(child: Image.asset('images/fuselogo3.png', width: 160)),
-    Center(child: Image.asset('images/fuselogo3.png', width: 160))
+    Image.asset('images/slide1.png', width: 160),
+    Image.asset('images/slide2.png', width: 160),
+    Image.asset('images/slide3.png', width: 160),
+    Image.asset('images/slide4.png', width: 160)
   ];
   logon() async {
     //WalletLogic.init();
@@ -137,7 +139,10 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
         drawer: drawer,
         body: new StoreBuilder(onInit: (store) {
-          store.dispatch(loadUserState(context));
+          Timer.run(() {
+            store.dispatch(loadUserState(context));
+          });
+          
         }, builder: (BuildContext context, Store<AppState> store) {
           return Container(
               child: Column(
