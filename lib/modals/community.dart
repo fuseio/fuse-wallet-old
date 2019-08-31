@@ -7,6 +7,7 @@ class Community {
   String homeBridgeAddress;
   String joinBonusText;
   int joinBonusAmount;
+  String symbol;
 
   Community(
       {this.communityAddress,
@@ -15,7 +16,8 @@ class Community {
       this.foreignBridgeAddress,
       this.homeBridgeAddress,
       this.joinBonusText,
-      this.joinBonusAmount});
+      this.joinBonusAmount,
+      this.symbol});
 
   static Community fromJson(dynamic json) => json != null ? Community(
       communityAddress: json["data"]["communityAddress"],
@@ -23,6 +25,7 @@ class Community {
       foreignTokenAddress: json["data"]["foreignTokenAddress"],
       foreignBridgeAddress: json["data"]["foreignBridgeAddress"],
       homeBridgeAddress: json["data"]["homeBridgeAddress"],
+      symbol: "",
       joinBonusText: json["data"]["plugins"].length > 0 && json["data"]["plugins"]["joinBonus"] != null ? json["data"]["plugins"]["joinBonus"]["text"] : "",
       joinBonusAmount: json["data"]["plugins"].length > 0 && json["data"]["plugins"]["joinBonus"] != null ? json["data"]["plugins"]["joinBonus"]["amount"] : 0
       ) : null;
@@ -33,5 +36,6 @@ class Community {
         'foreignTokenAddress': foreignTokenAddress,
         'foreignBridgeAddress': foreignBridgeAddress,
         'homeBridgeAddress': homeBridgeAddress,
+        'symbol': symbol
       };
 }

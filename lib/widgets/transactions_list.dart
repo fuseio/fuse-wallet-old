@@ -76,7 +76,13 @@ class _TransactionListItem extends StatelessWidget {
     var type = "Received"; //_transaction.to == globals.publicKey ? "Received" : "Sent";
     var color = type == "Received" ? 0xFF71C84D : 0xFFfc6e4c;
     var img = type == "Received" ? "send.png" : "recieve.png";
-    return Container(
+    return 
+    new StoreConnector<AppState, WalletViewModel>(
+              converter: (store) {
+                return WalletViewModel.fromStore(store);
+              },
+              builder: (_, viewModel) {
+                return Container(
         decoration: new BoxDecoration(
             border: Border(top: BorderSide(color: const Color(0xFFDCDCDC)))),
             padding: EdgeInsets.only(top: 5, bottom: 5, left: 0, right: 0),
@@ -98,7 +104,7 @@ class _TransactionListItem extends StatelessWidget {
           ),
           trailing: Container(
             child: Text(
-              _transaction.amount.toString() + " " + "\$",
+              _transaction.amount.toString() + " " + viewModel.community.symbol.toString(),
               style: TextStyle(
                   color: Color(color),
                   fontSize: 18.0,
@@ -107,6 +113,8 @@ class _TransactionListItem extends StatelessWidget {
             padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
           ),
         ));
+              },
+            );
   }
 }
 

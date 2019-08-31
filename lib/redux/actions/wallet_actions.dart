@@ -41,9 +41,14 @@ Future loadCommunity(Store store) async {
     tokenAddress = DEFAULT_COMMUNITY;
   }
   var community = await getCommunity(tokenAddress);
+  community.symbol = await getTokenInformation(tokenAddress);
   store.dispatch(new CommunityLoadedAction(tokenAddress, community));
   loadBalance(store);
   loadTransactions(store);
+  initSocket((payload) {
+    loadBalance(store);
+    loadTransactions(store);
+  });
 }
 
 Future loadBalance(Store store) async {

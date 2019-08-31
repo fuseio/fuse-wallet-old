@@ -73,7 +73,7 @@ class _WalletPageState extends State<WalletPage> {
         }, converter: (store) {
           return WalletViewModel.fromStore(store);
         }, builder: (_, viewModel) {
-          return viewModel.user != null ? Column(
+          return viewModel.user != null && viewModel.community != null ? Column(
             children: <Widget>[
               Expanded(
                 child: ListView(
@@ -187,9 +187,9 @@ class _WalletPageState extends State<WalletPage> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                               new TextSpan(
-                                                  text: " \$",
+                                                  text: " " + viewModel.community?.symbol.toString(),
                                                   style: new TextStyle(
-                                                      fontSize: 26,
+                                                      fontSize: 18,
                                                       color: Colors.white,
                                                       fontWeight:
                                                           FontWeight.normal,

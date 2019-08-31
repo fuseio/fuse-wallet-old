@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:absinthe_socket/absinthe_socket.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fusewallet/modals/community.dart';
 import 'package:fusewallet/modals/transactions.dart';
@@ -50,6 +51,17 @@ Future getCommunity(communityAddress) async {
   });
 }
 
+Future getTokenInformation(communityAddress) async {
+  return await http.get(Uri.encodeFull(API_ROOT + "tokens/" + communityAddress)).then((http.Response response) {
+    final int statusCode = response.statusCode;
+    if (statusCode < 200 || statusCode > 400 || json == null) {
+      throw new Exception("Error while fetching data");
+    }
+    Map<String, dynamic> obj = json.decode(response.body);
+    return obj["data"]["symbol"];
+  });
+}
+
 Future<String> getBalance(accountAddress, tokenAddress) async {
   print('Fetching balance of token $tokenAddress for account $accountAddress');
   var uri = Uri.encodeFull(EXPLORER_ROOT + 'module=account&action=tokenbalance&contractaddress=' + tokenAddress + '&address=' + accountAddress);
@@ -71,3 +83,19 @@ Future<TransactionList> getTransactions(accountAddress, tokenAddress) async {
     throw Exception('Failed to load transaction');
   }
 }
+
+  initSocket(_onStart) async {
+    var _socket = AbsintheSocket("wss://explorer.fusenet.io/socket/websocket");
+    Observer _categoryObserver = Observer(
+        //onAbort: _onStart,
+        //onCancel: _onStart,
+        //onError: _onStart,
+        onResult: _onStart,
+        //onStart: _onStart
+        );
+
+    Notifier notifier = _socket.send(GqlRequest(
+        operation:
+            "subscription { tokenTransfers(tokenContractAddressHash: \"0x415c11223bca1324f470cf72eac3046ea1e755a3\") { amount, fromAddressHash, toAddressHash }}"));
+    notifier.observe(_categoryObserver);
+  }
