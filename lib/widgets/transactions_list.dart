@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:core';
 import 'package:fusewallet/modals/transactions.dart';
+import 'package:fusewallet/modals/views/wallet_viewmodel.dart';
+import 'package:fusewallet/redux/state/app_state.dart';
 import 'package:intl/intl.dart';
 import 'package:fusewallet/generated/i18n.dart';
 
@@ -14,18 +17,16 @@ import 'package:fusewallet/generated/i18n.dart';
 //}
 
 class TransactionsWidget extends StatefulWidget {
-  List<Transaction> transactions;
 
-  TransactionsWidget(this.transactions);
+  TransactionsWidget();
 
   @override
-  createState() => new TransactionsWidgetState(transactions);
+  createState() => new TransactionsWidgetState();
 }
 
 class TransactionsWidgetState extends State<TransactionsWidget> {
-  List<Transaction> transactions;
 
-  TransactionsWidgetState(this.transactions);
+  TransactionsWidgetState();
 
   @override
   void initState() {
@@ -34,7 +35,12 @@ class TransactionsWidgetState extends State<TransactionsWidget> {
 
   @override
   Widget build(BuildContext _context) {
-    return transactions != null && transactions.length > 0
+    return new StoreConnector<AppState, WalletViewModel>(
+              converter: (store) {
+                return WalletViewModel.fromStore(store);
+              },
+              builder: (_, viewModel) {
+                return viewModel.transactions != null && viewModel.transactions.transactions.length > 0
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -49,12 +55,14 @@ class TransactionsWidgetState extends State<TransactionsWidget> {
                   shrinkWrap: true,
                   primary: false,
                   padding: EdgeInsets.symmetric(vertical: 8.0),
-                  children: transactions
+                  children: viewModel.transactions.transactions
                       .map((transaction) => _TransactionListItem(transaction))
                       .toList())
             ],
           )
         : TransactionsEmpty();
+              },
+            );
   }
 }
 

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:fusewallet/logic/crypto.dart';
 import 'package:http/http.dart' as http;
 
 class Transaction {
@@ -44,16 +43,5 @@ class TransactionList {
     return new TransactionList(
       transactions: transactions
     );
-  }
-}
-
-Future<TransactionList> getTransactions(accountAddress, tokenAddress) async {
-  final response =
-      await http.get('${EXPLORER_ROOT}module=account&action=tokentx&address=$accountAddress&contractaddress=$tokenAddress');
-
-  if (response.statusCode == 200) {
-    return TransactionList.fromJson(json.decode(response.body));
-  } else {
-    throw Exception('Failed to load transaction');
   }
 }

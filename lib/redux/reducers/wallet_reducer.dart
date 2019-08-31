@@ -1,6 +1,5 @@
 
 import 'package:fusewallet/redux/actions/wallet_actions.dart';
-import 'package:fusewallet/redux/state/user_state.dart';
 import 'package:fusewallet/redux/state/wallet_state.dart';
 import 'package:redux/redux.dart';
 
@@ -12,10 +11,11 @@ final walletReducer = combineReducers<WalletState>([
   TypedReducer<WalletState, TransactionSentAction>(_transactionSentAction),
   TypedReducer<WalletState, BusinessesLoadedAction>(_businessesLoadedAction),
   TypedReducer<WalletState, SwitchCommunityAction>(_switchCommunityAction),
+  TypedReducer<WalletState, WalletLoadedAction>(_walletLoadedAction),
 ]);
 
 WalletState _communityLoaded(WalletState state, CommunityLoadedAction action) {
-  return state.copyWith(communityAddress: action.communityAddress, tokenAddress: action.tokenAddress);
+  return state.copyWith(community: action.community, tokenAddress: action.tokenAddress);
 }
 
 WalletState _balanceLoaded(WalletState state, BalanceLoadedAction action) {
@@ -39,5 +39,9 @@ WalletState _businessesLoadedAction(WalletState state, BusinessesLoadedAction ac
 }
 
 WalletState _switchCommunityAction(WalletState state, SwitchCommunityAction action) {
-  return state.copyWith(isLoading: false, communityAddress: action.address);
+  return state.copyWith(isLoading: false, tokenAddress: action.address);
+}
+
+WalletState _walletLoadedAction(WalletState state, WalletLoadedAction action) {
+  return state.copyWith(isLoading: false, showBonusDialog: false);
 }

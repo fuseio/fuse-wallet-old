@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:fusewallet/logic/common.dart';
 //import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:fusewallet/screens/signup/backup1.dart';
+import 'package:fusewallet/screens/wallet/protect_wallet.dart';
 import 'package:fusewallet/screens/wallet/switch_community.dart';
 import 'package:fusewallet/screens/wallet/web2.dart';
 //import 'package:local_auth/local_auth.dart';
@@ -40,7 +41,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           return SignInViewModel.fromStore(store);
         },
         builder: (_, viewModel) {
-          return Builder(
+          return viewModel.user != null ? Builder(
               builder: (context) => ListView(
                     padding: EdgeInsets.zero,
                     children: <Widget>[
@@ -134,6 +135,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       Divider(),
                       ListTile(
                         title: Text(
+                          'Protect your wallet',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        onTap: () {
+                          openPage(context, ProtectWalletPage());
+                        },
+                      ),
+                      Divider(),
+                      ListTile(
+                        title: Text(
                           'Back up wallet',
                           style: TextStyle(fontSize: 16),
                         ),
@@ -193,7 +204,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         },
                       ),
                     ],
-                  ));
+                  )) : Container();
         },
       ),
     );

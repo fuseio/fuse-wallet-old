@@ -40,7 +40,8 @@ class _WebViewExampleState extends State<WebViewExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        //automaticallyImplyLeading: false,
+        titleSpacing: 0,
         title: 
            new Container(
              height: 35,

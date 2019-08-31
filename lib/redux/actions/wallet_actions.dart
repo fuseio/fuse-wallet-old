@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:fusewallet/modals/businesses.dart';
+import 'package:fusewallet/modals/community.dart';
 import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/services/wallet_service.dart';
+import 'package:fusewallet/widgets/bonusDialog.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:fusewallet/logic/crypto.dart' as crypto;
 import 'package:flutter/widgets.dart';
 
-ThunkAction initWalletCall() {
+ThunkAction initWalletCall(BuildContext context) {
   return (Store store) async {
 
     var localAuth = LocalAuthentication();
@@ -16,18 +18,30 @@ ThunkAction initWalletCall() {
     await localAuth.authenticateWithBiometrics(
         localizedReason: 'Please authenticate to open the wallet');
         
-    loadCommunity(store);
+    await loadCommunity(store);
+    
+    /// Show bonus dialog
+    if (store.state.walletState.community != null) { //&& store.state.walletState.showBonusDialog == null
+      new Future.delayed(Duration.zero, () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return BonusDialog();
+            });
+      });
+    }
+
     store.dispatch(new WalletLoadedAction());
   };
 }
 
 Future loadCommunity(Store store) async {
-  var communityAddress = store.state.walletState.communityAddress;
-  if ((communityAddress ?? "") == "") {
-    communityAddress = DEFAULT_COMMUNITY;
+  var tokenAddress = store.state.walletState.tokenAddress;
+  if ((tokenAddress ?? "") == "") {
+    tokenAddress = DEFAULT_COMMUNITY;
   }
-  var tokenAddress = await getTokenAddress(communityAddress);
-  store.dispatch(new CommunityLoadedAction(communityAddress, tokenAddress));
+  var community = await getCommunity(tokenAddress);
+  store.dispatch(new CommunityLoadedAction(tokenAddress, community));
   loadBalance(store);
   loadTransactions(store);
 }
@@ -89,10 +103,10 @@ class StartLoadingAction {
 }
 
 class CommunityLoadedAction {
-  final String communityAddress;
+  final Community community;
   final String tokenAddress;
 
-  CommunityLoadedAction(this.communityAddress, this.tokenAddress);
+  CommunityLoadedAction(this.tokenAddress, this.community);
 }
 
 class TransactionsLoadedAction {
