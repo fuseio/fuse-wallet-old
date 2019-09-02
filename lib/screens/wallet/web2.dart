@@ -142,7 +142,7 @@ class _WebViewExampleState extends State<WebViewExample> {
       const mnemonic = '""" +
         mnemonic +
         """';
-      let provider = new HDWalletProvider(mnemonic, 'https://rpc.fuse.io');
+      let provider = new HDWalletProvider(mnemonic, 'https://rpc.fusenet.io');
       provider.networkVersion = '121';
       window.ethereum = provider;
       window.web3 = new window.Web3(provider);

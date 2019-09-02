@@ -7,7 +7,7 @@ description: A new Flutter project.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org. 
-version: 2.2.1+34
+version: 2.2.2+35
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -45,6 +45,7 @@ dependencies:
   redux_thunk: ^0.2.1
   redux_persist: "^0.8.0"
   redux_persist_flutter: ^0.8.1
+  virtual_keyboard: ^0.1.4
   #flutter_inappbrowser: ^1.2.1
     
 dev_dependencies:
