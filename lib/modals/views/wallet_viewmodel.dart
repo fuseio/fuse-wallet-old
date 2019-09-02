@@ -4,6 +4,7 @@ import 'package:fusewallet/modals/community.dart';
 import 'package:fusewallet/modals/user.dart';
 import 'package:fusewallet/redux/actions/wallet_actions.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
+import 'package:fusewallet/redux/state/wallet_state.dart';
 import 'package:redux/redux.dart';
 import '../transactions.dart';
 
@@ -11,6 +12,7 @@ class WalletViewModel {
   final bool isLoading;
   final String balance;
   final User user;
+  final WalletState walletState;
   final Community community;
   final TransactionList transactions;
   final List<Business> businesses;
@@ -23,6 +25,7 @@ class WalletViewModel {
     this.isLoading,
     this.balance,
     this.user,
+    this.walletState,
     this.community,
     this.transactions,
     this.initWallet,
@@ -37,6 +40,7 @@ class WalletViewModel {
       isLoading: store.state.walletState.isLoading,
       balance: store.state.walletState.balance,
       user: store.state.userState.user,
+      walletState: store.state.walletState,
       community: store.state.walletState.community,
       transactions: store.state.walletState.transactions,
       businesses: store.state.walletState.businesses,

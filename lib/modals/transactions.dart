@@ -26,6 +26,8 @@ class Transaction {
       amount: BigInt.tryParse(json['value']) / BigInt.from(1000000000000000000)
     );
   }
+
+  dynamic toJson() => {'value': value,'to': to,'from': from, 'hash': hash,'timeStamp': timeStamp,'tokenSymbol': tokenSymbol,'date': date.millisecondsSinceEpoch.toString(),'amount': amount};
 }
 
 class TransactionList {
@@ -44,4 +46,22 @@ class TransactionList {
       transactions: transactions
     );
   }
+
+  factory TransactionList.fromJsonState(Map<String, dynamic> json) {
+
+    if (json == null) {
+      return null;
+    }
+
+    var list = json['transactions'] as List;
+
+    List<Transaction> transactions = new List<Transaction>();
+    transactions = list.map((i)=>Transaction.fromJson(i)).toList();
+
+    return new TransactionList(
+      transactions: transactions
+    );
+  }
+
+  dynamic toJson() => {'transactions': transactions};
 }

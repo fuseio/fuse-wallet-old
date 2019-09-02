@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'package:absinthe_socket/absinthe_socket.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fusewallet/modals/businesses.dart';
 import 'package:fusewallet/modals/community.dart';
 import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/modals/user.dart';
+import 'package:web3dart/web3dart.dart' as web3dart;
 import 'crypto_service.dart';
 import 'package:http/http.dart' as http;
+import "package:web3dart/src/utils/numbers.dart" as numbers;
+import 'package:http/http.dart';
 
 const DEFAULT_COMMUNITY = '0x2B40007C57a2259bdd21CbE4e0ebDB3270C3D63D'; //'0xF846053684960eBF35aEa6Dc4F9317ebb2F7bF84';
 const API_ROOT = 'https://studio-qa-ropsten.fusenet.io/api/v1/';
@@ -44,7 +48,7 @@ Future getCommunity(communityAddress) async {
     }
 
     Map<String, dynamic> obj = json.decode(response.body);
-    var community = Community.fromJson(obj);
+    var community = Community.fromJson(obj["data"]);
 
     print('Done fetching community data for $communityAddress');
     return community;
@@ -63,7 +67,6 @@ Future getTokenInformation(communityAddress) async {
 }
 
 Future<String> getBalance(accountAddress, tokenAddress) async {
-  print('Fetching balance of token $tokenAddress for account $accountAddress');
   var uri = Uri.encodeFull(EXPLORER_ROOT + 'module=account&action=tokenbalance&contractaddress=' + tokenAddress + '&address=' + accountAddress);
   var response = await http.get(uri);
   Map<String, dynamic> obj = json.decode(response.body);
@@ -84,18 +87,66 @@ Future<TransactionList> getTransactions(accountAddress, tokenAddress) async {
   }
 }
 
-  initSocket(_onStart) async {
-    var _socket = AbsintheSocket("wss://explorer.fusenet.io/socket/websocket");
-    Observer _categoryObserver = Observer(
-        //onAbort: _onStart,
-        //onCancel: _onStart,
-        //onError: _onStart,
-        onResult: _onStart,
-        //onStart: _onStart
-        );
+Future<List<Business>> getBusinesses(communityAddress) async {
+  print('Fetching businesses for commnuity: $communityAddress');
+  return http.get(API_ROOT + "entities/" + communityAddress + "?type=business&withMetadata=true").then((response) {
+    List<Business> businessList = new List();
+    final dynamic responseJson = json.decode(response.body);
+    responseJson["data"].forEach((f) => businessList.add(new Business.fromJson(f)));
+    print('Done Fetching businesses for commnuity: $communityAddress. length: ${businessList.length}');
+    return businessList;
+  });
+}
 
-    Notifier notifier = _socket.send(GqlRequest(
-        operation:
-            "subscription { tokenTransfers(tokenContractAddressHash: \"0x415c11223bca1324f470cf72eac3046ea1e755a3\") { amount, fromAddressHash, toAddressHash }}"));
-    notifier.observe(_categoryObserver);
-  }
+const String _URL = "https://rpc.fusenet.io";
+const String _ABI_EXTRACT =
+    '[ { "constant": true, "inputs": [], "name": "name", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" } ], "name": "approve", "outputs": [ { "name": "success", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_tokenContract", "type": "address" } ], "name": "withdrawAltcoinTokens", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_from", "type": "address" }, { "name": "_to", "type": "address" }, { "name": "_amount", "type": "uint256" } ], "name": "transferFrom", "outputs": [ { "name": "success", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "withdraw", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_value", "type": "uint256" } ], "name": "burn", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_participant", "type": "address" }, { "name": "_amount", "type": "uint256" } ], "name": "adminClaimAirdrop", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_addresses", "type": "address[]" }, { "name": "_amount", "type": "uint256" } ], "name": "adminClaimAirdropMultiple", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "_owner", "type": "address" } ], "name": "balanceOf", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "finishDistribution", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_tokensPerEth", "type": "uint256" } ], "name": "updateTokensPerEth", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_to", "type": "address" }, { "name": "_amount", "type": "uint256" } ], "name": "transfer", "outputs": [ { "name": "success", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": false, "inputs": [], "name": "getTokens", "outputs": [], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": true, "inputs": [], "name": "minContribution", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "distributionFinished", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "tokenAddress", "type": "address" }, { "name": "who", "type": "address" } ], "name": "getTokenBalance", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "tokensPerEth", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" } ], "name": "allowance", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "totalDistributed", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "newOwner", "type": "address" } ], "name": "transferOwnership", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "_from", "type": "address" }, { "indexed": true, "name": "_to", "type": "address" }, { "indexed": false, "name": "_value", "type": "uint256" } ], "name": "Transfer", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "_owner", "type": "address" }, { "indexed": true, "name": "_spender", "type": "address" }, { "indexed": false, "name": "_value", "type": "uint256" } ], "name": "Approval", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" } ], "name": "Distr", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [], "name": "DistrFinished", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "_owner", "type": "address" }, { "indexed": false, "name": "_amount", "type": "uint256" }, { "indexed": false, "name": "_balance", "type": "uint256" } ], "name": "Airdrop", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "_tokensPerEth", "type": "uint256" } ], "name": "TokensPerEthUpdated", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "burner", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" } ], "name": "Burn", "type": "event", "stateMutability": "view" } ]';
+
+Future sendTransaction(address, amount, communityAddress, privateKey) async {
+  var httpClient = new Client();
+  var ethClient = new web3dart.Web3Client(_URL, httpClient);
+
+  var credentials = web3dart.Credentials.fromPrivateKeyHex(privateKey);
+  var contractABI = web3dart.ContractABI.parseFromJSON(_ABI_EXTRACT, "cln");
+  var contract = new web3dart.DeployedContract(
+      contractABI, new web3dart.EthereumAddress(communityAddress), ethClient, credentials);
+
+//, EtherAmount.fromUnitAndValue(EtherUnit.gwei, 1)
+  var getKittyFn = contract.findFunctionsByName("transfer").first;
+  address = cleanAddress(address);
+  var n = BigInt.parse(numbers.strip0x(address), radix: 16);
+  var kittenResponse = await new web3dart.Transaction(
+          keys: credentials,
+          maximumGas: 100000,
+          gasPrice: web3dart.EtherAmount.fromUnitAndValue(web3dart.EtherUnit.gwei, 3))
+      .prepareForPaymentCall(
+          contract,
+          getKittyFn,
+          [n, BigInt.from(amount) * BigInt.from(1000000000000000000)],
+          web3dart.EtherAmount.zero())
+      .send(ethClient, chainId: 121);
+  print(kittenResponse);
+
+  return true;
+}
+
+String cleanAddress(address) {
+  address = address.toString().replaceAll("ethereum:", "");
+  return address;
+}
+
+initSocket(_onStart) async {
+  var _socket = AbsintheSocket("wss://explorer.fusenet.io/socket/websocket");
+  Observer _categoryObserver = Observer(
+      //onAbort: _onStart,
+      //onCancel: _onStart,
+      //onError: _onStart,
+      onResult: _onStart,
+      //onStart: _onStart
+      );
+
+  Notifier notifier = _socket.send(GqlRequest(
+      operation:
+          "subscription { tokenTransfers(tokenContractAddressHash: \"0x415c11223bca1324f470cf72eac3046ea1e755a3\") { amount, fromAddressHash, toAddressHash }}"));
+  notifier.observe(_categoryObserver);
+}

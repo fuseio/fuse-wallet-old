@@ -12,6 +12,7 @@ final walletReducer = combineReducers<WalletState>([
   TypedReducer<WalletState, BusinessesLoadedAction>(_businessesLoadedAction),
   TypedReducer<WalletState, SwitchCommunityAction>(_switchCommunityAction),
   TypedReducer<WalletState, WalletLoadedAction>(_walletLoadedAction),
+  TypedReducer<WalletState, LogoutAction>(_loagoutAction),
 ]);
 
 WalletState _communityLoaded(WalletState state, CommunityLoadedAction action) {
@@ -43,5 +44,9 @@ WalletState _switchCommunityAction(WalletState state, SwitchCommunityAction acti
 }
 
 WalletState _walletLoadedAction(WalletState state, WalletLoadedAction action) {
-  return state.copyWith(isLoading: false, showBonusDialog: false);
+  return state.copyWith(isLoading: false);
+}
+
+WalletState _loagoutAction(WalletState state, LogoutAction action) {
+  return state.copyWith(community: null, balance: "0", transactions: null, tokenAddress: "");
 }

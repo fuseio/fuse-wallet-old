@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fusewallet/logic/crypto.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:core';
 import 'package:flutter/services.dart';
+import 'package:fusewallet/services/wallet_service.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/logic/globals.dart' as globals;

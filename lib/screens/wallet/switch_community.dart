@@ -1,14 +1,10 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:fusewallet/logic/crypto.dart';
 import 'package:fusewallet/modals/views/wallet_viewmodel.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
 import 'dart:core';
-import 'package:fusewallet/screens/signup/signup.dart';
 import 'package:fusewallet/widgets/widgets.dart';
-import 'package:fusewallet/logic/common.dart';
-import 'package:country_code_picker/country_code_picker.dart';
 
 class SwitchCommunityPage extends StatefulWidget {
   SwitchCommunityPage({Key key, this.title}) : super(key: key);

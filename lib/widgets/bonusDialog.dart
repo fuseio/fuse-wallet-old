@@ -80,7 +80,7 @@ class BonusDialogState extends State<BonusDialog> {
                         children: letters,
                       ),
                     ),
-                    Text("new fuse coins!",
+                    Text("new " + viewModel.community.symbol + "'s!",
                         style: TextStyle(
                             color: Colors.black54,
                             fontSize: 18,

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:fusewallet/logic/crypto.dart';
 
 class Business {
   final String account;
@@ -41,16 +40,4 @@ class BusinessList {
       businesses: businesses
     );
   }
-}
-
-Future<List<Business>> getBusinesses() async {
-  var communityAddress = await getCommunityAddress();
-  print('Fetching businesses for commnuity: $communityAddress');
-  return http.get(API_ROOT + "entities/" + communityAddress + "?type=business&withMetadata=true").then((response) {
-    List<Business> businessList = new List();
-    final dynamic responseJson = json.decode(response.body);
-    responseJson["data"].forEach((f) => businessList.add(new Business.fromJson(f)));
-    print('Done Fetching businesses for commnuity: $communityAddress. length: ${businessList.length}');
-    return businessList;
-  });
 }

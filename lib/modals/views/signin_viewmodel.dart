@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:fusewallet/modals/user.dart';
 import 'package:fusewallet/redux/actions/signin_actions.dart';
+import 'package:fusewallet/redux/actions/wallet_actions.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
 import 'package:redux/redux.dart';
 
@@ -8,13 +9,13 @@ class SignInViewModel {
   final bool isLoading;
   final bool loginError;
   final User user;
-
   final Function(String, String) login;
   final Function(BuildContext, String) sendCodeToPhoneNumber;
   final Function(BuildContext, String) signInWithPhoneNumber;
   final Function(BuildContext, String, String, String) signUp;
   final Function() generateWallet;
   final Function() logout;
+  final Function(BuildContext) openWallet;
 
   SignInViewModel({
     this.isLoading,
@@ -26,6 +27,7 @@ class SignInViewModel {
     this.signUp,
     this.generateWallet,
     this.logout,
+    this.openWallet
   });
 
   static SignInViewModel fromStore(Store<AppState> store) {
@@ -46,8 +48,12 @@ class SignInViewModel {
         store.dispatch(generateWalletCall());
       },
       logout: () {
-        store.dispatch(logoutCall());
+        store.dispatch(logoutUserCall());
+        store.dispatch(logoutWalletCall());
       },
+      openWallet: (BuildContext context) {
+        store.dispatch(openWalletCall(context));
+      }
     );
   }
 }

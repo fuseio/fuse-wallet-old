@@ -11,7 +11,6 @@ class WalletState {
   final Community community;
   final bool isLoading;
   final List<Business> businesses;
-  final bool showBonusDialog;
 
   WalletState({
     @required this.balance,
@@ -19,17 +18,16 @@ class WalletState {
     @required this.tokenAddress,
     @required this.community,
     this.isLoading,
-    this.businesses,
-    this.showBonusDialog
+    this.businesses
   });
 
   factory WalletState.initial() {
-    return new WalletState(isLoading: false, balance: "0", transactions: null, tokenAddress: "", community: null, businesses: null, showBonusDialog: true);
+    return new WalletState(isLoading: false, balance: "0", transactions: null, tokenAddress: "", community: null, businesses: null);
   }
 
-  WalletState copyWith({String balance, TransactionList transactions, String tokenAddress, Community community, bool isLoading, List<Business> businesses, bool showBonusDialog}) {
+  WalletState copyWith({String balance, TransactionList transactions, String tokenAddress, Community community, bool isLoading, List<Business> businesses}) {
     return new WalletState(
-        balance: balance ?? this.balance, transactions: transactions ?? this.transactions, tokenAddress: tokenAddress ?? this.tokenAddress, community: community ?? this.community, isLoading: isLoading ?? this.isLoading, businesses: businesses ?? this.businesses, showBonusDialog: showBonusDialog ?? this.showBonusDialog);
+        balance: balance ?? this.balance, transactions: transactions ?? this.transactions, tokenAddress: tokenAddress ?? this.tokenAddress, community: community ?? this.community, isLoading: isLoading ?? this.isLoading, businesses: businesses ?? this.businesses);
   }
 
   @override
@@ -44,7 +42,7 @@ class WalletState {
   //int get hashCode => isLoading.hashCode ^ user.hashCode;
 
   static WalletState fromJson(dynamic json) =>
-      WalletState(balance: json["balance"], transactions: null, tokenAddress: "", community: null, isLoading: false, showBonusDialog: json["showBonusDialog"]);
+      WalletState(balance: json["balance"], transactions: TransactionList.fromJsonState(json["transactions"]), tokenAddress: json["tokenAddress"], community:  Community.fromJsonState(json["community"]), isLoading: false);
 
-  dynamic toJson() => {'balance': balance, 'showBonusDialog': showBonusDialog};
+  dynamic toJson() => {'balance': balance, 'community': community, 'transactions': transactions};
 }

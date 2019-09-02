@@ -20,14 +20,25 @@ class Community {
       this.symbol});
 
   static Community fromJson(dynamic json) => json != null ? Community(
-      communityAddress: json["data"]["communityAddress"],
-      homeTokenAddress: json["data"]["homeTokenAddress"],
-      foreignTokenAddress: json["data"]["foreignTokenAddress"],
-      foreignBridgeAddress: json["data"]["foreignBridgeAddress"],
-      homeBridgeAddress: json["data"]["homeBridgeAddress"],
+      communityAddress: json["communityAddress"],
+      homeTokenAddress: json["homeTokenAddress"],
+      foreignTokenAddress: json["foreignTokenAddress"],
+      foreignBridgeAddress: json["foreignBridgeAddress"],
+      homeBridgeAddress: json["homeBridgeAddress"],
       symbol: "",
-      joinBonusText: json["data"]["plugins"].length > 0 && json["data"]["plugins"]["joinBonus"] != null ? json["data"]["plugins"]["joinBonus"]["text"] : "",
-      joinBonusAmount: json["data"]["plugins"].length > 0 && json["data"]["plugins"]["joinBonus"] != null ? json["data"]["plugins"]["joinBonus"]["amount"] : 0
+      joinBonusText: json["plugins"].length > 0 && json["plugins"]["joinBonus"] != null ? json["plugins"]["joinBonus"]["text"] : "",
+      joinBonusAmount: json["plugins"].length > 0 && json["plugins"]["joinBonus"] != null ? json["plugins"]["joinBonus"]["amount"] : 0
+      ) : null;
+
+  static Community fromJsonState(dynamic json) => json != null ? Community(
+      communityAddress: json["communityAddress"],
+      homeTokenAddress: json["homeTokenAddress"],
+      foreignTokenAddress: json["foreignTokenAddress"],
+      foreignBridgeAddress: json["foreignBridgeAddress"],
+      homeBridgeAddress: json["homeBridgeAddress"],
+      symbol: json["symbol"],
+      joinBonusText: json["joinBonusText"],
+      joinBonusAmount: json["joinBonusAmount"]
       ) : null;
 
   dynamic toJson() => {

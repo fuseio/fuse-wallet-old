@@ -109,7 +109,7 @@ ThunkAction generateWalletCall() {
   };
 }
 
-ThunkAction logoutCall() {
+ThunkAction logoutUserCall() {
   return (Store store) async {
     store.dispatch(new LogoutAction());
     return true;
