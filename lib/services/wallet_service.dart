@@ -111,11 +111,12 @@ Future sendTransaction(address, amount, tokenAddress, privateKey) async {
   var contract = new web3dart.DeployedContract(
       contractABI, new web3dart.EthereumAddress(tokenAddress), ethClient, credentials);
 
-//, EtherAmount.fromUnitAndValue(EtherUnit.gwei, 1)
   var getKittyFn = contract.findFunctionsByName("transfer").first;
   address = cleanAddress(address);
   var n = BigInt.parse(numbers.strip0x(address), radix: 16);
-  var kittenResponse = await new web3dart.Transaction(
+
+  try {
+      var response = await new web3dart.Transaction(
           keys: credentials,
           maximumGas: 100000,
           gasPrice: web3dart.EtherAmount.fromUnitAndValue(web3dart.EtherUnit.gwei, 3))
@@ -125,9 +126,11 @@ Future sendTransaction(address, amount, tokenAddress, privateKey) async {
           [n, BigInt.from(amount) * BigInt.from(1000000000000000000)],
           web3dart.EtherAmount.zero())
       .send(ethClient, chainId: 122);
-  print(kittenResponse);
 
-  return true;
+      return "000";
+  } catch (e) {
+    return e.toString();
+  }
 }
 
 String cleanAddress(address) {

@@ -68,16 +68,20 @@ Future loadCommunity(Store store) async {
 Future loadBalance(Store store) async {
   var publicKey = store.state.userState.user.publicKey;
   var tokenAddress = store.state.walletState.tokenAddress;
-  var balance = await getBalance(publicKey, tokenAddress);
-  store.dispatch(new BalanceLoadedAction(balance));
+  if (publicKey != "" && tokenAddress != "") {
+    var balance = await getBalance(publicKey, tokenAddress);
+    store.dispatch(new BalanceLoadedAction(balance));
+  }
 }
 
 Future loadTransactions(Store store) {
   var publicKey = store.state.userState.user.publicKey;
   var tokenAddress = store.state.walletState.tokenAddress;
-  getTransactions(publicKey, tokenAddress).then((list) {
-    store.dispatch(new TransactionsLoadedAction(list));
-  });
+  if (publicKey != "" && tokenAddress != "") {
+    getTransactions(publicKey, tokenAddress).then((list) {
+      store.dispatch(new TransactionsLoadedAction(list));
+    });
+  }
 }
 
 ThunkAction sendTransactionCall(BuildContext context, address, amount) {
@@ -85,11 +89,18 @@ ThunkAction sendTransactionCall(BuildContext context, address, amount) {
     store.dispatch(new StartLoadingAction());
     sendTransaction(cleanAddress(address), int.parse(amount), store.state.walletState.tokenAddress, store.state.userState.user.privateKey)
       .then((ret) {
-          Navigator.of(context).pop();
+        if (ret == "000") {
+          store.dispatch(new SendStepAction("complete"));
+          new Timer(Duration(seconds: 3), () {
+            store.dispatch(new SendStepAction("amount"));
+            Navigator.of(context).pop(true);
+          });
+        } else {
           Scaffold.of(context).showSnackBar(new SnackBar(
-            content: new Text('Transaction sent successfully'),
+            content: new Text(ret),
             //duration: new Duration(seconds: 5),
           ));
+        }
         store.dispatch(new TransactionSentAction());
       });
     return true;
@@ -112,6 +123,14 @@ ThunkAction switchCommunityCall(communityAddress) {
     return true;
   };
 }
+
+ThunkAction sendStepCall(step) {
+  return (Store store) async {
+    store.dispatch(new SendStepAction(step));
+    return true;
+  };
+}
+
 
 ThunkAction logoutWalletCall() {
   return (Store store) async {
@@ -165,6 +184,12 @@ class SwitchCommunityAction {
   final String address;
 
   SwitchCommunityAction(this.address);
+}
+
+class SendStepAction {
+  final String step;
+
+  SendStepAction(this.step);
 }
 
 class LogoutAction {

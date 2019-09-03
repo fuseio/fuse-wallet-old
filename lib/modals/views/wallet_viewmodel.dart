@@ -20,6 +20,7 @@ class WalletViewModel {
   final Function(BuildContext, String, String) sendTransaction;
   final Function() loadBusinesses;
   final Function(String) switchCommunity;
+  final Function(String) sendStep;
 
   WalletViewModel({
     this.isLoading,
@@ -32,7 +33,8 @@ class WalletViewModel {
     this.sendTransaction,
     this.businesses,
     this.loadBusinesses,
-    this.switchCommunity
+    this.switchCommunity,
+    this.sendStep
   });
 
   static WalletViewModel fromStore(Store<AppState> store) {
@@ -55,6 +57,9 @@ class WalletViewModel {
       },
       switchCommunity: (address) {
         store.dispatch(switchCommunityCall(address));
+      },
+      sendStep: (step) {
+        store.dispatch(sendStepCall(step));
       }
     );
   }

@@ -11,6 +11,9 @@ class WalletState {
   final Community community;
   final bool isLoading;
   final List<Business> businesses;
+  final String sendAddress;
+  final double sendAmount;
+  final String sendStep;
 
   WalletState({
     @required this.balance,
@@ -18,16 +21,27 @@ class WalletState {
     @required this.tokenAddress,
     @required this.community,
     this.isLoading,
-    this.businesses
+    this.businesses,
+    this.sendAddress,
+    this.sendAmount,
+    this.sendStep
   });
 
   factory WalletState.initial() {
-    return new WalletState(isLoading: false, balance: "0", transactions: null, tokenAddress: "", community: null, businesses: null);
+    return new WalletState(isLoading: false, balance: "0", transactions: null, tokenAddress: "", community: null, businesses: null, sendAddress: "", sendAmount: 0, sendStep: "amount");
   }
 
-  WalletState copyWith({String balance, TransactionList transactions, String tokenAddress, Community community, bool isLoading, List<Business> businesses}) {
+  WalletState copyWith({String balance, Nullable<TransactionList> transactions, String tokenAddress, Nullable<Community> community, bool isLoading, List<Business> businesses, String sendAddress, double sendAmount, String sendStep}) {
     return new WalletState(
-        balance: balance ?? this.balance, transactions: transactions ?? this.transactions, tokenAddress: tokenAddress ?? this.tokenAddress, community: community ?? this.community, isLoading: isLoading ?? this.isLoading, businesses: businesses ?? this.businesses);
+        balance: balance ?? this.balance,
+        transactions: transactions == null ? this.transactions : transactions.value,
+        tokenAddress: tokenAddress ?? this.tokenAddress,
+        community: community == null ? this.community : community.value,
+        isLoading: isLoading ?? this.isLoading,
+        businesses: businesses ?? this.businesses,
+        sendAddress: sendAddress ?? this.sendAddress,
+        sendAmount: sendAmount ?? this.sendAmount,
+        sendStep: sendStep ?? this.sendStep);
   }
 
   @override
@@ -45,4 +59,11 @@ class WalletState {
       WalletState(balance: json["balance"], transactions: TransactionList.fromJsonState(json["transactions"]), tokenAddress: json["tokenAddress"], community:  Community.fromJsonState(json["community"]), isLoading: false);
 
   dynamic toJson() => {'balance': balance, 'community': community, 'transactions': transactions};
+}
+
+class Nullable<T> {
+  final T value;
+
+  const Nullable(this.value);
+  const Nullable.fromNull() : this.value = null;
 }
