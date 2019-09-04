@@ -416,7 +416,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 2.2;
-				FLUTTER_BUILD_NUMBER = 34s;
+				FLUTTER_BUILD_NUMBER = 35s;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
@@ -553,7 +553,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 2.2;
-				FLUTTER_BUILD_NUMBER = 34;
+				FLUTTER_BUILD_NUMBER = 35;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
@@ -584,7 +584,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 2.2;
-				FLUTTER_BUILD_NUMBER = 34;
+				FLUTTER_BUILD_NUMBER = 35;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
