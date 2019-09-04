@@ -20,7 +20,13 @@ void main() async {
     serializer: JsonSerializer<AppState>(AppState.fromJson),
   );
 
-  final initialState = await persistor.load();
+  var initialState;
+  try {
+    initialState = await persistor.load();
+  }
+  catch (e) {
+    initialState = null;
+  }
   
   final store = Store<AppState>(
       appReducer,

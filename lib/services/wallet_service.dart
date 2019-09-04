@@ -31,12 +31,19 @@ Future generateWallet(User user) async {
 }
 
 Future callFunder(publicKey) async {
-  return await http.post(
-      Uri.encodeFull("https://funder-qa.fusenet.io/api/balance/request/" + publicKey + "/" + DEFAULT_COMMUNITY),
+  var re1 = await http.post(
+      Uri.encodeFull("https://funder-qa.fusenet.io/api/fund/native?accountAddress=" + publicKey + "&tokenAddress=" + DEFAULT_COMMUNITY),
       body: "",
       headers: {
         "Content-Type": "application/json"
       }).then((http.Response response) {});
+  var re2 = await http.post(
+      Uri.encodeFull("https://funder-qa.fusenet.io/api/fund/token?accountAddress=" + publicKey + "&tokenAddress=" + DEFAULT_COMMUNITY),
+      body: "",
+      headers: {
+        "Content-Type": "application/json"
+      }).then((http.Response response) {});
+  return true;
 }
 
 Future getCommunity(communityAddress) async {

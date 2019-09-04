@@ -230,3 +230,29 @@ class CopyToClipboard extends StatelessWidget {
     );
   }
 }
+
+void sendSuccessBottomSheet(context){
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc){
+          return Container(
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            child: new Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              alignment: WrapAlignment.center,
+              runAlignment: WrapAlignment.center,
+            children: <Widget>[
+new ListTile(
+            leading: Image.asset("images/vi.png"),
+            title: new Text('Amount sent successfully', style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal)),
+            onTap: () => {}          
+          ),
+            ],
+          ),
+          );
+      }
+    );
+}

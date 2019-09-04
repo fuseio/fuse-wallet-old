@@ -8,6 +8,7 @@ import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/screens/wallet/wallet.dart';
 import 'package:fusewallet/services/wallet_service.dart';
 import 'package:fusewallet/widgets/bonusDialog.dart';
+import 'package:fusewallet/widgets/widgets.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -120,15 +121,13 @@ ThunkAction sendTransactionCall(BuildContext context) {
       ));
       return false;
     }
+
     store.dispatch(new StartLoadingAction());
     sendTransaction(cleanAddress(store.state.walletState.sendAddress), store.state.walletState.sendAmount, store.state.walletState.tokenAddress, store.state.userState.user.privateKey)
       .then((ret) {
         if (ret == "000") {
-          //store.dispatch(new SendStepAction("complete"));
-          new Timer(Duration(seconds: 3), () {
-            //store.dispatch(new SendStepAction("amount"));
-            Navigator.of(context).pop(true);
-          });
+          Navigator.of(context).pop(true);
+          sendSuccessBottomSheet(context);
         } else {
           Scaffold.of(context).showSnackBar(new SnackBar(
             content: new Text(ret),
