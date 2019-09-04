@@ -125,6 +125,12 @@ class _SendAmountFormState extends State<SendAmountForm> {
           }
         }
         setState(() {});
+        if (amountText == "") {
+          amountText = "0";
+        }
+        if (double.parse(viewModel.balance) < double.parse(amountText)) {
+          //amountText = viewModel.balance;
+        }
         viewModel.sendAmount(double.parse(amountText));
       }
 
@@ -200,6 +206,7 @@ class _SendAmountFormState extends State<SendAmountForm> {
                 content: new Text("Please enter amount"),
               ));
             } else {
+              viewModel.sendAmount(double.parse(amountText));
               openPage(context, new SendAddressPage());
             }
           },
