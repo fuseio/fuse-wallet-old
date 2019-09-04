@@ -26,10 +26,7 @@ class _SendAmountPageState extends State<SendAmountPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, WalletViewModel>(converter: (store) {
-      return WalletViewModel.fromStore(store);
-    }, builder: (_, viewModel) {
-      return Scaffold(
+    return Scaffold(
           appBar: AppBar(
             centerTitle: true,
             elevation: 0.0,
@@ -38,7 +35,6 @@ class _SendAmountPageState extends State<SendAmountPage> {
           ),
           backgroundColor: const Color(0xFFF8F8F8),
           body: SendAmountForm());
-    });
   }
 }
 
@@ -204,7 +200,7 @@ class _SendAmountFormState extends State<SendAmountForm> {
                 content: new Text("Please enter amount"),
               ));
             } else {
-              openPage(globals.scaffoldKey.currentContext, new SendAddressPage());
+              openPage(context, new SendAddressPage());
             }
           },
           preload: false,

@@ -184,7 +184,7 @@ class _SendPageState extends State<SendPage> {
                                   child: PrimaryButton(
                                 label: I18n.of(context).send,
                                 onPressed: () async {
-                                  viewModel.sendTransaction(context, cleanAddress(addressController.text), amountController.text);
+                                  viewModel.sendTransaction(context);
                                 },
                                 preload: viewModel.isLoading,
                               ))

@@ -17,7 +17,7 @@ class WalletViewModel {
   final TransactionList transactions;
   final List<Business> businesses;
   final Function(BuildContext) initWallet;
-  final Function(BuildContext, String, String) sendTransaction;
+  final Function(BuildContext) sendTransaction;
   final Function() loadBusinesses;
   final Function(BuildContext, String) switchCommunity;
   final Function(double) sendAmount;
@@ -51,7 +51,7 @@ class WalletViewModel {
       initWallet: (context) {
         store.dispatch(initWalletCall(context));
       },
-      sendTransaction: (context, address, amount) {
+      sendTransaction: (context) {
         store.dispatch(sendTransactionCall(context));
       },
       loadBusinesses: () {

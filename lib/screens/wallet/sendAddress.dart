@@ -20,19 +20,8 @@ Future scan() async {
   } on FormatException {} catch (e) {}
 }
 
-final addressController = TextEditingController(text: "");
-
-Future openCameraScan(openPage) async {
-  addressController.text = await BarcodeScanner.scan();
-  if (openPage) {
-    openPage(globals.scaffoldKey.currentContext, new SendAddressPage());
-  }
-}
-
 class SendAddressPage extends StatefulWidget {
-  SendAddressPage({Key key, this.address}) : super(key: key);
-
-  final String address;
+  SendAddressPage({Key key}) : super(key: key);
 
   @override
   _SendAddressPageState createState() => _SendAddressPageState();
@@ -41,20 +30,14 @@ class SendAddressPage extends StatefulWidget {
 class _SendAddressPageState extends State<SendAddressPage> {
   GlobalKey<ScaffoldState> scaffoldState;
 
-  String amountText = "0";
-
   @override
   void initState() {
-    addressController.text = widget.address;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, WalletViewModel>(converter: (store) {
-      return WalletViewModel.fromStore(store);
-    }, builder: (_, viewModel) {
-      return Scaffold(
+    return Scaffold(
           appBar: AppBar(
             centerTitle: true,
             elevation: 0.0,
@@ -62,8 +45,7 @@ class _SendAddressPageState extends State<SendAddressPage> {
             backgroundColor: Theme.of(context).canvasColor,
           ),
           backgroundColor: const Color(0xFFF8F8F8),
-          body: SendAddressPage());
-    });
+          body: SendAddressForm());
   }
 }
 
@@ -77,11 +59,9 @@ class SendAddressForm extends StatefulWidget {
 }
 
 class _SendAddressFormState extends State<SendAddressForm> {
-  String amountText = "0";
 
   @override
   void initState() {
-    addressController.text = widget.address;
     super.initState();
   }
 
@@ -90,6 +70,16 @@ class _SendAddressFormState extends State<SendAddressForm> {
     return new StoreConnector<AppState, WalletViewModel>(converter: (store) {
       return WalletViewModel.fromStore(store);
     }, builder: (_, viewModel) {
+
+      final addressController = TextEditingController(text: viewModel.walletState.sendAddress);
+
+      Future openCameraScan(openPage) async {
+        viewModel.sendAddress(await BarcodeScanner.scan());
+        if (openPage) {
+          openPage(globals.scaffoldKey.currentContext, new SendAddressPage());
+        }
+      }
+
       return Container(
           child: Column(children: <Widget>[
         Expanded(
@@ -129,7 +119,7 @@ class _SendAddressFormState extends State<SendAddressForm> {
                     children: <Widget>[
                       TextFormField(
                         controller: addressController,
-                        autofocus: true,
+                        autofocus: false,
                         style: const TextStyle(fontSize: 18),
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(
@@ -171,7 +161,7 @@ class _SendAddressFormState extends State<SendAddressForm> {
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.only(top: 10.0),
-                          child: Text(amountText,
+                          child: Text(viewModel.walletState.sendAmount.toString(),
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: 60,
@@ -198,8 +188,8 @@ class _SendAddressFormState extends State<SendAddressForm> {
             child: PrimaryButton(
           label: "SEND",
           onPressed: () async {
-            viewModel.sendTransaction(
-                context, cleanAddress(addressController.text), amountText);
+            viewModel.sendAddress(addressController.text);
+            viewModel.sendTransaction(context);
           },
           preload: viewModel.isLoading,
           width: 300,

@@ -121,7 +121,7 @@ ThunkAction sendTransactionCall(BuildContext context) {
       return false;
     }
     store.dispatch(new StartLoadingAction());
-    sendTransaction(cleanAddress(store.state.walletState.sendAddress), int.parse(store.state.walletState.sendAmount), store.state.walletState.tokenAddress, store.state.userState.user.privateKey)
+    sendTransaction(cleanAddress(store.state.walletState.sendAddress), store.state.walletState.sendAmount, store.state.walletState.tokenAddress, store.state.userState.user.privateKey)
       .then((ret) {
         if (ret == "000") {
           //store.dispatch(new SendStepAction("complete"));
