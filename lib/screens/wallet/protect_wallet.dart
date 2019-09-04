@@ -88,7 +88,7 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
                                   label: "USE FACE ID",
                                   onPressed: () async {
                                     var assetId = await BarcodeScanner.scan();
-                                    viewModel.switchCommunity(assetId);
+                                    viewModel.switchCommunity(context, assetId);
                                     Navigator.of(context).pop(true);
                                     Navigator.of(context).pop(true);
                                   },
@@ -152,7 +152,7 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
                                                         child: PrimaryButton(
                                                           label: "SAVE",
                                                           onPressed: () {
-                                                            viewModel.switchCommunity(assetIdController.text);
+                                                            viewModel.switchCommunity(context, assetIdController.text);
                                                             Navigator.of(context).pop(true);
                                                             Navigator.of(context).pop(true);
                                                           },

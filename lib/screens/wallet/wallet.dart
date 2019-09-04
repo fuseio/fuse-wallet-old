@@ -1,3 +1,4 @@
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:core';
@@ -5,7 +6,7 @@ import 'package:fusewallet/logic/globals.dart' as globals;
 import 'package:fusewallet/modals/views/wallet_viewmodel.dart';
 import 'package:fusewallet/redux/actions/wallet_actions.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
-import 'package:fusewallet/screens/wallet/send.dart';
+import 'package:fusewallet/screens/wallet/sendAddress.dart';
 import 'package:fusewallet/widgets/drawer.dart';
 import 'package:fusewallet/widgets/transactions_list.dart';
 import 'package:fusewallet/widgets/widgets.dart';
@@ -36,6 +37,13 @@ class _WalletPageState extends State<WalletPage> {
         store.dispatch(initWalletCall(context));
       },
       builder: (_, viewModel) {
+
+        Future openCameraScan(openPage) async {
+          viewModel.sendAddress(await BarcodeScanner.scan());
+          if (openPage) {
+            openPage(globals.scaffoldKey.currentContext, new SendAddressPage());
+          }
+        }
         return viewModel.user == null ||
                 viewModel.community == null ||
                 viewModel.isLoading

@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/logic/globals.dart' as globals;
 import 'package:fusewallet/modals/businesses.dart';
-import 'package:fusewallet/screens/wallet/send.dart';
+import 'package:fusewallet/screens/wallet/sendAmount.dart';
 
 class BusinessPage extends StatefulWidget {
   BusinessPage({Key key, this.title, this.business}) : super(key: key);
@@ -83,8 +83,9 @@ class _BusinessPageState extends State<BusinessPage> {
                     fontWeight: FontWeight.bold),
               ),
               onPressed: () {
+                //widget.business.account
                 openPage(globals.scaffoldKey.currentContext,
-                    new SendPage(address: widget.business.account));
+                    new SendAmountPage());
               },
             )),
           ),

@@ -5,8 +5,8 @@ import 'package:fusewallet/logic/globals.dart' as globals;
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/screens/wallet/buy.dart';
 import 'package:fusewallet/screens/wallet/receive.dart';
-import 'package:fusewallet/screens/wallet/send.dart';
 import 'package:fusewallet/generated/i18n.dart';
+import 'package:fusewallet/screens/wallet/sendAmount.dart';
 
 class CustomScaffold extends StatelessWidget {
   CustomScaffold({this.title, this.children, this.key});
@@ -165,7 +165,7 @@ Widget bottomBar(context) {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           bottomBarItem("send.png", I18n.of(context).send, () {
-            openPage(globals.scaffoldKey.currentContext, new SendPage());
+            openPage(globals.scaffoldKey.currentContext, new SendAmountPage());
           }),
           bottomBarItem("buy.png", I18n.of(context).buy, () {
             openPage(globals.scaffoldKey.currentContext, new BuyPage());

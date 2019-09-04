@@ -48,8 +48,10 @@ Future getCommunity(communityAddress) async {
     }
 
     Map<String, dynamic> obj = json.decode(response.body);
+    if (obj["data"] == null) {
+      throw new Exception("No token information found");
+    }
     var community = Community.fromJson(obj["data"]);
-
     print('Done fetching community data for $communityAddress');
     return community;
   });
@@ -62,6 +64,9 @@ Future getTokenInformation(communityAddress) async {
       throw new Exception("Error while fetching data");
     }
     Map<String, dynamic> obj = json.decode(response.body);
+    if (obj["data"] == null) {
+      throw new Exception("No token information found");
+    }
     return obj["data"]["symbol"];
   });
 }

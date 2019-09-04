@@ -22,8 +22,8 @@ class Transaction {
       hash: json['hash'],
       timeStamp: json['timeStamp'],
       tokenSymbol: json['tokenSymbol'],
-      date: new DateTime.fromMillisecondsSinceEpoch(int.tryParse(json['timeStamp']) * 1000),
-      amount: BigInt.tryParse(json['value']) / BigInt.from(1000000000000000000)
+      date: json['timeStamp'] != null ? new DateTime.fromMillisecondsSinceEpoch(int.tryParse(json['timeStamp']) * 1000) : null,
+      amount: json['value'] != null ? BigInt.tryParse(json['value']) / BigInt.from(1000000000000000000) : null
     );
   }
 

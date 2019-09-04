@@ -16,7 +16,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 void main() async {
 
   final persistor = Persistor<AppState>(
-    storage: FlutterStorage(key: "app2"),
+    storage: FlutterStorage(key: "app6"),
     serializer: JsonSerializer<AppState>(AppState.fromJson),
   );
 

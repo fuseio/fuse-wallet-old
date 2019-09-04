@@ -6,7 +6,7 @@ import 'package:fusewallet/modals/views/wallet_viewmodel.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
 import 'package:fusewallet/screens/wallet/business.dart';
 import 'package:fusewallet/logic/globals.dart' as globals;
-import 'package:fusewallet/screens/wallet/send.dart';
+import 'package:fusewallet/screens/wallet/sendAmount.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 
 class BuyPage extends StatefulWidget {
@@ -153,13 +153,11 @@ class BusinessesListViewState extends State<BusinessesListView> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         onPressed: () {
+                                          viewModel.sendAddress(viewModel.businesses[index].account);
                                           openPage(
                                               globals
                                                   .scaffoldKey.currentContext,
-                                              new SendPage(
-                                                  address: viewModel
-                                                      .businesses[index]
-                                                      .account));
+                                              new SendAmountPage());
                                         },
                                       ),
                                     );

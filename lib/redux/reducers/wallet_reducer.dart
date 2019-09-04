@@ -15,7 +15,8 @@ final walletReducer = combineReducers<WalletState>([
   TypedReducer<WalletState, SwitchCommunityAction>(_switchCommunityAction),
   TypedReducer<WalletState, WalletLoadedAction>(_walletLoadedAction),
   TypedReducer<WalletState, LogoutAction>(_loagoutAction),
-  TypedReducer<WalletState, SendStepAction>(_sendStepAction),
+  TypedReducer<WalletState, SendAmountAction>(_sendAmountAction),
+  TypedReducer<WalletState, SendAddressAction>(_sendAddressAction),
 ]);
 
 WalletState _communityLoaded(WalletState state, CommunityLoadedAction action) {
@@ -54,6 +55,10 @@ WalletState _loagoutAction(WalletState state, LogoutAction action) {
   return state.copyWith(community: Nullable<Community>(null), balance: "0", transactions: Nullable<TransactionList>(null), tokenAddress: "", sendAddress: "", sendAmount: 0, sendStep: "amount");
 }
 
-WalletState _sendStepAction(WalletState state, SendStepAction action) {
-  return state.copyWith(sendStep: action.step);
+WalletState _sendAmountAction(WalletState state, SendAmountAction action) {
+  return state.copyWith(sendAmount: action.amount);
+}
+
+WalletState _sendAddressAction(WalletState state, SendAddressAction action) {
+  return state.copyWith(sendAddress: action.address);
 }
