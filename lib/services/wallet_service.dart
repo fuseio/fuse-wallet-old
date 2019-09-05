@@ -46,7 +46,7 @@ Future fundNative(accountAddress) async {
 
 Future fundToken(accountAddress, tokenAddress) async {
   print("requesting token funding of $tokenAddress for account $accountAddress ");
-  var body = '{ "accountAddress": "$accountAddress", tokenAddress: $tokenAddress}';
+  var body = '{ "accountAddress": "$accountAddress", "tokenAddress": "$tokenAddress"}';
 
   return await http.post(Uri.encodeFull("$API_FUNDER/fund/token"), body: body, headers: {
     "Content-Type": "application/json"

@@ -186,6 +186,14 @@ ThunkAction switchCommunityCall(BuildContext context, [tokenAddress = DEFAULT_TO
     await loadCommunity(store, tokenAddress);
     // await joinCommunity(store);
     await fundTokenCall(store);
+
+    // new Future.delayed(Duration.zero, () {
+    //   showDialog(
+    //       context: context,
+    //       builder: (BuildContext context) {
+    //         return BonusDialog();
+    //       });
+    // });
     // store.dispatch(initWalletCall(context));
     //store.dispatch(new SwitchCommunityAction(communityAddress));
     return true;
