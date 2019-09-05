@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:fusewallet/modals/businesses.dart';
 import 'package:fusewallet/modals/community.dart';
+import 'package:fusewallet/modals/token.dart';
 import 'package:fusewallet/modals/user.dart';
 import 'package:fusewallet/redux/actions/wallet_actions.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
@@ -14,6 +15,7 @@ class WalletViewModel {
   final User user;
   final WalletState walletState;
   final Community community;
+  final Token token;
   final TransactionList transactions;
   final List<Business> businesses;
   final Function(BuildContext) initWallet;
@@ -30,6 +32,7 @@ class WalletViewModel {
     this.user,
     this.walletState,
     this.community,
+    this.token,
     this.transactions,
     this.initWallet,
     this.loadBalances,
@@ -48,6 +51,7 @@ class WalletViewModel {
       user: store.state.userState.user,
       walletState: store.state.walletState,
       community: store.state.walletState.community,
+      token: store.state.walletState.token,
       transactions: store.state.walletState.transactions,
       businesses: store.state.walletState.businesses,
       initWallet: (context) {

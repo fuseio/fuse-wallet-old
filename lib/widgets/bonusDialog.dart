@@ -28,8 +28,11 @@ class BonusDialogState extends State<BonusDialog> {
       },
       builder: (_, viewModel) {
 
+        if (viewModel.community == null) {
+          return Container();
+        }
         var letters = new List<Widget>();
-        var lettersStr = viewModel.community.joinBonusAmount.toString().split("");
+        var lettersStr = viewModel.community.joinBonusAmount != null ? viewModel.community.joinBonusAmount.toString().split("") : new List<String>();
         for (var i = 0; i < lettersStr.length; i++) {
           letters.add(BonusLetter(lettersStr[i]));
         }
@@ -61,7 +64,7 @@ class BonusDialogState extends State<BonusDialog> {
                     Padding(
                       padding: EdgeInsets.only(top: 30, bottom: 20),
                       child: Text(
-                          "Hello " + viewModel.user.firstName + "!\n" + viewModel.community.joinBonusText,
+                          "Hello " + viewModel.user.firstName + "!\n" + viewModel.community.joinBonusText.toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Theme.of(context).textTheme.body1.color,

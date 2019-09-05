@@ -75,7 +75,6 @@ class _WalletPageState extends State<WalletPage> {
                 ],
               )))
             : new Scaffold(
-                key: globals.scaffoldKey,
                 appBar: AppBar(
                   title: InkWell(
                     child: Image.asset(
@@ -213,9 +212,7 @@ class _WalletPageState extends State<WalletPage> {
                                                                     .bold)),
                                                     new TextSpan(
                                                         text: " " +
-                                                            viewModel.community
-                                                                ?.symbol
-                                                                .toString(),
+                                                            viewModel.token?.symbol.toString(),
                                                         style: new TextStyle(
                                                             fontSize: 18,
                                                             color: Colors.white,
