@@ -56,10 +56,6 @@ ThunkAction loadBalancesCall(BuildContext context) {
 
 
 Future loadCommunity(Store store, tokenAddress) async {
-  var tokenAddress = store.state.walletState.tokenAddress;
-  if ((tokenAddress ?? "") == "") {
-    tokenAddress = DEFAULT_TOKEN_ADDRESS;
-  }
   var token = await getToken(tokenAddress);
   var commmunity = await getCommunity(tokenAddress);
   store.dispatch(new TokenLoadedAction(tokenAddress, token));
@@ -185,7 +181,7 @@ ThunkAction switchCommunityCall(BuildContext context, [tokenAddress = DEFAULT_TO
 
     await loadCommunity(store, tokenAddress);
     // await joinCommunity(store);
-    await fundTokenCall(store);
+    fundTokenCall(store);
 
     // new Future.delayed(Duration.zero, () {
     //   showDialog(
@@ -194,6 +190,8 @@ ThunkAction switchCommunityCall(BuildContext context, [tokenAddress = DEFAULT_TO
     //         return BonusDialog();
     //       });
     // });
+
+    store.dispatch(new WalletLoadedAction());
     // store.dispatch(initWalletCall(context));
     //store.dispatch(new SwitchCommunityAction(communityAddress));
     return true;

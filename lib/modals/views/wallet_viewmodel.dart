@@ -62,8 +62,8 @@ class WalletViewModel {
       loadBusinesses: () {
         store.dispatch(loadBusinessesCall());
       },
-      switchCommunity: (context, address) {
-        store.dispatch(switchCommunityCall(context, address));
+      switchCommunity: (context, tokenAddress) {
+        store.dispatch(switchCommunityCall(context, tokenAddress));
       },
       sendAmount: (amount) {
         store.dispatch(sendAmountCall(amount));
