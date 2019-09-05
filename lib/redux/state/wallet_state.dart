@@ -1,5 +1,6 @@
 import 'package:fusewallet/modals/businesses.dart';
 import 'package:fusewallet/modals/community.dart';
+import 'package:fusewallet/modals/token.dart';
 import 'package:fusewallet/modals/transactions.dart';
 import 'package:meta/meta.dart';
 
@@ -9,6 +10,7 @@ class WalletState {
   final TransactionList transactions;
   final String tokenAddress;
   final Community community;
+  final Token token;
   final bool isLoading;
   final List<Business> businesses;
   final String sendAddress;
@@ -20,6 +22,7 @@ class WalletState {
     @required this.transactions,
     @required this.tokenAddress,
     @required this.community,
+    this.token,
     this.isLoading,
     this.businesses,
     this.sendAddress,
@@ -28,15 +31,16 @@ class WalletState {
   });
 
   factory WalletState.initial() {
-    return new WalletState(isLoading: false, balance: "0", transactions: null, tokenAddress: "", community: null, businesses: null, sendAddress: "", sendAmount: 0, sendStep: "amount");
+    return new WalletState(isLoading: false, balance: "0", transactions: null, tokenAddress: "", community: null, token: null, businesses: null, sendAddress: "", sendAmount: 0, sendStep: "amount");
   }
 
-  WalletState copyWith({String balance, Nullable<TransactionList> transactions, String tokenAddress, Nullable<Community> community, bool isLoading, List<Business> businesses, String sendAddress, double sendAmount, String sendStep}) {
+  WalletState copyWith({String balance, Nullable<TransactionList> transactions, String tokenAddress, Nullable<Community> community, bool isLoading, List<Business> businesses, String sendAddress, double sendAmount, String sendStep, Nullable<Token> token}) {
     return new WalletState(
         balance: balance ?? this.balance,
         transactions: transactions == null ? this.transactions : transactions.value,
         tokenAddress: tokenAddress ?? this.tokenAddress,
         community: community == null ? this.community : community.value,
+        token: token == null ? this.token : token.value,
         isLoading: isLoading ?? this.isLoading,
         businesses: businesses ?? this.businesses,
         sendAddress: sendAddress ?? this.sendAddress,

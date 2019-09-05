@@ -36,7 +36,7 @@ class _WalletPageState extends State<WalletPage> {
         return WalletViewModel.fromStore(store);
       },
       onInit: (store) {
-        store.dispatch(initWalletCall(context));
+        store.dispatch(switchCommunityCall(context));
       },
       builder: (_, viewModel) {
 
@@ -93,7 +93,7 @@ class _WalletPageState extends State<WalletPage> {
                               color: const Color(0xFFFFFFFF),
                               tooltip: 'refresh',
                               onPressed: () async {
-                                viewModel.initWallet(context);
+                                viewModel.loadBalances(context);
                               },
                             )),
                   ],

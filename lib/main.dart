@@ -14,7 +14,7 @@ import 'package:fusewallet/generated/i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
-
+  WidgetsFlutterBinding.ensureInitialized();
   final persistor = Persistor<AppState>(
     storage: FlutterStorage(key: "app6"),
     serializer: JsonSerializer<AppState>(AppState.fromJson),
@@ -25,6 +25,7 @@ void main() async {
     initialState = await persistor.load();
   }
   catch (e) {
+    print(e);
     initialState = null;
   }
   

@@ -1,19 +1,22 @@
 import 'dart:convert';
+import 'dart:async';
 import 'package:absinthe_socket/absinthe_socket.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fusewallet/modals/businesses.dart';
 import 'package:fusewallet/modals/community.dart';
 import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/modals/user.dart';
+import 'package:fusewallet/modals/token.dart';
 import 'package:web3dart/web3dart.dart' as web3dart;
 import 'crypto_service.dart';
 import 'package:http/http.dart' as http;
 import "package:web3dart/src/utils/numbers.dart" as numbers;
 import 'package:http/http.dart';
 
-const DEFAULT_COMMUNITY = '0x2B40007C57a2259bdd21CbE4e0ebDB3270C3D63D'; //'0xF846053684960eBF35aEa6Dc4F9317ebb2F7bF84';
+const DEFAULT_TOKEN_ADDRESS = '0xF4a67c9273A7ef6d6438eaAD506846A80c95c159';
 const API_ROOT = 'https://studio-qa-ropsten.fusenet.io/api/v1/';
 const EXPLORER_ROOT = 'https://explorer.fusenet.io/api?';
+const API_FUNDER = 'https://funder-qa.fusenet.io/api';
 
 Future generateWallet(User user) async {
   if (user == null) {
@@ -25,30 +28,36 @@ Future generateWallet(User user) async {
   user.publicKey = await getPublickKey(user.privateKey);
 
   //Call funder
-  callFunder(user.publicKey);
+  fundNative(user.publicKey);
 
   return user;
 }
 
-Future callFunder(publicKey) async {
-  var re1 = await http.post(
-      Uri.encodeFull("https://funder-qa.fusenet.io/api/fund/native?accountAddress=" + publicKey + "&tokenAddress=" + DEFAULT_COMMUNITY),
-      body: "",
-      headers: {
-        "Content-Type": "application/json"
-      }).then((http.Response response) {});
-  var re2 = await http.post(
-      Uri.encodeFull("https://funder-qa.fusenet.io/api/fund/token?accountAddress=" + publicKey + "&tokenAddress=" + DEFAULT_COMMUNITY),
-      body: "",
-      headers: {
-        "Content-Type": "application/json"
-      }).then((http.Response response) {});
-  return true;
+Future fundNative(accountAddress) async {
+  print("requesting native funding for account $accountAddress");
+  var body = '{ "accountAddress": "$accountAddress"}';
+
+  return await http.post(Uri.encodeFull("$API_FUNDER/fund/native"), body: body, headers: {
+    "Content-Type": "application/json"
+  }).then((http.Response response) {
+    print('native funding for account $accountAddress succeeded');
+  });
 }
 
-Future getCommunity(communityAddress) async {
-  print('Fetching community data for $communityAddress');
-  return await http.get(Uri.encodeFull(API_ROOT + "communities?homeTokenAddress=" + communityAddress)).then((http.Response response) {
+Future fundToken(accountAddress, tokenAddress) async {
+  print("requesting token funding of $tokenAddress for account $accountAddress ");
+  var body = '{ "accountAddress": "$accountAddress", tokenAddress: $tokenAddress}';
+
+  return await http.post(Uri.encodeFull("$API_FUNDER/fund/token"), body: body, headers: {
+    "Content-Type": "application/json"
+  }).then((http.Response response) {
+    print('token funding of $tokenAddress for account $accountAddress succeeded');
+  });
+}
+
+Future getCommunity(tokenAddress) async {
+  print('Fetching community data by the token address: $tokenAddress');
+  return await http.get(Uri.encodeFull(API_ROOT + "communities?homeTokenAddress=" + tokenAddress)).then((http.Response response) {
     final int statusCode = response.statusCode;
     if (statusCode < 200 || statusCode > 400 || json == null) {
       throw new Exception("Error while fetching data");
@@ -59,13 +68,13 @@ Future getCommunity(communityAddress) async {
       throw new Exception("No token information found");
     }
     var community = Community.fromJson(obj["data"]);
-    print('Done fetching community data for $communityAddress');
+    print('Done fetching community data for $tokenAddress');
     return community;
   });
 }
 
-Future getTokenInformation(communityAddress) async {
-  return await http.get(Uri.encodeFull(API_ROOT + "tokens/" + communityAddress)).then((http.Response response) {
+Future getToken(tokenAddress) async {
+  return await http.get(Uri.encodeFull(API_ROOT + "tokens/" + tokenAddress)).then((http.Response response) {
     final int statusCode = response.statusCode;
     if (statusCode < 200 || statusCode > 400 || json == null) {
       throw new Exception("Error while fetching data");
@@ -74,7 +83,9 @@ Future getTokenInformation(communityAddress) async {
     if (obj["data"] == null) {
       throw new Exception("No token information found");
     }
-    return obj["data"]["symbol"];
+    var token = Token.fromJson(obj["data"]);
+    print('Done fetching token data for $tokenAddress');
+    return token;
   });
 }
 
@@ -89,6 +100,7 @@ Future<String> getBalance(accountAddress, tokenAddress) async {
 }
 
 Future<TransactionList> getTransactions(accountAddress, tokenAddress) async {
+  print('Fetching transactions of token $tokenAddress for account $accountAddress done.');
   final response =
       await http.get('${EXPLORER_ROOT}module=account&action=tokentx&address=$accountAddress&contractaddress=$tokenAddress');
 

@@ -157,6 +157,7 @@ Future getCommunityAddress() async {
 
 Future getCommunity(communityAddress) async {
   print('Fetching community data for $communityAddress');
+  print('yoyoyo');
   return await http.get(Uri.encodeFull(API_ROOT + "communities/" + communityAddress)).then((http.Response response) {
     final int statusCode = response.statusCode;
     if (statusCode < 200 || statusCode > 400 || json == null) {

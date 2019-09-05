@@ -17,6 +17,7 @@ class WalletViewModel {
   final TransactionList transactions;
   final List<Business> businesses;
   final Function(BuildContext) initWallet;
+  final Function(BuildContext) loadBalances;
   final Function(BuildContext) sendTransaction;
   final Function() loadBusinesses;
   final Function(BuildContext, String) switchCommunity;
@@ -31,6 +32,7 @@ class WalletViewModel {
     this.community,
     this.transactions,
     this.initWallet,
+    this.loadBalances,
     this.sendTransaction,
     this.businesses,
     this.loadBusinesses,
@@ -49,7 +51,10 @@ class WalletViewModel {
       transactions: store.state.walletState.transactions,
       businesses: store.state.walletState.businesses,
       initWallet: (context) {
-        store.dispatch(initWalletCall(context));
+        // store.dispatch(initWalletCall(context));
+      },
+      loadBalances: (context) {
+        store.dispatch(loadBalancesCall(context));
       },
       sendTransaction: (context) {
         store.dispatch(sendTransactionCall(context));
