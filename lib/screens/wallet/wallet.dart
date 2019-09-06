@@ -7,7 +7,6 @@ import 'package:fusewallet/logic/globals.dart' as globals;
 import 'package:fusewallet/modals/views/wallet_viewmodel.dart';
 import 'package:fusewallet/redux/actions/wallet_actions.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
-import 'package:fusewallet/screens/wallet/sendAddress.dart';
 import 'package:fusewallet/screens/wallet/sendAmount.dart';
 import 'package:fusewallet/widgets/drawer.dart';
 import 'package:fusewallet/widgets/transactions_list.dart';
@@ -75,6 +74,7 @@ class _WalletPageState extends State<WalletPage> {
                 ],
               )))
             : new Scaffold(
+                key: globals.scaffoldKey,
                 appBar: AppBar(
                   title: InkWell(
                     child: Image.asset(

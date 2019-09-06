@@ -183,7 +183,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       
                       ListTile(
                         title: Text(
-                          'Web',
+                          'Fuse studio',
                           style: TextStyle(fontSize: 16),
                         ),
                         onTap: () {

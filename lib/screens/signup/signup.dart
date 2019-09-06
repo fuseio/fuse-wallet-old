@@ -65,7 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
               children: <Widget>[
                 TextFormField(
                   controller: firstNameController,
-                  autofocus: true,
+                  autofocus: false,
                   style: const TextStyle(fontSize: 18),
                   decoration: const InputDecoration(
                     labelText: 'First name',

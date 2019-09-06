@@ -60,7 +60,7 @@ class _RecoveryPageState extends State<RecoveryPage> {
                   controller: wordsController,
                   keyboardType: TextInputType.multiline,
                   maxLines: 10,
-                  autofocus: true,
+                  autofocus: false,
                   decoration: const InputDecoration(
                     labelText: 'Write down your 12 words...',
                   ),

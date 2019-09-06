@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:web3dart/src/contracts/abi.dart';
 import 'package:web3dart/src/utils/amounts.dart';
-import "package:web3dart/src/utils/numbers.dart" as numbers;
 import 'package:absinthe_socket/absinthe_socket.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:bip32/bip32.dart' as bip32;

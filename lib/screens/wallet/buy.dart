@@ -82,7 +82,9 @@ class BusinessesListViewState extends State<BusinessesListView> {
       },
       builder: (_, viewModel) {
         return Builder(
-            builder: (context) => new Container(
+            builder: (context) => 
+            viewModel.businesses.length == 0 ? Container(padding: const EdgeInsets.all(40.0),child: Center(child: Text("No businesses found"),) ,) :
+            new Container(
                   padding: const EdgeInsets.all(8.0),
                   child: new Column(
                     mainAxisAlignment: MainAxisAlignment.center,

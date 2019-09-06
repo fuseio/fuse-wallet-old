@@ -169,7 +169,7 @@ class _SendAddressFormState extends State<SendAddressForm> {
                         ),
                         Padding(
                           padding: EdgeInsets.only(bottom: 11.0, left: 5),
-                          child: Text(viewModel.community.symbol,
+                          child: Text(viewModel.token.symbol,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: 16,

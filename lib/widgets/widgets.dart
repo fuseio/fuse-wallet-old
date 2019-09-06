@@ -165,13 +165,13 @@ Widget bottomBar(context) {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           bottomBarItem("send.png", I18n.of(context).send, () {
-            openPage(globals.scaffoldKey.currentContext, new SendAmountPage());
+            openPage(context, new SendAmountPage());
           }),
           bottomBarItem("buy.png", I18n.of(context).buy, () {
-            openPage(globals.scaffoldKey.currentContext, new BuyPage());
+            openPage(context, new BuyPage());
           }),
           bottomBarItem("recieve.png", I18n.of(context).receive, () {
-            openPage(globals.scaffoldKey.currentContext, new ReceivePage());
+            openPage(context, new ReceivePage());
           })
         ],
       ),

@@ -25,6 +25,7 @@ class WalletViewModel {
   final Function(BuildContext, String) switchCommunity;
   final Function(double) sendAmount;
   final Function(String) sendAddress;
+  final Function() logoutWallet;
 
   WalletViewModel({
     this.isLoading,
@@ -41,7 +42,8 @@ class WalletViewModel {
     this.loadBusinesses,
     this.switchCommunity,
     this.sendAmount,
-    this.sendAddress
+    this.sendAddress,
+    this.logoutWallet
   });
 
   static WalletViewModel fromStore(Store<AppState> store) {
@@ -74,6 +76,9 @@ class WalletViewModel {
       },
       sendAddress: (address) {
         store.dispatch(sendAddressCall(address));
+      },
+      logoutWallet: () {
+        store.dispatch(logoutWalletCall());
       }
     );
   }

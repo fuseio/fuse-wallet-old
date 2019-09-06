@@ -96,7 +96,7 @@ class _SignInPageState extends State<SignInPage> {
                             child: TextFormField(
                               controller: phoneController,
                               keyboardType: TextInputType.number,
-                              autofocus: true,
+                              autofocus: false,
                               style: const TextStyle(fontSize: 18),
                               decoration: const InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(

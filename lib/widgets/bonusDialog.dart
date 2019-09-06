@@ -12,12 +12,29 @@ class BonusDialog extends StatefulWidget {
   createState() => new BonusDialogState();
 }
 
-class BonusDialogState extends State<BonusDialog> {
+class BonusDialogState extends State<BonusDialog> with SingleTickerProviderStateMixin {
   BonusDialogState();
+
+  AnimationController controller;
+  Animation<double> opacityAnimation;
+  Animation<double> scaleAnimatoin;
 
   @override
   void initState() {
     super.initState();
+
+     controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 450));
+    opacityAnimation = Tween<double>(begin: 0.0, end: 0.4).animate(
+        CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn));
+    scaleAnimatoin =
+        CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
+
+    controller.addListener(() {
+      setState(() {});
+    });
+
+    controller.forward();
   }
 
   @override
@@ -43,8 +60,9 @@ class BonusDialogState extends State<BonusDialog> {
                                   fontWeight: FontWeight.w500)));
         letters.add(BonusLetter("0"));
         letters.add(BonusLetter("0"));
-
-        return AlertDialog(
+return ScaleTransition(
+          scale: scaleAnimatoin,
+          child: AlertDialog(
           contentPadding: EdgeInsets.all(5.0),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(12.0))),
@@ -83,7 +101,7 @@ class BonusDialogState extends State<BonusDialog> {
                         children: letters,
                       ),
                     ),
-                    Text("new " + viewModel.community.symbol + "'s!",
+                    Text("new " + viewModel.token.symbol + "'s!",
                         style: TextStyle(
                             color: Colors.black54,
                             fontSize: 18,
@@ -120,7 +138,8 @@ class BonusDialogState extends State<BonusDialog> {
               )
             ],
           ),
-        );
+        )
+);
       },
     );
   }

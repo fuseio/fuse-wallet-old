@@ -26,15 +26,6 @@ class Token {
       owner: json["owner"]
       ) : null;
 
-  static Token fromJsonState(dynamic json) => json != null ? Token(
-    address: json["address"],
-    name: json["name"],
-    symbol: json["symbol"],
-    totalSupply: json["totalSupply"],
-    tokenURI: json["tokenURI"],
-    owner: json["owner"]
-    ) : null;
-
   dynamic toJson() => {
         'address': address,
         'name': name,

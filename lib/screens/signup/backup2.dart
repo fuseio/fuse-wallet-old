@@ -69,7 +69,7 @@ class _Backup2PageState extends State<Backup2Page> {
                     child: Column(
                       children: <Widget>[
                         TextFormField(
-                          autofocus: true,
+                          autofocus: false,
                           decoration: InputDecoration(
                             labelText: 'Word ' + selectedWordsNum[0].toString(),
                           ),
@@ -83,7 +83,7 @@ class _Backup2PageState extends State<Backup2Page> {
                         ),
                         const SizedBox(height: 16.0),
                         TextFormField(
-                          autofocus: true,
+                          autofocus: false,
                           decoration: InputDecoration(
                             labelText: 'Word ' + selectedWordsNum[1].toString(),
                           ),
@@ -97,7 +97,7 @@ class _Backup2PageState extends State<Backup2Page> {
                         ),
                         const SizedBox(height: 16.0),
                         TextFormField(
-                          autofocus: true,
+                          autofocus: false,
                           decoration: InputDecoration(
                             labelText: 'Word ' + selectedWordsNum[2].toString(),
                           ),

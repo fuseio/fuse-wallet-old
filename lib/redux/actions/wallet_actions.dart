@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/logic/crypto_legacy.dart' as prefix0;
@@ -15,6 +14,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fusewallet/logic/globals.dart' as globals;
 
 ThunkAction openWalletCall(BuildContext context, { bool firstTime = false }) {
   return (Store store) async {
@@ -138,7 +138,10 @@ ThunkAction sendTransactionCall(BuildContext context) {
       .then((ret) {
         if (ret == "000") {
           Navigator.of(context).pop(true);
-          sendSuccessBottomSheet(context);
+          Navigator.of(context).pop(true);
+          new Future.delayed(Duration(seconds: 1), () {
+            sendSuccessBottomSheet(globals.scaffoldKey.currentContext);
+          });
         } else {
           Scaffold.of(context).showSnackBar(new SnackBar(
             content: new Text(ret),
@@ -178,21 +181,26 @@ ThunkAction switchCommunityCall(BuildContext context, [tokenAddress = DEFAULT_TO
     // store.dispatch(new TokenLoadedAction(tokenAddress, null));
     // store.dispatch(new CommunityLoadedAction(tokenAddress, null));
 
+    var isFirstTime = store.state.walletState.community == null;
+
     await loadCommunity(store, tokenAddress);
     // await joinCommunity(store);
     fundTokenCall(store);
 
-     new Future.delayed(Duration.zero, () {
-       showDialog(
-           context: context,
-           builder: (BuildContext context) {
-             return BonusDialog();
-           });
-     });
-
     store.dispatch(new WalletLoadedAction());
     // store.dispatch(initWalletCall(context));
     //store.dispatch(new SwitchCommunityAction(communityAddress));
+
+    if (isFirstTime) {
+      new Future.delayed(Duration(seconds: 1), () {
+       showDialog(
+           context: globals.scaffoldKey.currentContext,
+           builder: (BuildContext context) {
+             return BonusDialog();
+           });
+      });
+    }
+    
     return true;
   };
 }

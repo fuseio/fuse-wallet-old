@@ -178,7 +178,7 @@ class _SendAmountFormState extends State<SendAmountForm> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(bottom: 30.0),
-                      child: Text(viewModel.community.symbol,
+                      child: Text(viewModel.token.symbol,
                           style: TextStyle(
                               color: Theme.of(context).primaryColor,
                               fontSize: 16,

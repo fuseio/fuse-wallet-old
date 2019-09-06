@@ -17,9 +17,6 @@ class BusinessPage extends StatefulWidget {
 
 class _BusinessPageState extends State<BusinessPage> {
   GlobalKey<ScaffoldState> scaffoldState;
-  bool isLoading = false;
-  final addressController = TextEditingController(text: "");
-  final amountController = TextEditingController(text: "");
 
   @override
   void initState() {
