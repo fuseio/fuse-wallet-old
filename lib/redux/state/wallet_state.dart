@@ -15,6 +15,7 @@ class WalletState {
   final List<Business> businesses;
   final String sendAddress;
   final double sendAmount;
+  final bool isJoiningCommunity;
 
   WalletState({
     @required this.balance,
@@ -25,14 +26,15 @@ class WalletState {
     this.isLoading,
     this.businesses,
     this.sendAddress,
-    this.sendAmount
+    this.sendAmount,
+    this.isJoiningCommunity
   });
 
   factory WalletState.initial() {
-    return new WalletState(isLoading: false, balance: "0", transactions: null, tokenAddress: "", community: null, token: null, businesses: null, sendAddress: "", sendAmount: 0);
+    return new WalletState(isLoading: false, balance: "0", transactions: null, tokenAddress: "", community: null, token: null, businesses: null, sendAddress: "", sendAmount: 0, isJoiningCommunity: false);
   }
 
-  WalletState copyWith({String balance, Nullable<TransactionList> transactions, String tokenAddress, Nullable<Community> community, bool isLoading, List<Business> businesses, String sendAddress, double sendAmount, String sendStep, Nullable<Token> token}) {
+  WalletState copyWith({String balance, Nullable<TransactionList> transactions, String tokenAddress, Nullable<Community> community, bool isLoading, List<Business> businesses, String sendAddress, double sendAmount, String sendStep, Nullable<Token> token, bool isJoiningCommunity}) {
     return new WalletState(
         balance: balance ?? this.balance,
         transactions: transactions == null ? this.transactions : transactions.value,
@@ -42,7 +44,8 @@ class WalletState {
         isLoading: isLoading ?? this.isLoading,
         businesses: businesses ?? this.businesses,
         sendAddress: sendAddress ?? this.sendAddress,
-        sendAmount: sendAmount ?? this.sendAmount);
+        sendAmount: sendAmount ?? this.sendAmount,
+        isJoiningCommunity: isJoiningCommunity ?? this.isJoiningCommunity);
   }
 
   @override
@@ -57,7 +60,7 @@ class WalletState {
   //int get hashCode => isLoading.hashCode ^ user.hashCode;
 
   static WalletState fromJson(dynamic json) =>
-      WalletState(balance: json["balance"], transactions: TransactionList.fromJsonState(json["transactions"]), tokenAddress: json["tokenAddress"], community:  Community.fromJsonState(json["community"]), token:  Token.fromJson(json["token"]), isLoading: false);
+      WalletState(balance: json["balance"], transactions: TransactionList.fromJsonState(json["transactions"]), tokenAddress: json["tokenAddress"], community:  Community.fromJsonState(json["community"]), token:  Token.fromJson(json["token"]), isLoading: false, isJoiningCommunity: false);
 
   dynamic toJson() => {'balance': balance, 'community': community, 'transactions': transactions, 'token': token};
 }

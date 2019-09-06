@@ -26,28 +26,6 @@ ThunkAction openWalletCall(BuildContext context, { bool firstTime = false }) {
   };
 }
 
-// ThunkAction initWalletCall(BuildContext context) {
-//   return (Store store) async {
-
-//     var isFirstTime = store.state.walletState.community == null;
-        
-//     await loadCommunity(store);
-    
-//     /// Show bonus dialog
-//     if (isFirstTime && store.state.walletState.community != null) {
-//       new Future.delayed(Duration.zero, () {
-//         showDialog(
-//             context: context,
-//             builder: (BuildContext context) {
-//               return BonusDialog();
-//             });
-//       });
-//     }
-
-//     store.dispatch(new WalletLoadedAction());
-//   };
-// }
-
 ThunkAction loadBalancesCall(BuildContext context) {
   return (Store store) async {
     await loadBalances(store);
@@ -67,7 +45,7 @@ Future loadCommunity(Store store, tokenAddress) async {
 }
 
 Future joinCommunity(Store store) async {
-  // var tokenAddress = store.state.walletState.community.communityA;
+  // var communityAddress = store.state.walletState.community.communityAddress;
 
 }
 
@@ -184,7 +162,7 @@ ThunkAction switchCommunityCall(BuildContext context, [tokenAddress = DEFAULT_TO
     var isFirstTime = store.state.walletState.community == null;
 
     await loadCommunity(store, tokenAddress);
-    // await joinCommunity(store);
+    await joinCommunity(store);
     fundTokenCall(store);
 
     store.dispatch(new WalletLoadedAction());
@@ -264,6 +242,18 @@ class SwitchCommunityAction {
   final String address;
 
   SwitchCommunityAction(this.address);
+}
+
+class JoinCommunityRequestAction {
+  final String communityAddress;
+
+  JoinCommunityRequestAction(this.communityAddress);
+}
+
+class JoinCommunitySuccessAction {
+  final String communityAddress;
+
+  JoinCommunitySuccessAction(this.communityAddress);
 }
 
 class SendAmountAction {

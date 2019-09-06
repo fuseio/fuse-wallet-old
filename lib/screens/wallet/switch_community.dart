@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/modals/views/wallet_viewmodel.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
+import 'package:fusewallet/screens/wallet/hidden_web.dart';
 import 'dart:core';
 import 'package:fusewallet/widgets/widgets.dart';
 import 'package:fusewallet/logic/globals.dart' as globals;
+import 'package:fusewallet/logic/common.dart';
 
 class SwitchCommunityPage extends StatefulWidget {
   SwitchCommunityPage({Key key, this.title}) : super(key: key);
@@ -159,10 +161,11 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
                                                         child: PrimaryButton(
                                                           label: "SAVE",
                                                           onPressed: () {
-                                                            viewModel.logoutWallet();
-                                                            viewModel.switchCommunity(context, assetIdController.text);
-                                                            Navigator.of(context).pop(true);
-                                                            Navigator.of(context).pop(true);
+                                                            openPage(context, HiddenWeb());
+                                                            // viewModel.logoutWallet();
+                                                            // viewModel.switchCommunity(context, assetIdController.text);
+                                                            // Navigator.of(context).pop(true);
+                                                            // Navigator.of(context).pop(true);
                                                           },
                                                           width: 250,
                                                         ),
@@ -175,7 +178,7 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
                                   },
                                   width: 300,
                                 ),
-                              )
+                              ),
                             ],
                           ));
                 },
