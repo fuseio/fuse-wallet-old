@@ -1,7 +1,10 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/modals/views/signin_viewmodel.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
+import 'package:fusewallet/screens/signup/backup1.dart';
+import 'package:fusewallet/screens/wallet/wallet.dart';
 import 'dart:core';
 import 'package:fusewallet/widgets/widgets.dart';
 import 'package:fusewallet/logic/common.dart';
@@ -68,7 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   autofocus: false,
                   style: const TextStyle(fontSize: 18),
                   decoration: const InputDecoration(
-                    labelText: 'First name',
+                    labelText: 'Full name',
                   ),
                   validator: (String value) {
                     if (value.trim().isEmpty) {
@@ -76,6 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     }
                   },
                 ),
+                /*
                 const SizedBox(height: 16.0),
                 TextFormField(
                   controller: lastNameController,
@@ -89,6 +93,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     }
                   },
                 ),
+                */
                 const SizedBox(height: 16.0),
                 TextFormField(
                   controller: emailController,
@@ -106,6 +111,55 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                 ),
                 const SizedBox(height: 16.0),
+                Container(
+                  decoration: new BoxDecoration(
+                      border: Border.all(
+                          color: !viewModel.loginError
+                              ? Colors.black.withOpacity(0.1)
+                              : Colors.red,
+                          width: 1.0),
+                      borderRadius:
+                          new BorderRadius.all(Radius.circular(30.0))),
+                  child: Row(
+                    children: <Widget>[
+                      CountryCodePicker(
+                        padding: EdgeInsets.only(top: 0, left: 30, right: 0),
+                        onChanged: (_countryCode) {
+                          //countryCode = _countryCode;
+                        },
+                        initialSelection: 'IL',
+                        favorite: [],
+                        showCountryOnly: false,
+                        textStyle: const TextStyle(fontSize: 18),
+                      ),
+                      Icon(Icons.arrow_drop_down),
+                      new Container(
+                        height: 35,
+                        width: 1,
+                        color: const Color(0xFFc1c1c1),
+                        margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          //controller: phoneController,
+                          keyboardType: TextInputType.number,
+                          autofocus: false,
+                          style: const TextStyle(fontSize: 18),
+                          decoration: const InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 10),
+                              hintText: 'Phone number',
+                              border: InputBorder.none,
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide.none),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide.none)),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16.0),
                 Center(
                   child: PrimaryButton(
                     label: "NEXT",
@@ -120,6 +174,27 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                   ),
                 ),
+                const SizedBox(height: 16.0),
+                Center(
+                  child: TransparentButton(
+                      label: "Skip",
+                      onPressed: () {
+                        openPage(context, new Backup1Page());
+                      }),
+                ),
+                const SizedBox(height: 16.0),
+                Center(
+                  child: Padding(
+                    child: Text(
+                      "This information is stored only on the device and you will control who to share it with",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                      color: Colors.black.withOpacity(0.5),
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal),),
+                    padding: const EdgeInsets.only(bottom: 30.0),
+                  ) ,
+                )
               ],
             ),
           ),

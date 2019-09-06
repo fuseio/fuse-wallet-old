@@ -10,6 +10,8 @@ final userReducer = combineReducers<UserState>([
   TypedReducer<UserState, LoginFailedAction>(_loginFailed),
   TypedReducer<UserState, StartLoadingAction>(_startLoading),
   TypedReducer<UserState, UpdateUserAction>(_walletCreated),
+  TypedReducer<UserState, SetProtectMethodAction>(_setProtectMethod),
+  TypedReducer<UserState, ProtectUnlockedAction>(_protectUnlocked),
   TypedReducer<UserState, LogoutAction>(_logout),
 ]);
 
@@ -31,6 +33,14 @@ UserState _startLoading(UserState state, StartLoadingAction action) {
 
 UserState _walletCreated(UserState state, UpdateUserAction action) {
   return state.copyWith(isLoading: false, user: action.user);
+}
+
+UserState _setProtectMethod(UserState state, SetProtectMethodAction action) {
+  return state.copyWith(isLoading: false, protectMethod: action.method, protectPincode: action.code);
+}
+
+UserState _protectUnlocked(UserState state, ProtectUnlockedAction action) {
+  return state.copyWith(protectTimestamp: action.timestamp);
 }
 
 UserState _logout(UserState state, LogoutAction action) {

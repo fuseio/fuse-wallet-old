@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:core';
 import 'package:fusewallet/redux/state/app_state.dart';
 import 'package:fusewallet/splash.dart';
@@ -12,11 +13,14 @@ import 'package:redux_persist_flutter/redux_persist_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fusewallet/generated/i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'redux/state/state_secure_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  var storage = new FlutterSecureStorage();
   final persistor = Persistor<AppState>(
-    storage: FlutterStorage(key: "app6"),
+    //storage: FlutterStorage(key: "app6"),
+    storage: SecureStorage(storage= storage),
     serializer: JsonSerializer<AppState>(AppState.fromJson),
   );
 

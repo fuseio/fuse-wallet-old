@@ -3,6 +3,7 @@ import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/modals/user.dart';
 import 'package:fusewallet/screens/signup/backup1.dart';
 import 'package:fusewallet/screens/signup/signup.dart';
+import 'package:fusewallet/screens/wallet/pincode.dart';
 import 'package:fusewallet/screens/wallet/wallet.dart';
 import 'package:fusewallet/services/wallet_service.dart';
 import 'package:redux/redux.dart';
@@ -15,7 +16,7 @@ ThunkAction loadUserState(BuildContext context) {
 
     store.dispatch(new LoadUserAction(_isLogged));
     if (_isLogged) {
-      openPageReplace(context, new WalletPage());
+      store.dispatch(openWalletCall(context));
     }
 
   };
@@ -109,6 +110,32 @@ ThunkAction generateWalletCall() {
   };
 }
 
+ThunkAction setProtectMethodCall(method, { code = ""}) {
+  return (Store store) async {
+    store.dispatch(new SetProtectMethodAction(method, code));
+  };
+}
+
+ThunkAction openWalletCall(context) {
+  return (Store store) async {
+    var method = store.state.userState.protectMethod;
+    var lastEnter = store.state.userState.protectTimestamp == null ? DateTime.now().subtract(Duration(minutes: 30)) : store.state.userState.protectTimestamp;
+    Duration difference = DateTime.now().difference(lastEnter);
+    if (method == "pincode" && difference.inSeconds > 10) {
+      openPage(context, new PincodePage());
+    } else {
+      openPageReplace(context, new WalletPage());
+    }
+  };
+}
+
+ThunkAction protectUnlockCall(context) {
+  return (Store store) async {
+    store.dispatch(new ProtectUnlockedAction(DateTime.now()));
+    store.dispatch(openWalletCall(context));
+  };
+}
+
 ThunkAction logoutUserCall() {
   return (Store store) async {
     store.dispatch(new LogoutAction());
@@ -139,6 +166,19 @@ class UpdateUserAction {
 
 class LoginFailedAction {
   LoginFailedAction();
+}
+
+class SetProtectMethodAction {
+  final String method;
+  final String code;
+
+  SetProtectMethodAction(this.method, this.code);
+}
+
+class ProtectUnlockedAction {
+  final DateTime timestamp;
+
+  ProtectUnlockedAction(this.timestamp);
 }
 
 class LogoutAction {

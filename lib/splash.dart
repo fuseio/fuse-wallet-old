@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/screens/signup/recovery.dart';
 import 'package:fusewallet/screens/signup/signin.dart';
+import 'package:fusewallet/screens/signup/signup.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 import 'package:redux/redux.dart';
 import 'redux/actions/signin_actions.dart';
@@ -227,7 +228,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                               fontWeight: FontWeight.w500),
                                         ),
                                         onPressed: () {
-                                          openPage(context, new SignInPage());
+                                          openPage(context, new SignUpPage());
                                         },
                                       ),
                                     ),

@@ -1,10 +1,13 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:fusewallet/modals/views/signin_viewmodel.dart';
 import 'package:fusewallet/modals/views/wallet_viewmodel.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
 import 'dart:core';
 import 'package:fusewallet/widgets/widgets.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 class ProtectWalletPage extends StatefulWidget {
   ProtectWalletPage({Key key, this.title}) : super(key: key);
@@ -18,10 +21,21 @@ class ProtectWalletPage extends StatefulWidget {
 class _ProtectWalletPageState extends State<ProtectWalletPage> {
   GlobalKey<ScaffoldState> scaffoldState;
   final assetIdController = TextEditingController(text: "");
+  List<BiometricType> availableBiometrics;
+
+  getAvailableBiometrics() async {
+    var localAuth = LocalAuthentication();
+    availableBiometrics = await localAuth.getAvailableBiometrics();
+    setState(() {
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+
+    getAvailableBiometrics();
+    //bool didAuthenticate = await localAuth.authenticateWithBiometrics(localizedReason: 'Please authenticate to open the wallet');
   }
 
   @override
@@ -73,9 +87,9 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
           Padding(
             padding: EdgeInsets.only(top: 0, bottom: 50, left: 30, right: 30),
             child: Form(
-              child: new StoreConnector<AppState, WalletViewModel>(
+              child: new StoreConnector<AppState, SignInViewModel>(
                 converter: (store) {
-                  return WalletViewModel.fromStore(store);
+                  return SignInViewModel.fromStore(store);
                 },
                 builder: (_, viewModel) {
                   return Builder(
@@ -83,19 +97,20 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const SizedBox(height: 16.0),
-                              Center(
+                              availableBiometrics.length > 0 ? Center(
                                 child: PrimaryButton(
                                   label: "USE FACE ID",
                                   onPressed: () async {
-                                    var assetId = await BarcodeScanner.scan();
-                                    viewModel.switchCommunity(context, assetId);
+                                    //var assetId = await BarcodeScanner.scan();
+                                    //viewModel.switchCommunity(context, assetId);
                                     Navigator.of(context).pop(true);
                                     Navigator.of(context).pop(true);
                                   },
                                   width: 300,
                                 ),
-                              ),
+                              ) : Container(),
                               const SizedBox(height: 22.0),
+                              availableBiometrics.length > 0 ?
                               Stack(
                                 children: <Widget>[
                                   new SizedBox(
@@ -121,7 +136,7 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
                                         color: const Color(0xFFF8F8F8)),
                                   ))
                                 ],
-                              ),
+                              ) : Container(),
                               const SizedBox(height: 22.0),
                               Center(
                                 child: PrimaryButton(
@@ -130,7 +145,7 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
                                     showDialog(
                                         context: context,
                                         builder: (context) => AlertDialog(
-                                              title: Text("Community Address",
+                                              title: Text("Enter pin code",
                                                   style: TextStyle(
                                                       color: Theme.of(context)
                                                           .primaryColor,
@@ -141,10 +156,38 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
                                                 height: 150,
                                                 child:
                                                     Column(children: <Widget>[
-                                                  TextField(
-                                                    controller:
-                                                        assetIdController,
-                                                  ),
+                                                      PinCodeTextField(
+                autofocus: true,
+                controller: assetIdController,
+                hideCharacter: true,
+                highlight: true,
+                highlightColor: Colors.blue,
+                defaultBorderColor: Colors.black,
+                hasTextBorderColor: Colors.green,
+                maxLength: 4,
+                //hasError: hasError,
+                maskCharacter: "*",
+
+                onTextChanged: (text) {
+                  setState(() {
+                   
+                  });
+                },
+                /*onDone: (text){
+                  if (text != viewModel.userState.protectPincode) {
+                    setState(() {
+                      hasError = true;
+                    });
+                  }
+                },*/
+                pinCodeTextFieldLayoutType: PinCodeTextFieldLayoutType.AUTO_ADJUST_WIDTH,
+                wrapAlignment: WrapAlignment.start,
+                pinBoxDecoration: ProvidedPinBoxDecoration.underlinedPinBoxDecoration,
+                pinTextStyle: TextStyle(fontSize: 30.0),
+                pinTextAnimatedSwitcherTransition: ProvidedPinBoxTextAnimation.scalingTransition,
+                pinTextAnimatedSwitcherDuration: Duration(milliseconds: 300),
+              )
+                                                  ,
                                                   const SizedBox(height: 22.0),
                                                   Row(
                                                     children: <Widget>[
@@ -152,7 +195,7 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
                                                         child: PrimaryButton(
                                                           label: "SAVE",
                                                           onPressed: () {
-                                                            viewModel.switchCommunity(context, assetIdController.text);
+                                                            viewModel.setProtectMethod("pincode", assetIdController.text);
                                                             Navigator.of(context).pop(true);
                                                             Navigator.of(context).pop(true);
                                                           },

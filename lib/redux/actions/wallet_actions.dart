@@ -16,15 +16,15 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fusewallet/logic/globals.dart' as globals;
 
-ThunkAction openWalletCall(BuildContext context, { bool firstTime = false }) {
-  return (Store store) async {
+//ThunkAction openWalletCall(BuildContext context, { bool firstTime = false }) {
+//  return (Store store) async {
     //var localAuth = LocalAuthentication();
     //bool didAuthenticate =
     //await localAuth.authenticateWithBiometrics(localizedReason: 'Please authenticate to open the wallet');
 
-    openPageReplace(context, WalletPage());
-  };
-}
+//    openPageReplace(context, WalletPage());
+//  };
+//}
 
 // ThunkAction initWalletCall(BuildContext context) {
 //   return (Store store) async {
@@ -62,7 +62,7 @@ Future loadCommunity(Store store, tokenAddress) async {
   
   loadBalances(store);
   new Timer.periodic(Duration(seconds: 3), (timer) {
-    loadBalances(store);
+    //loadBalances(store);
   });
 }
 

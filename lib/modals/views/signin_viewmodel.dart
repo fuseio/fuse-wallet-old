@@ -3,12 +3,14 @@ import 'package:fusewallet/modals/user.dart';
 import 'package:fusewallet/redux/actions/signin_actions.dart';
 import 'package:fusewallet/redux/actions/wallet_actions.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
+import 'package:fusewallet/redux/state/user_state.dart';
 import 'package:redux/redux.dart';
 
 class SignInViewModel {
   final bool isLoading;
   final bool loginError;
   final User user;
+  final UserState userState;
   final Function(String, String) login;
   final Function(BuildContext, String) sendCodeToPhoneNumber;
   final Function(BuildContext, String) signInWithPhoneNumber;
@@ -16,6 +18,8 @@ class SignInViewModel {
   final Function() generateWallet;
   final Function() logout;
   final Function(BuildContext) openWallet;
+  final Function(String, String) setProtectMethod;
+  final Function(BuildContext) protectUnlock;
 
   SignInViewModel({
     this.isLoading,
@@ -27,7 +31,10 @@ class SignInViewModel {
     this.signUp,
     this.generateWallet,
     this.logout,
-    this.openWallet
+    this.openWallet,
+    this.setProtectMethod,
+    this.userState,
+    this.protectUnlock
   });
 
   static SignInViewModel fromStore(Store<AppState> store) {
@@ -35,6 +42,7 @@ class SignInViewModel {
       isLoading: store.state.userState.isLoading,
       loginError: store.state.userState.loginError,
       user: store.state.userState.user,
+      userState: store.state.userState,
       sendCodeToPhoneNumber: (BuildContext context, String phone) {
         store.dispatch(sendCodeToPhoneNumberCall(context, phone));
       },
@@ -51,8 +59,14 @@ class SignInViewModel {
         store.dispatch(logoutUserCall());
         store.dispatch(logoutWalletCall());
       },
+      setProtectMethod: (method, code) {
+        store.dispatch(setProtectMethodCall(method, code: code));
+      },
       openWallet: (BuildContext context) {
         store.dispatch(openWalletCall(context));
+      },
+      protectUnlock: (BuildContext context) {
+        store.dispatch(protectUnlockCall(context));
       }
     );
   }
