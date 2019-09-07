@@ -94,6 +94,9 @@ Future<String> getBalance(accountAddress, tokenAddress) async {
   var response = await http.get(uri);
   Map<String, dynamic> obj = json.decode(response.body);
   
+  if (obj['result'] == "") {
+    return "0";
+  }
   var balance = (BigInt.parse(obj['result']) / BigInt.from(1000000000000000000)).toStringAsFixed(1);
   print('Fetching balance of token $tokenAddress for account $accountAddress done. balance: $balance');
   return balance;

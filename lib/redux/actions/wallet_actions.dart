@@ -175,7 +175,7 @@ ThunkAction addPendingTransaction(amount, from, to) {
       tokenSymbol: store.state.walletState.token.symbol,
       pending: true,
       date: DateTime.now(),
-      amount: store.state.walletState.sendAmount
+      amount: amount
     ));
     store.dispatch(new TransactionsLoadedAction(transactions));
     return true;
@@ -216,7 +216,7 @@ ThunkAction switchCommunityCall(BuildContext context, _tokenAddress) {
       tokenAddress = _tokenAddress;
     }
     
-    if (tokenAddress == null) {
+    if (tokenAddress == null || tokenAddress == "") {
       tokenAddress = DEFAULT_TOKEN_ADDRESS;
     }
 
