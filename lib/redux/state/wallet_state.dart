@@ -59,7 +59,7 @@ class WalletState {
   static WalletState fromJson(dynamic json) =>
       WalletState(balance: json["balance"], transactions: TransactionList.fromJsonState(json["transactions"]), tokenAddress: json["tokenAddress"], community:  Community.fromJsonState(json["community"]), token:  Token.fromJson(json["token"]), isLoading: false);
 
-  dynamic toJson() => {'balance': balance, 'community': community, 'transactions': transactions, 'token': token};
+  dynamic toJson() => {'balance': balance, 'community': community, 'transactions': transactions, 'token': token, 'tokenAddress': tokenAddress};
 }
 
 class Nullable<T> {

@@ -203,13 +203,22 @@ ThunkAction loadBusinessesCall() {
 //   };
 // }
 
-ThunkAction switchCommunityCall(BuildContext context, [tokenAddress = DEFAULT_TOKEN_ADDRESS]) {
+ThunkAction switchCommunityCall(BuildContext context, _tokenAddress) {
   return (Store store) async {
     // store.dispatch(new LogoutAction());
     // store.dispatch(new TokenLoadedAction(tokenAddress, null));
     // store.dispatch(new CommunityLoadedAction(tokenAddress, null));
 
     var isFirstTime = store.state.walletState.community == null;
+    var tokenAddress = store.state.walletState.tokenAddress;
+
+    if (_tokenAddress != null) {
+      tokenAddress = _tokenAddress;
+    }
+    
+    if (tokenAddress == null) {
+      tokenAddress = DEFAULT_TOKEN_ADDRESS;
+    }
 
     await loadCommunity(store, tokenAddress);
     // await joinCommunity(store);
@@ -221,7 +230,7 @@ ThunkAction switchCommunityCall(BuildContext context, [tokenAddress = DEFAULT_TO
 
     if (isFirstTime && store.state.walletState.community.joinBonusAmount > 0) {
       store.dispatch(addPendingTransaction(store.state.walletState.community.joinBonusAmount, "", store.state.userState.user.publicKey));
-      new Future.delayed(Duration(seconds: 5), () {
+      new Future.delayed(Duration(seconds: 3), () {
        showDialog(
            context: globals.scaffoldKey.currentContext,
            builder: (BuildContext context) {
