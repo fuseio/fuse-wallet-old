@@ -139,7 +139,7 @@ class _Backup1PageState extends State<Backup1Page> {
                           TransparentButton(
                               label: "Skip",
                               onPressed: () {
-                                openPageReplace(context, WalletPage());
+                                viewModel.openWallet(context);
                               }),
                           const SizedBox(height: 30.0),
                         ],

@@ -85,7 +85,7 @@ class _WalletPageState extends State<WalletPage> {
                     onTap: () {},
                   ),
                   centerTitle: true,
-                  actions: <Widget>[
+                  /*actions: <Widget>[
                     Builder(
                         builder: (context) => IconButton(
                               icon: const Icon(Icons.refresh),
@@ -95,7 +95,7 @@ class _WalletPageState extends State<WalletPage> {
                                 viewModel.loadBalances(context);
                               },
                             )),
-                  ],
+                  ],*/
                   elevation: 0.0,
                 ),
                 drawer: new DrawerWidget(),
@@ -103,6 +103,8 @@ class _WalletPageState extends State<WalletPage> {
                   children: <Widget>[
                     Expanded(
                       child: ListView(
+                        //physics: const BouncingScrollPhysics(),
+                        physics: ClampingScrollPhysics(),
                         children: <Widget>[
                           Container(
                             height: 260.0,

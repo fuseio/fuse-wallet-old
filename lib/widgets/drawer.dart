@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:core';
 import 'package:fusewallet/logic/common.dart';
 //import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
@@ -199,6 +200,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           style: TextStyle(fontSize: 16),
                         ),
                         onTap: () async {
+                          Navigator.of(context).pop();
                           viewModel.logout();
                           openPageReplace(context, SplashScreen());
                         },

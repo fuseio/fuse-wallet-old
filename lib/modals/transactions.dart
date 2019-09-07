@@ -11,8 +11,9 @@ class Transaction {
   final String tokenSymbol;
   final DateTime date;
   final double amount;
+  final bool pending;
 
-  Transaction({this.value, this.to, this.from, this.hash, this.timeStamp, this.tokenSymbol, this.date, this.amount});
+  Transaction({this.value, this.to, this.from, this.hash, this.timeStamp, this.tokenSymbol, this.date, this.amount, this.pending});
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
@@ -22,6 +23,7 @@ class Transaction {
       hash: json['hash'],
       timeStamp: json['timeStamp'],
       tokenSymbol: json['tokenSymbol'],
+      pending: false,
       date: json['timeStamp'] != null ? new DateTime.fromMillisecondsSinceEpoch(int.tryParse(json['timeStamp']) * 1000) : null,
       amount: json['value'] != null ? BigInt.tryParse(json['value']) / BigInt.from(1000000000000000000) : null
     );
@@ -32,8 +34,9 @@ class Transaction {
 
 class TransactionList {
   final List<Transaction> transactions;
+  List<Transaction> pendingTransactions;
 
-  TransactionList({this.transactions});
+  TransactionList({this.transactions, this.pendingTransactions});
 
   factory TransactionList.fromJson(Map<String, dynamic> json) {
 
@@ -43,7 +46,8 @@ class TransactionList {
     transactions = list.map((i)=>Transaction.fromJson(i)).toList();
 
     return new TransactionList(
-      transactions: transactions
+      transactions: transactions,
+      pendingTransactions: new List<Transaction>()
     );
   }
 
@@ -59,7 +63,8 @@ class TransactionList {
     transactions = list.map((i)=>Transaction.fromJson(i)).toList();
 
     return new TransactionList(
-      transactions: transactions
+      transactions: transactions,
+      pendingTransactions: new List<Transaction>()
     );
   }
 

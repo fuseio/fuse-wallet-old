@@ -40,7 +40,7 @@ class _Backup2PageState extends State<Backup2Page> {
     return StoreConnector<AppState, SignInViewModel>(converter: (store) {
       return SignInViewModel.fromStore(store);
     }, builder: (_, viewModel) {
-      CustomScaffold(title: "Back up", children: <Widget>[
+      return CustomScaffold(title: "Back up", children: <Widget>[
         Container(
           padding:
               EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),

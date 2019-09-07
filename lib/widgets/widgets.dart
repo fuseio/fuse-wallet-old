@@ -231,11 +231,15 @@ class CopyToClipboard extends StatelessWidget {
   }
 }
 
-void sendSuccessBottomSheet(context){
+void sendSuccessBottomSheet(context) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext bc){
-          return Container(
+          return
+          Theme(
+      data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+      child: 
+      Container(
             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             child: new Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
@@ -243,16 +247,20 @@ void sendSuccessBottomSheet(context){
               runAlignment: WrapAlignment.center,
             children: <Widget>[
 new ListTile(
-            leading: Image.asset("images/vi.png"),
+            //leading: Image.asset("images/vi.png"),
             title: new Text('Amount sent successfully', style: TextStyle(
-                            color: Theme.of(context).primaryColor,
+                            color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.normal)),
             onTap: () => {}          
           ),
             ],
           ),
+          )
           );
-      }
+           
+      },
+      //backgroundColor: Colors.transparent,
+      elevation: 0
     );
 }

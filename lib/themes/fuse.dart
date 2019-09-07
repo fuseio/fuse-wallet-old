@@ -41,5 +41,6 @@ ThemeData getTheme() {
                   ),
                   */
         contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 30)),
+        bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.transparent),
   );
 }

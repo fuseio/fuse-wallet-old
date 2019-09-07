@@ -40,22 +40,47 @@ class TransactionsWidgetState extends State<TransactionsWidget> {
       builder: (_, viewModel) {
         return viewModel.token != null &&
                 viewModel.transactions != null &&
-                viewModel.transactions.transactions.length > 0
+                (viewModel.transactions.transactions.length > 0 ||
+                    viewModel.transactions.pendingTransactions.length > 0)
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.only(left: 15, top: 15, bottom: 8),
-                      child: Text("Transactions",
-                          style: TextStyle(
-                              color: Color(0xFF979797),
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.normal))),
+                  viewModel.transactions.pendingTransactions.length > 0
+                      ? Container(
+                          padding:
+                              EdgeInsets.only(left: 15, top: 15, bottom: 8),
+                          child: Text("Pending Transactions",
+                              style: TextStyle(
+                                  color: Color(0xFF979797),
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.normal)))
+                      : Container(),
+                  viewModel.transactions.pendingTransactions.length > 0
+                      ? ListView(
+                          shrinkWrap: true,
+                          primary: false,
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          children: viewModel
+                              .transactions.pendingTransactions.reversed
+                              .map((transaction) =>
+                                  _TransactionListItem(transaction))
+                              .toList())
+                      : Container(),
+                  viewModel.transactions.transactions.length > 0
+                      ? Container(
+                          padding:
+                              EdgeInsets.only(left: 15, top: 15, bottom: 8),
+                          child: Text("Transactions",
+                              style: TextStyle(
+                                  color: Color(0xFF979797),
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.normal)))
+                      : Container(),
                   ListView(
                       shrinkWrap: true,
                       primary: false,
                       padding: EdgeInsets.symmetric(vertical: 8.0),
-                      children: viewModel.transactions.transactions
+                      children: viewModel.transactions.transactions.reversed
                           .map((transaction) =>
                               _TransactionListItem(transaction))
                           .toList())
@@ -79,7 +104,8 @@ class _TransactionListItem extends StatelessWidget {
         return WalletViewModel.fromStore(store);
       },
       builder: (_, viewModel) {
-        var type = _transaction.to == viewModel.user.publicKey ? "Received" : "Sent";
+        var type =
+            _transaction.to == viewModel.user.publicKey ? "Received" : "Sent";
         var color = type == "Received" ? 0xFF71C84D : 0xFFfc6e4c;
         var img = type == "Received" ? "send.png" : "recieve.png";
 
@@ -89,30 +115,57 @@ class _TransactionListItem extends StatelessWidget {
                     Border(top: BorderSide(color: const Color(0xFFDCDCDC)))),
             padding: EdgeInsets.only(top: 5, bottom: 5, left: 0, right: 0),
             child: ListTile(
-              title: Text(DateFormat("MMMM d, yyyy").format(_transaction.date)),
+              title: Text(DateFormat("MMMM d, yyyy").format(_transaction.date),
+                  style: TextStyle(color: Color(0xFF333333))),
               /*subtitle: Text(type,
               style: TextStyle(
                   color: Color(color),
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold)),*/
-              leading: Opacity(
-                opacity: 0.5,
-                child: CircleAvatar(
-                  radius: 18,
-                  backgroundColor: Color(color),
-                  child: Image.asset('images/' + img,
-                      width: 24.0, color: const Color(0xFFFFFFFF)),
-                ),
+              leading: Stack(
+                children: <Widget>[
+                  Opacity(
+                      opacity: 0.5,
+                      child: CircleAvatar(
+                        radius: 18,
+                        backgroundColor: Color(color),
+                        child: Image.asset('images/' + img,
+                            width: 24.0, color: const Color(0xFFFFFFFF)),
+                      )),
+                  _transaction.pending
+                      ? CircularProgressIndicator(
+                          backgroundColor: Color(color).withOpacity(0),
+                          strokeWidth: 2, //backgroundColor: Color(0xFFb8e3a6),
+                          valueColor: new AlwaysStoppedAnimation<Color>(
+                              Color(color).withOpacity(1)),
+                        )
+                      : SizedBox.shrink()
+                ],
               ),
               trailing: Container(
-                child: Text(
-                  _transaction.amount.toString() +
-                      " " +
+                width: 120,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(right: 5),
+                      child: Text(
+                        _transaction.amount.toString(),
+                        style: TextStyle(
+                            color: Color(color),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Text(
                       viewModel.token.symbol.toString(),
-                  style: TextStyle(
-                      color: Color(color),
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Color(color),
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.normal),
+                    )
+                  ],
                 ),
                 padding:
                     EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),

@@ -1,16 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:fusewallet/logic/common.dart';
-import 'package:fusewallet/logic/crypto_legacy.dart' as prefix0;
 import 'package:fusewallet/modals/businesses.dart';
 import 'package:fusewallet/modals/community.dart';
 import 'package:fusewallet/modals/token.dart';
 import 'package:fusewallet/modals/transactions.dart';
-import 'package:fusewallet/screens/wallet/wallet.dart';
 import 'package:fusewallet/services/wallet_service.dart';
 import 'package:fusewallet/widgets/bonusDialog.dart';
 import 'package:fusewallet/widgets/widgets.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:flutter/widgets.dart';
@@ -62,7 +58,11 @@ Future loadCommunity(Store store, tokenAddress) async {
   
   loadBalances(store);
   new Timer.periodic(Duration(seconds: 3), (timer) {
-    //loadBalances(store);
+    try {
+      loadBalances(store);
+    } catch (e) {
+
+    }
   });
 }
 
@@ -85,7 +85,7 @@ Future loadBalances(Store store) async {
 }
 
 Future loadBalance(Store store) async {
-  var publicKey = store.state.userState.user.publicKey;
+  var publicKey = store.state.userState.user?.publicKey;
   var tokenAddress = store.state.walletState.tokenAddress;
   if (publicKey != "" && tokenAddress != "") {
     var balance = await getBalance(publicKey, tokenAddress);
@@ -94,10 +94,15 @@ Future loadBalance(Store store) async {
 }
 
 Future loadTransactions(Store store) {
-  var publicKey = store.state.userState.user.publicKey;
+  var publicKey = store.state.userState.user?.publicKey;
   var tokenAddress = store.state.walletState.tokenAddress;
   if (publicKey != "" && tokenAddress != "") {
     getTransactions(publicKey, tokenAddress).then((list) {
+      if (list.transactions.length != store.state.walletState.transactions.transactions.length) {
+        list.pendingTransactions = new List<Transaction>();
+      } else {
+        list.pendingTransactions = store.state.walletState.transactions.pendingTransactions;
+      }
       store.dispatch(new TransactionsLoadedAction(list));
     });
   }
@@ -139,9 +144,13 @@ ThunkAction sendTransactionCall(BuildContext context) {
         if (ret == "000") {
           Navigator.of(context).pop(true);
           Navigator.of(context).pop(true);
-          new Future.delayed(Duration(seconds: 1), () {
-            sendSuccessBottomSheet(globals.scaffoldKey.currentContext);
-          });
+          
+          //new Future.delayed(Duration(seconds: 1), () {
+            //sendSuccessBottomSheet(globals.scaffoldKey.currentContext);
+          //});
+
+          store.dispatch(addPendingTransaction(store.state.walletState.sendAmount, store.state.userState.user.publicKey, ""));
+
         } else {
           Scaffold.of(context).showSnackBar(new SnackBar(
             content: new Text(ret),
@@ -150,6 +159,25 @@ ThunkAction sendTransactionCall(BuildContext context) {
         }
         store.dispatch(new TransactionSentAction());
       });
+    return true;
+  };
+}
+
+ThunkAction addPendingTransaction(amount, from, to) {
+  return (Store store) async {
+    TransactionList transactions = store.state.walletState.transactions;
+    if (transactions == null) {
+      transactions = new TransactionList(transactions: new List<Transaction>(), pendingTransactions: new List<Transaction>());
+    }
+    transactions.pendingTransactions.add(Transaction(
+      from: from,
+      to: to,
+      tokenSymbol: store.state.walletState.token.symbol,
+      pending: true,
+      date: DateTime.now(),
+      amount: store.state.walletState.sendAmount
+    ));
+    store.dispatch(new TransactionsLoadedAction(transactions));
     return true;
   };
 }
@@ -191,8 +219,9 @@ ThunkAction switchCommunityCall(BuildContext context, [tokenAddress = DEFAULT_TO
     // store.dispatch(initWalletCall(context));
     //store.dispatch(new SwitchCommunityAction(communityAddress));
 
-    if (isFirstTime) {
-      new Future.delayed(Duration(seconds: 1), () {
+    if (isFirstTime && store.state.walletState.community.joinBonusAmount > 0) {
+      store.dispatch(addPendingTransaction(store.state.walletState.community.joinBonusAmount, "", store.state.userState.user.publicKey));
+      new Future.delayed(Duration(seconds: 5), () {
        showDialog(
            context: globals.scaffoldKey.currentContext,
            builder: (BuildContext context) {

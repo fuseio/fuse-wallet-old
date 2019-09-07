@@ -75,7 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   validator: (String value) {
                     if (value.trim().isEmpty) {
-                      return 'First name is required';
+                      return 'Full name is required';
                     }
                   },
                 ),
@@ -179,14 +179,18 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: TransparentButton(
                       label: "Skip",
                       onPressed: () {
-                        openPage(context, new Backup1Page());
+                        viewModel.signUp(
+                            context,
+                            "",
+                            "",
+                            "");
                       }),
                 ),
                 const SizedBox(height: 16.0),
                 Center(
                   child: Padding(
                     child: Text(
-                      "This information is stored only on the device and you will control who to share it with",
+                      "This wallet can store private information you can choose to share with service providers. This data will be enrypted and stored only on this device secured storage.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                       color: Colors.black.withOpacity(0.5),
