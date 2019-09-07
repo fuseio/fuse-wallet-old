@@ -26,8 +26,7 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
   getAvailableBiometrics() async {
     var localAuth = LocalAuthentication();
     availableBiometrics = await localAuth.getAvailableBiometrics();
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -79,7 +78,6 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
                     padding: EdgeInsets.only(top: 20),
                     child: Image.asset('images/protect-pic.png', width: 170),
                   )
-                  
                 ],
               ),
             ),
@@ -97,46 +95,52 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const SizedBox(height: 16.0),
-                              availableBiometrics.length > 0 ? Center(
-                                child: PrimaryButton(
-                                  label: "USE FACE ID",
-                                  onPressed: () async {
-                                    //var assetId = await BarcodeScanner.scan();
-                                    //viewModel.switchCommunity(context, assetId);
-                                    Navigator.of(context).pop(true);
-                                    Navigator.of(context).pop(true);
-                                  },
-                                  width: 300,
-                                ),
-                              ) : Container(),
-                              const SizedBox(height: 22.0),
-                              availableBiometrics.length > 0 ?
-                              Stack(
-                                children: <Widget>[
-                                  new SizedBox(
-                                    height: 10.0,
-                                    child: new Center(
-                                      child: new Container(
-                                        margin: new EdgeInsetsDirectional.only(
-                                            start: 1.0, end: 1.0),
-                                        height: 1.0,
-                                        color: const Color(0xFF666666),
+                              availableBiometrics.length > 0
+                                  ? Center(
+                                      child: PrimaryButton(
+                                        label: "USE FINGER PRINT",
+                                        onPressed: () async {
+                                          var localAuth = LocalAuthentication();
+                                          bool didAuthenticate = await localAuth.authenticateWithBiometrics(localizedReason: 'Please authenticate to open the wallet');
+                                          if (didAuthenticate) {
+                                            viewModel.setProtectMethod("fingerprint", "");
+                                            Navigator.of(context).pop(true);
+                                            Navigator.of(context).pop(true);
+                                          }
+                                        },
+                                        width: 300,
                                       ),
-                                    ),
-                                  ),
-                                  Center(
-                                      child: Container(
-                                    padding:
-                                        EdgeInsets.only(left: 18, right: 18),
-                                    child: Text(
-                                      "OR",
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                    decoration: const BoxDecoration(
-                                        color: const Color(0xFFF8F8F8)),
-                                  ))
-                                ],
-                              ) : Container(),
+                                    )
+                                  : Container(),
+                              const SizedBox(height: 22.0),
+                              availableBiometrics.length > 0
+                                  ? Stack(
+                                      children: <Widget>[
+                                        new SizedBox(
+                                          height: 10.0,
+                                          child: new Center(
+                                            child: new Container(
+                                              margin: new EdgeInsetsDirectional
+                                                  .only(start: 1.0, end: 1.0),
+                                              height: 1.0,
+                                              color: const Color(0xFF666666),
+                                            ),
+                                          ),
+                                        ),
+                                        Center(
+                                            child: Container(
+                                          padding: EdgeInsets.only(
+                                              left: 18, right: 18),
+                                          child: Text(
+                                            "OR",
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                          decoration: const BoxDecoration(
+                                              color: const Color(0xFFF8F8F8)),
+                                        ))
+                                      ],
+                                    )
+                                  : Container(),
                               const SizedBox(height: 22.0),
                               Center(
                                 child: PrimaryButton(
@@ -156,38 +160,48 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
                                                 height: 150,
                                                 child:
                                                     Column(children: <Widget>[
-                                                      PinCodeTextField(
-                autofocus: true,
-                controller: assetIdController,
-                hideCharacter: true,
-                highlight: true,
-                highlightColor: Colors.blue,
-                defaultBorderColor: Colors.black,
-                hasTextBorderColor: Colors.green,
-                maxLength: 4,
-                //hasError: hasError,
-                maskCharacter: "*",
+                                                  PinCodeTextField(
+                                                    autofocus: true,
+                                                    controller:
+                                                        assetIdController,
+                                                    hideCharacter: true,
+                                                    highlight: true,
+                                                    highlightColor: Colors.blue,
+                                                    defaultBorderColor:
+                                                        Colors.black,
+                                                    hasTextBorderColor:
+                                                        Colors.green,
+                                                    maxLength: 4,
+                                                    //hasError: hasError,
+                                                    maskCharacter: "*",
 
-                onTextChanged: (text) {
-                  setState(() {
-                   
-                  });
-                },
-                /*onDone: (text){
+                                                    onTextChanged: (text) {
+                                                      setState(() {});
+                                                    },
+                                                    /*onDone: (text){
                   if (text != viewModel.userState.protectPincode) {
                     setState(() {
                       hasError = true;
                     });
                   }
                 },*/
-                pinCodeTextFieldLayoutType: PinCodeTextFieldLayoutType.AUTO_ADJUST_WIDTH,
-                wrapAlignment: WrapAlignment.start,
-                pinBoxDecoration: ProvidedPinBoxDecoration.underlinedPinBoxDecoration,
-                pinTextStyle: TextStyle(fontSize: 30.0),
-                pinTextAnimatedSwitcherTransition: ProvidedPinBoxTextAnimation.scalingTransition,
-                pinTextAnimatedSwitcherDuration: Duration(milliseconds: 300),
-              )
-                                                  ,
+                                                    pinCodeTextFieldLayoutType:
+                                                        PinCodeTextFieldLayoutType
+                                                            .AUTO_ADJUST_WIDTH,
+                                                    wrapAlignment:
+                                                        WrapAlignment.start,
+                                                    pinBoxDecoration:
+                                                        ProvidedPinBoxDecoration
+                                                            .underlinedPinBoxDecoration,
+                                                    pinTextStyle: TextStyle(
+                                                        fontSize: 30.0),
+                                                    pinTextAnimatedSwitcherTransition:
+                                                        ProvidedPinBoxTextAnimation
+                                                            .scalingTransition,
+                                                    pinTextAnimatedSwitcherDuration:
+                                                        Duration(
+                                                            milliseconds: 300),
+                                                  ),
                                                   const SizedBox(height: 22.0),
                                                   Row(
                                                     children: <Widget>[
@@ -195,9 +209,17 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
                                                         child: PrimaryButton(
                                                           label: "SAVE",
                                                           onPressed: () {
-                                                            viewModel.setProtectMethod("pincode", assetIdController.text);
-                                                            Navigator.of(context).pop(true);
-                                                            Navigator.of(context).pop(true);
+                                                            viewModel
+                                                                .setProtectMethod(
+                                                                    "pincode",
+                                                                    assetIdController
+                                                                        .text);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(true);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(true);
                                                           },
                                                           width: 250,
                                                         ),
@@ -210,7 +232,28 @@ class _ProtectWalletPageState extends State<ProtectWalletPage> {
                                   },
                                   width: 300,
                                 ),
-                              )
+                              ),
+
+
+
+                                  const SizedBox(height: 22.0),
+
+                                 viewModel.userState.protectMethod != ""
+                                  ? Center(
+                                      child: 
+
+                                      TransparentButton(
+                                            label: "Disable protection",
+                                            onPressed: () {
+                                              viewModel.setProtectMethod("", "");
+                                          Navigator.of(context).pop(true);
+                                          Navigator.of(context).pop(true);
+                                            })
+
+
+
+                                    )
+                                  : Container(),
                             ],
                           ));
                 },

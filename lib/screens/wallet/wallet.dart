@@ -12,6 +12,7 @@ import 'package:fusewallet/widgets/drawer.dart';
 import 'package:fusewallet/widgets/transactions_list.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 import 'package:fusewallet/generated/i18n.dart';
+import 'package:share/share.dart';
 
 class WalletPage extends StatefulWidget {
   WalletPage({Key key, this.title}) : super(key: key);
@@ -85,17 +86,18 @@ class _WalletPageState extends State<WalletPage> {
                     onTap: () {},
                   ),
                   centerTitle: true,
-                  /*actions: <Widget>[
+                  actions: <Widget>[
                     Builder(
                         builder: (context) => IconButton(
-                              icon: const Icon(Icons.refresh),
+                              icon: const Icon(Icons.share),
                               color: const Color(0xFFFFFFFF),
                               tooltip: 'refresh',
                               onPressed: () async {
-                                viewModel.loadBalances(context);
+                                //viewModel.loadBalances(context);
+                                Share.share('Hey, your friend shared with you the Fuse wallet: http://fuseio.app.link/PKSgcxA6KZ');
                               },
                             )),
-                  ],*/
+                  ],
                   elevation: 0.0,
                 ),
                 drawer: new DrawerWidget(),

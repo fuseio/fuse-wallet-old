@@ -6,6 +6,7 @@ import 'package:fusewallet/screens/signup/signup.dart';
 import 'package:fusewallet/screens/wallet/pincode.dart';
 import 'package:fusewallet/screens/wallet/wallet.dart';
 import 'package:fusewallet/services/wallet_service.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
@@ -121,8 +122,14 @@ ThunkAction openWalletCall(context) {
     var method = store.state.userState.protectMethod;
     var lastEnter = store.state.userState.protectTimestamp == null ? DateTime.now().subtract(Duration(minutes: 30)) : store.state.userState.protectTimestamp;
     Duration difference = DateTime.now().difference(lastEnter);
-    if (method == "pincode" && difference.inSeconds > 10) {
+    if (method == "pincode" && difference.inMinutes > 10) {
       openPage(context, new PincodePage());
+    } else if (method == "fingerprint" && difference.inMinutes > 10) {
+      var localAuth = LocalAuthentication();
+      bool didAuthenticate = await localAuth.authenticateWithBiometrics(localizedReason: 'Please authenticate to open the wallet');
+      if (didAuthenticate) {
+        openPageReplace(context, new WalletPage());
+      }
     } else {
       openPageReplace(context, new WalletPage());
     }
