@@ -6,7 +6,7 @@ class Community {
   String foreignBridgeAddress;
   String homeBridgeAddress;
   String joinBonusText;
-  int joinBonusAmount;
+  double joinBonusAmount;
 
   Community(
       {this.communityAddress,
@@ -24,7 +24,7 @@ class Community {
       foreignBridgeAddress: json["foreignBridgeAddress"],
       homeBridgeAddress: json["homeBridgeAddress"],
       joinBonusText: json["plugins"].length > 0 && json["plugins"]["joinBonus"] != null ? json["plugins"]["joinBonus"]["joinInfo"]["message"] : "",
-      joinBonusAmount: json["plugins"].length > 0 && json["plugins"]["joinBonus"] != null ? int.parse(json["plugins"]["joinBonus"]["joinInfo"]["amount"]) : 0
+      joinBonusAmount: json["plugins"].length > 0 && json["plugins"]["joinBonus"] != null ? double.parse(json["plugins"]["joinBonus"]["joinInfo"]["amount"]) : 0
       ) : null;
 
   static Community fromJsonState(dynamic json) => json != null ? Community(
