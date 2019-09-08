@@ -43,7 +43,7 @@ class _SignUpPageState extends State<SignUpPage> {
               padding: EdgeInsets.only(
                   left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
               child: Text(
-                  "Enter your information, this will only be shared with your consent",
+                  "This wallet can store private information you can choose to share with service providers.",
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 18,
@@ -190,7 +190,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Center(
                   child: Padding(
                     child: Text(
-                      "This wallet can store private information you can choose to share with service providers. This data will be enrypted and stored only on this device secured storage.",
+                      "This data will be enrypted and stored only on this device secured storage.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                       color: Colors.black.withOpacity(0.5),

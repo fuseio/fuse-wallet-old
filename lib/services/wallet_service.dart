@@ -13,7 +13,7 @@ import 'package:http/http.dart' as http;
 import "package:web3dart/src/utils/numbers.dart" as numbers;
 import 'package:http/http.dart';
 
-const DEFAULT_TOKEN_ADDRESS = '0xF4a67c9273A7ef6d6438eaAD506846A80c95c159';
+const DEFAULT_TOKEN_ADDRESS = '0xBf5D6570a8B0245fADf2f2111e2AB6F4342fE62C';
 const API_ROOT = 'https://studio-qa-ropsten.fusenet.io/api/v1/';
 const EXPLORER_ROOT = 'https://explorer.fusenet.io/api?';
 const API_FUNDER = 'https://funder-qa.fusenet.io/api';

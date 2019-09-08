@@ -54,7 +54,7 @@ class BonusDialogState extends State<BonusDialog> with SingleTickerProviderState
           letters.add(BonusLetter(lettersStr[i]));
         }
         //letters.add(Text(".", style: TextStyle(color: Colors.black45, fontSize: 30, fontWeight: FontWeight.w500)));
-        //letters.add(BonusLetter("0"));
+        letters.add(BonusLetter("0"));
         //letters.add(BonusLetter("0"));
 return ScaleTransition(
           scale: scaleAnimatoin,

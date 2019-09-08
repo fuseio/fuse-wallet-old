@@ -27,15 +27,27 @@ class _BusinessPageState extends State<BusinessPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         key: scaffoldState,
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0.0,
-        ),
-        body: ListView(children: <Widget>[
+        
+        body: SafeArea(
+          top: false,
+          minimum: EdgeInsets.zero,
+          child: Stack(
+        children: <Widget>[
+          Container( //My container or any other widget
+          margin:  EdgeInsets.only(top: 0),
+            child: ListView(children: <Widget>[
+          Stack(children: <Widget>[
+            Image.network(
+              widget.business.coverPhoto,
+              fit: BoxFit.cover,
+              //width: 50.0,
+              //height: 50.0,
+            )
+          ],),
           Container(
-            color: Theme.of(context).primaryColor,
+            //color: Theme.of(context).primaryColor,
             padding: EdgeInsets.all(20.0),
-            height: 250,
+            //height: 250,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
@@ -44,13 +56,13 @@ class _BusinessPageState extends State<BusinessPage> {
                   padding: EdgeInsets.only(bottom: 10),
                   child: Text(widget.business.name,
                       style: TextStyle(
-                          color: const Color(0xFFFFFFFF),
+                          //color: const Color(0xFFFFFFFF),
                           fontSize: 24,
                           fontWeight: FontWeight.bold)),
                 ),
                 Text(widget.business.address,
                     style: TextStyle(
-                        color: const Color(0xFFFFFFFF),
+                        //color: const Color(0xFFFFFFFF),
                         fontSize: 14,
                         fontWeight: FontWeight.normal))
               ],
@@ -86,20 +98,34 @@ class _BusinessPageState extends State<BusinessPage> {
               },
             )),
           ),
-          Container(
+          /*Container(
             height: 200,
             margin: EdgeInsets.all(20),
             decoration: BoxDecoration(
                 color: const Color(0xFFEAEAEA),
                 borderRadius: new BorderRadius.all(new Radius.circular(15.0))),
             child: Image.network(
-              widget.business.image,
+              widget.business.coverPhoto,
               fit: BoxFit.cover,
               width: 50.0,
               height: 50.0,
             ),
-          )
-        ]));
+          )*/
+        ]),
+          ),
+          new Positioned( //Place it at the top, and not use the entire screen
+          top: 0.0,
+          left: 0.0,
+          right: 0.0,
+          child: AppBar(
+            backgroundColor: Colors.transparent, //No more green
+            elevation: 0.0, //Shadow gone
+          ),),
+        ], ),
+        )
+
+        
+        );
   }
 }
 
