@@ -7,46 +7,7 @@ import 'dart:async';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:fusewallet/modals/views/web_viewmodel.dart';
 
-
-// class HiddenWeb extends StatefulWidget {
-//   HiddenWeb();
-
-//   @override
-//   createState() => new HiddenWebState();
-// }
-
-// class HiddenWebState extends State<HiddenWeb> {
-//   HiddenWebState();
-
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext _context) {
-//     return new StoreConnector<AppState, WalletViewModel>(
-//       converter: (store) {
-//         return WalletViewModel.fromStore(store);
-//       },
-//       builder: (_, viewModel) {
-//         return viewModel.walletState.isJoiningCommunity ? Column(
-//                 crossAxisAlignment: CrossAxisAlignment.stretch,
-//                 children: <Widget>[
-//                   Container(
-//                       child: Text("HiddenWeb",
-//                           style: TextStyle(
-//                               color: Color(0xFF979797),
-//                               fontSize: 14.0,
-//                               fontWeight: FontWeight.normal))),
-//                 ],
-//               )
-//               : Scaffold();
-//       },
-//     );
-//   }
-// }
-
+var URL_BASE = 'https://studio-qa.fusenet.io/';
 
 class HiddenWeb extends StatefulWidget {
   @override
@@ -59,7 +20,7 @@ class _HiddenWebState extends State<HiddenWeb> {
 
       WebViewController _myController;
 
-  TextEditingController address = new TextEditingController(text: 'https://studio-qa.fusenet.io/');
+  TextEditingController address = new TextEditingController(text: URL_BASE);
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +93,7 @@ class _HiddenWebState extends State<HiddenWeb> {
             body: Builder(builder: (BuildContext context) {
               return WebView(
                 debuggingEnabled: true,
-                initialUrl: 'https://studio-qa.fusenet.io/view/join/0xb23D8028240b73F2a70822f9560158e8c69bf5C0?isMobile',
+                initialUrl: '${URL_BASE}view/join/0x7C0f812e540F1e403A99Ad56405D849C07096006?isMobile',
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController webViewController) {
                   _controller.complete(webViewController);
@@ -152,12 +113,17 @@ class _HiddenWebState extends State<HiddenWeb> {
                   return NavigationDecision.navigate;
                 },
                 onPageFinished: (String url) {
+                  if (url == URL_BASE) {
+                    print('DONE JOIN');
+                  }
+                  print(viewModel.user);
                   var injectedCode = """
                     console.log('injecting webview');
                     window.pk = '0x${viewModel.user.privateKey}';
                     window.user = {
-                      name: 'leon',
-                      email: 'leonprou@gmail.com'
+                      name: '${viewModel.user.firstName} ${viewModel.user.lastName}',
+                      account: '${viewModel.user.publicKey}',
+                      email: '${viewModel.user.email}'
                     };
                     console.log('done injecting webview');
                   """;
