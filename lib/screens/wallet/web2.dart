@@ -38,7 +38,7 @@ class _WebViewExampleState extends State<WebViewExample> {
 
       WebViewController _myController;
 
-  TextEditingController address = new TextEditingController(text: 'https://studio-qa.fusenet.io/');
+  TextEditingController address = new TextEditingController(text: 'https://studio.fusenet.io/');
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +110,7 @@ class _WebViewExampleState extends State<WebViewExample> {
             // to allow calling Scaffold.of(context) so we can show a snackbar.
             body: Builder(builder: (BuildContext context) {
               return WebView(
-                initialUrl: 'https://studio-qa.fusenet.io/?isMobile',
+                initialUrl: 'https://studio.fusenet.io/?isMobile',
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController webViewController) {
                   _controller.complete(webViewController);
