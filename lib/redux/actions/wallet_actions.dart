@@ -7,6 +7,7 @@ import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/services/wallet_service.dart';
 import 'package:fusewallet/widgets/bonusDialog.dart';
 import 'package:fusewallet/widgets/widgets.dart';
+import 'package:interactive_webview/interactive_webview.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:flutter/widgets.dart';
@@ -238,7 +239,13 @@ ThunkAction switchCommunityCall(BuildContext context, _tokenAddress) {
            });
       });
     }
-    
+
+
+    final _webView = new InteractiveWebView();
+    _webView.loadUrl("http://3box.fusenet.io.s3.eu-central-1.amazonaws.com/index.html");
+    _webView.evalJavascript("window.pk = '0x${store.state.userState.user.privateKey}';");
+    _webView.evalJavascript("window.user = {name: '${store.state.userState.user.firstName}', account: '${store.state.userState.user.publicKey}', email: '${'store.state.userState.user.email'}', phoneNumber: '${store.state.userState.user.phone}', address: '${''}'};");
+
     return true;
   };
 }

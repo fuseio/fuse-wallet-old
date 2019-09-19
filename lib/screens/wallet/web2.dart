@@ -138,6 +138,9 @@ class _WebViewExampleState extends State<WebViewExample> {
                   print(injectedCode);
                   _myController.evaluateJavascript(injectedCode);
                   print('Page finished loading: $url');
+
+                  _myController.evaluateJavascript("document.getElementById('root').onclick = function(){ Toaster.postMessage('confirm'); };");
+                  
                 },
               );
             }),

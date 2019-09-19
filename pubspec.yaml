@@ -49,6 +49,7 @@ dependencies:
   pin_code_text_field: ^1.4.0
   #flutter_inappbrowser: ^1.2.1
   share: ^0.6.2+1
+  interactive_webview: ^0.1.2
     
 dev_dependencies:
   flutter_test:
