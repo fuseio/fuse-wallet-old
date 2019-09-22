@@ -15,7 +15,7 @@ import 'package:hex/hex.dart';
 
 const DEFAULT_COMMUNITY = '0xF846053684960eBF35aEa6Dc4F9317ebb2F7bF84';
 
-const API_ROOT = 'https://studio-qa-ropsten.fusenet.io/api/v1/';
+const API_ROOT = 'https://studio-ropsten.fusenet.io/api/v1/';
 const EXPLORER_ROOT = 'https://explorer.fusenet.io/api?';
 // const API_ROOT = 'http://localhost:3000/api/v1/';
 
