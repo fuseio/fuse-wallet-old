@@ -23,8 +23,8 @@ class Community {
       foreignTokenAddress: json["foreignTokenAddress"],
       foreignBridgeAddress: json["foreignBridgeAddress"],
       homeBridgeAddress: json["homeBridgeAddress"],
-      joinBonusText: json["plugins"].length > 0 && json["plugins"]["joinBonus"] != null ? json["plugins"]["joinBonus"]["joinInfo"]["message"] : "",
-      joinBonusAmount: json["plugins"].length > 0 && json["plugins"]["joinBonus"] != null ? double.parse(json["plugins"]["joinBonus"]["joinInfo"]["amount"]) : 0
+      joinBonusText: json.containsKey('plugins') && json["plugins"].length > 0 && json["plugins"]["joinBonus"] != null ? json["plugins"]["joinBonus"]["joinInfo"]["message"] : "",
+      joinBonusAmount: json.containsKey('plugins') && json["plugins"].length > 0 && json["plugins"]["joinBonus"] != null ? double.parse(json["plugins"]["joinBonus"]["joinInfo"]["amount"]) : 0
       ) : null;
 
   static Community fromJsonState(dynamic json) => json != null ? Community(

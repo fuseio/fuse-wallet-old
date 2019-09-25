@@ -8,7 +8,6 @@ import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/services/wallet_service.dart';
 import 'package:fusewallet/widgets/bonusDialog.dart';
 import 'package:fusewallet/widgets/widgets.dart';
-import 'package:interactive_webview/interactive_webview.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:flutter/widgets.dart';
@@ -39,6 +38,7 @@ import 'package:fusewallet/logic/globals.dart' as globals;
 //             builder: (BuildContext context) {
 //               return BonusDialog();
 //             });
+
 //       });
 //     }
 
@@ -90,16 +90,23 @@ Future loadBalance(Store store) async {
   var publicKey = store.state.userState.user?.publicKey;
   var tokenAddress = store.state.walletState.tokenAddress;
   if (publicKey != "" && tokenAddress != "") {
-    var balance = await getBalance(publicKey, tokenAddress);
-    store.dispatch(new BalanceLoadedAction(balance));
+    try {
+      var balance = await getBalance(publicKey, tokenAddress);
+      store.dispatch(new BalanceLoadedAction(balance));
+    } catch (e) {
+      print(e);
+      print('Balance could not be loaded for account $publicKey, tokenAddress: $tokenAddress');
+      store.dispatch(new BalanceLoadedAction('0'));
+    }
   }
 }
 
-Future loadTransactions(Store store) {
+Future loadTransactions(Store store) async {
   var publicKey = store.state.userState.user?.publicKey;
   var tokenAddress = store.state.walletState.tokenAddress;
   if (publicKey != "" && tokenAddress != "") {
-    getTransactions(publicKey, tokenAddress).then((list) {
+    try {
+      var list = await getTransactions(publicKey, tokenAddress);
       if (store.state.walletState.transactions != null) {
         if (list.transactions.length != store.state.walletState.transactions.transactions.length) {
           list.pendingTransactions = new List<Transaction>();
@@ -108,7 +115,12 @@ Future loadTransactions(Store store) {
         }
       }
       store.dispatch(new TransactionsLoadedAction(list));
-    });
+    } catch (e) {
+        print(e);
+        print('Transactions list could not be loaded for account $publicKey, tokenAddress: $tokenAddress');
+        var list = new TransactionList(transactions: new List<Transaction>(), pendingTransactions: new List<Transaction>());
+        store.dispatch(new TransactionsLoadedAction(list));
+    }
   }
 }
 
@@ -260,12 +272,6 @@ ThunkAction switchCommunityCall(BuildContext context, _tokenAddress, _env, _orig
            });
       });
     }
-
-
-    final _webView = new InteractiveWebView();
-    _webView.loadUrl("http://3box.fusenet.io.s3.eu-central-1.amazonaws.com/index.html");
-    _webView.evalJavascript("window.pk = '0x${store.state.userState.user.privateKey}';");
-    _webView.evalJavascript("window.user = {name: '${store.state.userState.user.firstName}', account: '${store.state.userState.user.publicKey}', email: '${'store.state.userState.user.email'}', phoneNumber: '${store.state.userState.user.phone}', address: '${''}'};");
 
     return true;
   };

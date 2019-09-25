@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:interactive_webview/interactive_webview.dart';
 import 'package:fusewallet/logic/common.dart';
 import 'package:fusewallet/modals/user.dart';
 import 'package:fusewallet/screens/signup/backup1.dart';
@@ -103,11 +104,29 @@ ThunkAction signUpCall(BuildContext context, String firstName, String lastName, 
   };
 }
 
+ThunkAction create3boxAccountCall() {
+    return (Store store) async {
+      final _webView = new InteractiveWebView();
+      print('Loading 3box webview for account ${store.state.userState.user.publicKey}');
+      final html = '''<html>
+        <head></head>
+        <script>
+          window.pk = '0x${store.state.userState.user.privateKey}';
+          window.user = { name: '${store.state.userState.user.firstName}', account: '${store.state.userState.user.publicKey}', email: '${store.state.userState.user.email}', phoneNumber: '${store.state.userState.user.phone}', address: '${''}'};
+        </script>
+        <script src='https://3box.fusenet.io/main.js'></script>
+        <body></body>
+      </html>''';
+      _webView.loadHTML(html, baseUrl: "https://beta.3box.io");
+    };
+}
+
 ThunkAction generateWalletCall() {
   return (Store store) async {
     store.dispatch(new StartLoadingAction());
     var user = await generateWallet(store.state.userState.user);
     store.dispatch(new UpdateUserAction(user));
+    store.dispatch(create3boxAccountCall());
   };
 }
 
