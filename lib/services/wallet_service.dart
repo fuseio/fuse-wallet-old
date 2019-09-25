@@ -14,9 +14,18 @@ import "package:web3dart/src/utils/numbers.dart" as numbers;
 import 'package:http/http.dart';
 
 const DEFAULT_TOKEN_ADDRESS = '0xBf5D6570a8B0245fADf2f2111e2AB6F4342fE62C';
-const API_ROOT = 'https://studio-ropsten.fusenet.io/api/v1/';
+const DEFAULT_ENV = '';
+const DEFAULT_ORIGIN_NETWORK = 'ropsten';
+const API_ROOT = 'https://studio{env}{originNetwork}.fusenet.io/api/v1/';
 const EXPLORER_ROOT = 'https://explorer.fusenet.io/api?';
 const API_FUNDER = 'https://funder-qa.fusenet.io/api';
+
+parseAPIRoot(String path, env, originNetwork) {
+  var _path = path;
+  _path = _path.replaceAll("{env}", env == '' ? '' : '-' + env);
+  _path = _path.replaceAll("{originNetwork}", originNetwork == '' ? '' : '-' + originNetwork);
+  return _path;
+}
 
 Future generateWallet(User user) async {
   if (user == null) {
@@ -55,9 +64,9 @@ Future fundToken(accountAddress, tokenAddress) async {
   });
 }
 
-Future getCommunity(tokenAddress) async {
+Future getCommunity(tokenAddress, env, originNetwork) async {
   print('Fetching community data by the token address: $tokenAddress');
-  return await http.get(Uri.encodeFull(API_ROOT + "communities?homeTokenAddress=" + tokenAddress)).then((http.Response response) {
+  return await http.get(Uri.encodeFull(parseAPIRoot(API_ROOT, env, originNetwork) + "communities?homeTokenAddress=" + tokenAddress)).then((http.Response response) {
     final int statusCode = response.statusCode;
     if (statusCode < 200 || statusCode > 400 || json == null) {
       throw new Exception("Error while fetching data");
@@ -67,14 +76,14 @@ Future getCommunity(tokenAddress) async {
     if (obj["data"] == null) {
       throw new Exception("No token information found");
     }
-    var community = Community.fromJson(obj["data"]);
+    var community = Community.fromJson(obj["data"][0]);
     print('Done fetching community data for $tokenAddress');
     return community;
   });
 }
 
-Future getToken(tokenAddress) async {
-  return await http.get(Uri.encodeFull(API_ROOT + "tokens/" + tokenAddress)).then((http.Response response) {
+Future getToken(tokenAddress, env, originNetwork) async {
+  return await http.get(Uri.encodeFull(parseAPIRoot(API_ROOT, env, originNetwork) + "tokens/" + tokenAddress)).then((http.Response response) {
     final int statusCode = response.statusCode;
     if (statusCode < 200 || statusCode > 400 || json == null) {
       throw new Exception("Error while fetching data");
@@ -114,9 +123,9 @@ Future<TransactionList> getTransactions(accountAddress, tokenAddress) async {
   }
 }
 
-Future<List<Business>> getBusinesses(communityAddress) async {
+Future<List<Business>> getBusinesses(communityAddress, env, originNetwork) async {
   print('Fetching businesses for commnuity: $communityAddress');
-  return http.get(API_ROOT + "entities/" + communityAddress + "?type=business&withMetadata=true").then((response) {
+  return http.get(parseAPIRoot(API_ROOT, env, originNetwork) + "entities/" + communityAddress + "?type=business&withMetadata=true").then((response) {
     List<Business> businessList = new List();
     final dynamic responseJson = json.decode(response.body);
     responseJson["data"].forEach((f) => businessList.add(new Business.fromJson(f)));

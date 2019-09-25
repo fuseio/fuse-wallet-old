@@ -26,7 +26,7 @@ WalletState _communityLoaded(WalletState state, CommunityLoadedAction action) {
 }
 
 WalletState _tokenLoaded(WalletState state, TokenLoadedAction action) {
-  return state.copyWith(token: Nullable<Token>(action.token), tokenAddress: action.tokenAddress);
+  return state.copyWith(token: Nullable<Token>(action.token), tokenAddress: action.tokenAddress, environment: action.environment, originNetwork: action.originNetwork);
 }
 
 WalletState _balanceLoaded(WalletState state, BalanceLoadedAction action) {

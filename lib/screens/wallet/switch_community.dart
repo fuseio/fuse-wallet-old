@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -93,11 +95,12 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
                                 child: PrimaryButton(
                                   label: "SCAN QR CODE",
                                   onPressed: () async {
-                                    var assetId = await BarcodeScanner.scan();
+                                    var json = await BarcodeScanner.scan();
                                     Navigator.of(context).pop(true);
                                     Navigator.of(context).pop(true);
                                     viewModel.logoutWallet();
-                                    viewModel.switchCommunity(globals.scaffoldKey.currentContext, assetId);
+                                    Map jsonMap = jsonDecode(json);
+                                    viewModel.switchCommunity(globals.scaffoldKey.currentContext, jsonMap["tokenAddress"], jsonMap["env"], jsonMap["originNetwork"]);
                                   },
                                   width: 300,
                                 ),
@@ -160,7 +163,7 @@ class _SwitchCommunityPageState extends State<SwitchCommunityPage> {
                                                           label: "SAVE",
                                                           onPressed: () {
                                                             viewModel.logoutWallet();
-                                                            viewModel.switchCommunity(context, assetIdController.text);
+                                                            //viewModel.switchCommunity(context, assetIdController.text);
                                                             Navigator.of(context).pop(true);
                                                             Navigator.of(context).pop(true);
                                                           },

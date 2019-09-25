@@ -36,7 +36,7 @@ class _WalletPageState extends State<WalletPage> {
         return WalletViewModel.fromStore(store);
       },
       onInit: (store) {
-        store.dispatch(switchCommunityCall(context, null));
+        store.dispatch(switchCommunityCall(context, null, null, null));
       },
       builder: (_, viewModel) {
 

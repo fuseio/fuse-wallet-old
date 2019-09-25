@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fusewallet/modals/businesses.dart';
 import 'package:fusewallet/modals/community.dart';
@@ -51,10 +52,10 @@ ThunkAction loadBalancesCall(BuildContext context) {
   };
 }
 
-Future loadCommunity(Store store, tokenAddress) async {
-  var token = await getToken(tokenAddress);
-  var commmunity = await getCommunity(tokenAddress);
-  store.dispatch(new TokenLoadedAction(tokenAddress, token));
+Future loadCommunity(Store store, tokenAddress, env, originNetwork) async {
+  var token = await getToken(tokenAddress, env, originNetwork);
+  var commmunity = await getCommunity(tokenAddress, env, originNetwork);
+  store.dispatch(new TokenLoadedAction(tokenAddress, token, env, originNetwork));
   store.dispatch(new CommunityLoadedAction(tokenAddress, commmunity));
   
   loadBalances(store);
@@ -99,10 +100,12 @@ Future loadTransactions(Store store) {
   var tokenAddress = store.state.walletState.tokenAddress;
   if (publicKey != "" && tokenAddress != "") {
     getTransactions(publicKey, tokenAddress).then((list) {
-      if (list.transactions.length != store.state.walletState.transactions.transactions.length) {
-        list.pendingTransactions = new List<Transaction>();
-      } else {
-        list.pendingTransactions = store.state.walletState.transactions.pendingTransactions;
+      if (store.state.walletState.transactions != null) {
+        if (list.transactions.length != store.state.walletState.transactions.transactions.length) {
+          list.pendingTransactions = new List<Transaction>();
+        } else {
+          list.pendingTransactions = store.state.walletState.transactions.pendingTransactions;
+        }
       }
       store.dispatch(new TransactionsLoadedAction(list));
     });
@@ -186,7 +189,7 @@ ThunkAction addPendingTransaction(amount, from, to) {
 ThunkAction loadBusinessesCall() {
   return (Store store) async {
     store.dispatch(new StartLoadingAction());
-    getBusinesses(store.state.walletState.community.communityAddress).then((list) {
+    getBusinesses(store.state.walletState.community.communityAddress, store.state.walletState.environment, store.state.walletState.originNetwork).then((list) {
       store.dispatch(new BusinessesLoadedAction(list));
     });
     return true;
@@ -204,7 +207,7 @@ ThunkAction loadBusinessesCall() {
 //   };
 // }
 
-ThunkAction switchCommunityCall(BuildContext context, _tokenAddress) {
+ThunkAction switchCommunityCall(BuildContext context, _tokenAddress, _env, _originNetwork) {
   return (Store store) async {
     // store.dispatch(new LogoutAction());
     // store.dispatch(new TokenLoadedAction(tokenAddress, null));
@@ -212,16 +215,34 @@ ThunkAction switchCommunityCall(BuildContext context, _tokenAddress) {
 
     var isFirstTime = store.state.walletState.community == null;
     var tokenAddress = store.state.walletState.tokenAddress;
+    var env = store.state.walletState.environment;
+    var originNetwork = store.state.walletState.originNetwork;
 
     if (_tokenAddress != null) {
       tokenAddress = _tokenAddress;
     }
+
+    if (_env != null) {
+      env = _env;
+    }
     
+    if (_originNetwork != null) {
+      originNetwork = _originNetwork;
+    }
+
     if (tokenAddress == null || tokenAddress == "") {
       tokenAddress = DEFAULT_TOKEN_ADDRESS;
     }
 
-    await loadCommunity(store, tokenAddress);
+    if (env == null || env == "") {
+      env = DEFAULT_ENV;
+    }
+
+    if (originNetwork == null || originNetwork == "") {
+      originNetwork = DEFAULT_ORIGIN_NETWORK;
+    }
+
+    await loadCommunity(store, tokenAddress, env, originNetwork);
     // await joinCommunity(store);
     fundTokenCall(store);
 
@@ -275,8 +296,10 @@ class CommunityLoadedAction {
 class TokenLoadedAction {
   final Token token;
   final String tokenAddress;
+  final String environment;
+  final String originNetwork;
 
-  TokenLoadedAction(this.tokenAddress, this.token);
+  TokenLoadedAction(this.tokenAddress, this.token, this.environment, this.originNetwork);
 }
 
 class TransactionsLoadedAction {

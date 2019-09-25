@@ -22,7 +22,7 @@ class WalletViewModel {
   final Function(BuildContext) loadBalances;
   final Function(BuildContext) sendTransaction;
   final Function() loadBusinesses;
-  final Function(BuildContext, String) switchCommunity;
+  final Function(BuildContext, String, String, String) switchCommunity;
   final Function(double) sendAmount;
   final Function(String) sendAddress;
   final Function() logoutWallet;
@@ -68,8 +68,8 @@ class WalletViewModel {
       loadBusinesses: () {
         store.dispatch(loadBusinessesCall());
       },
-      switchCommunity: (context, tokenAddress) {
-        store.dispatch(switchCommunityCall(context, tokenAddress));
+      switchCommunity: (context, tokenAddress, env, originNetwork) {
+        store.dispatch(switchCommunityCall(context, tokenAddress, env, originNetwork));
       },
       sendAmount: (amount) {
         store.dispatch(sendAmountCall(amount));

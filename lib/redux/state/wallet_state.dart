@@ -9,6 +9,8 @@ class WalletState {
   final String balance;
   final TransactionList transactions;
   final String tokenAddress;
+  final String environment;
+  final String originNetwork;
   final Community community;
   final Token token;
   final bool isLoading;
@@ -20,6 +22,8 @@ class WalletState {
     @required this.balance,
     @required this.transactions,
     @required this.tokenAddress,
+    @required this.environment,
+    @required this.originNetwork,
     @required this.community,
     this.token,
     this.isLoading,
@@ -29,14 +33,16 @@ class WalletState {
   });
 
   factory WalletState.initial() {
-    return new WalletState(isLoading: false, balance: "0", transactions: null, tokenAddress: "", community: null, token: null, businesses: null, sendAddress: "", sendAmount: 0);
+    return new WalletState(isLoading: false, balance: "0", transactions: null, tokenAddress: "", environment: "", originNetwork: "", community: null, token: null, businesses: null, sendAddress: "", sendAmount: 0);
   }
 
-  WalletState copyWith({String balance, Nullable<TransactionList> transactions, String tokenAddress, Nullable<Community> community, bool isLoading, List<Business> businesses, String sendAddress, double sendAmount, String sendStep, Nullable<Token> token}) {
+  WalletState copyWith({String balance, Nullable<TransactionList> transactions, String tokenAddress, String environment, String originNetwork, Nullable<Community> community, bool isLoading, List<Business> businesses, String sendAddress, double sendAmount, String sendStep, Nullable<Token> token}) {
     return new WalletState(
         balance: balance ?? this.balance,
         transactions: transactions == null ? this.transactions : transactions.value,
         tokenAddress: tokenAddress ?? this.tokenAddress,
+        environment: environment ?? this.environment,
+        originNetwork: originNetwork ?? this.originNetwork,
         community: community == null ? this.community : community.value,
         token: token == null ? this.token : token.value,
         isLoading: isLoading ?? this.isLoading,
@@ -57,7 +63,7 @@ class WalletState {
   //int get hashCode => isLoading.hashCode ^ user.hashCode;
 
   static WalletState fromJson(dynamic json) =>
-      WalletState(balance: json["balance"], transactions: TransactionList.fromJsonState(json["transactions"]), tokenAddress: json["tokenAddress"], community:  Community.fromJsonState(json["community"]), token:  Token.fromJson(json["token"]), isLoading: false);
+      WalletState(balance: json["balance"], transactions: TransactionList.fromJsonState(json["transactions"]), tokenAddress: json["tokenAddress"], environment: json["environment"], originNetwork: json["originNetwork"], community:  Community.fromJsonState(json["community"]), token:  Token.fromJson(json["token"]), isLoading: false);
 
   dynamic toJson() => {'balance': balance, 'community': community, 'transactions': transactions, 'token': token, 'tokenAddress': tokenAddress};
 }
