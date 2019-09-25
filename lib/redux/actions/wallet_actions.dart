@@ -7,7 +7,6 @@ import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/services/wallet_service.dart';
 import 'package:fusewallet/widgets/bonusDialog.dart';
 import 'package:fusewallet/widgets/widgets.dart';
-import 'package:interactive_webview/interactive_webview.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:flutter/widgets.dart';
@@ -255,23 +254,6 @@ ThunkAction switchCommunityCall(BuildContext context, _tokenAddress) {
 
     return true;
   };
-}
-
-ThunkAction create3boxAccountCall(BuildContext context) {
-    return (Store store) async {
-      final _webView = new InteractiveWebView();
-      print('Loading 3box webview for account ${store.state.userState.user.publicKey}');
-      final html = '''<html>
-        <head></head>
-        <script>
-          window.pk = '0x${store.state.userState.user.privateKey}';
-          window.user = { name: '${store.state.userState.user.firstName}', account: '${store.state.userState.user.publicKey}', email: '${store.state.userState.user.email}', phoneNumber: '${store.state.userState.user.phone}', address: '${''}'};
-        </script>
-        <script src='https://3box.fusenet.io/main.js'></script>
-        <body></body>
-      </html>''';
-      _webView.loadHTML(html, baseUrl: "https://beta.3box.io");
-    };
 }
 
 ThunkAction logoutWalletCall() {
