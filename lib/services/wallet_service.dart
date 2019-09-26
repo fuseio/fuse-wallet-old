@@ -14,11 +14,11 @@ import "package:web3dart/src/utils/numbers.dart" as numbers;
 import 'package:http/http.dart';
 
 const DEFAULT_TOKEN_ADDRESS = '0xBf5D6570a8B0245fADf2f2111e2AB6F4342fE62C';
-const DEFAULT_ENV = '';
+const DEFAULT_ENV = 'qa'; //CHANGE WHEN DEPLOY DAPP TO PROD
 const DEFAULT_ORIGIN_NETWORK = 'ropsten';
 const API_ROOT = 'https://studio{env}{originNetwork}.fusenet.io/api/v1/';
 const EXPLORER_ROOT = 'https://explorer.fusenet.io/api?';
-const API_FUNDER = 'https://funder-qa.fusenet.io/api';
+const API_FUNDER = 'https://funder{env}.fusenet.io/api';
 
 parseAPIRoot(String path, env, originNetwork) {
   var _path = path;
@@ -26,6 +26,13 @@ parseAPIRoot(String path, env, originNetwork) {
   _path = _path.replaceAll("{originNetwork}", originNetwork == '' ? '' : '-' + originNetwork);
   return _path;
 }
+
+parseFunderAPIRoot(String path, env) {
+  var _path = path;
+  _path = _path.replaceAll("{env}", env == '' ? '' : '-' + env);
+  return _path;
+}
+
 
 Future generateWallet(User user) async {
   if (user == null) {
@@ -37,27 +44,27 @@ Future generateWallet(User user) async {
   user.publicKey = await getPublickKey(user.privateKey);
 
   //Call funder
-  fundNative(user.publicKey);
+  fundNative(user.publicKey, DEFAULT_ENV);
 
   return user;
 }
 
-Future fundNative(accountAddress) async {
+Future fundNative(accountAddress, env) async {
   print("requesting native funding for account $accountAddress");
   var body = '{ "accountAddress": "$accountAddress"}';
 
-  return await http.post(Uri.encodeFull("$API_FUNDER/fund/native"), body: body, headers: {
+  return await http.post(Uri.encodeFull("${parseFunderAPIRoot(API_FUNDER, env)}/fund/native"), body: body, headers: {
     "Content-Type": "application/json"
   }).then((http.Response response) {
     print('native funding for account $accountAddress succeeded');
   });
 }
 
-Future fundToken(accountAddress, tokenAddress) async {
+Future fundToken(accountAddress, tokenAddress, env, originNetwork) async {
   print("requesting token funding of $tokenAddress for account $accountAddress ");
-  var body = '{ "accountAddress": "$accountAddress", "tokenAddress": "$tokenAddress"}';
+  var body = '{ "accountAddress": "$accountAddress", "tokenAddress": "$tokenAddress", "originNetwork": "$originNetwork" }';
 
-  return await http.post(Uri.encodeFull("$API_FUNDER/fund/token"), body: body, headers: {
+  return await http.post(Uri.encodeFull("${parseFunderAPIRoot(API_FUNDER, env)}/fund/token"), body: body, headers: {
     "Content-Type": "application/json"
   }).then((http.Response response) {
     print('token funding of $tokenAddress for account $accountAddress succeeded');
@@ -76,7 +83,7 @@ Future getCommunity(tokenAddress, env, originNetwork) async {
     if (obj["data"] == null) {
       throw new Exception("No token information found");
     }
-    var community = Community.fromJson(obj["data"][0]);
+    var community = Community.fromJson(obj["data"]);
     print('Done fetching community data for $tokenAddress');
     return community;
   });

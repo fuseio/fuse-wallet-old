@@ -73,10 +73,10 @@ Future joinCommunity(Store store) async {
 
 }
 
-Future fundTokenCall(Store store) async {
+Future fundTokenCall(Store store, env, originNetwork) async {
   var tokenAddress = store.state.walletState.tokenAddress;
   var publicKey = store.state.userState.user.publicKey;
-  await fundToken(publicKey, tokenAddress);
+  await fundToken(publicKey, tokenAddress, env, originNetwork);
 
 
 }
@@ -256,7 +256,7 @@ ThunkAction switchCommunityCall(BuildContext context, _tokenAddress, _env, _orig
 
     await loadCommunity(store, tokenAddress, env, originNetwork);
     // await joinCommunity(store);
-    fundTokenCall(store);
+    fundTokenCall(store, env, originNetwork);
 
     store.dispatch(new WalletLoadedAction());
     // store.dispatch(initWalletCall(context));
