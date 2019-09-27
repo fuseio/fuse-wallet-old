@@ -22,14 +22,16 @@ const API_FUNDER = 'https://funder{env}.fusenet.io/api';
 
 parseAPIRoot(String path, env, originNetwork) {
   var _path = path;
-  _path = _path.replaceAll("{env}", env == '' ? '' : '-' + env);
-  _path = _path.replaceAll("{originNetwork}", originNetwork == '' ? '' : '-' + originNetwork);
+  _path = _path.replaceAll("{env}", env == 'qa' ? '-qa' : '');
+  _path = _path.replaceAll("{originNetwork}", originNetwork == 'ropsten' ? '-ropsten' : '');
+  print(_path);
   return _path;
 }
 
 parseFunderAPIRoot(String path, env) {
   var _path = path;
-  _path = _path.replaceAll("{env}", env == '' ? '' : '-' + env);
+  _path = _path.replaceAll("{env}", env == 'qa' ? '-qa' : '');
+  print(_path);
   return _path;
 }
 
