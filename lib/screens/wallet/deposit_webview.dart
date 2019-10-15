@@ -3,48 +3,30 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
-import 'package:fusewallet/modals/views/web_viewmodel.dart';
+import 'package:fusewallet/modals/views/drawer_viewmodel.dart';
 
-
-const String kNavigationExamplePage = '''
-<!DOCTYPE html><html>
-<head><title>Navigation Delegate Example</title></head>
-<body>
-<p>
-The navigation delegate is set to block navigation to the youtube website.
-</p>
-<ul>
-<ul><a href="https://www.youtube.com/">https://www.youtube.com/</a></ul>
-<ul><a href="https://www.google.com/">https://www.google.com/</a></ul>
-<ul><a href="javascript:Toaster.postMessage('confirm');">test</a></ul>
-</ul>
-</body>
-</html>
-''';
-
-class WebViewExample extends StatefulWidget {
+class DepositWebView extends StatefulWidget {
   @override
-  _WebViewExampleState createState() => _WebViewExampleState();
+  _DepositWebViewState createState() => _DepositWebViewState();
 }
 
-class _WebViewExampleState extends State<WebViewExample> {
+class _DepositWebViewState extends State<DepositWebView> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 
       WebViewController _myController;
 
-  TextEditingController address = new TextEditingController(text: 'https://studio.fusenet.io/');
+  TextEditingController address = new TextEditingController(text: 'https://buy-staging.moonpay.io');
 
   @override
   Widget build(BuildContext context) {
-      return new StoreConnector<AppState, WebViewModel>(
+      return new StoreConnector<AppState, DrawerViewModel>(
         converter: (store) {
-          return WebViewModel.fromStore(store);
+          return DrawerViewModel.fromStore(store);
         },
         builder: (_, viewModel) {
           return Scaffold(
@@ -109,39 +91,19 @@ class _WebViewExampleState extends State<WebViewExample> {
             // We're using a Builder here so we have a context that is below the Scaffold
             // to allow calling Scaffold.of(context) so we can show a snackbar.
             body: Builder(builder: (BuildContext context) {
+              dynamic deposit = viewModel.community.plugins.deposit;
+              
+              dynamic url = 'https://buy-staging.moonpay.io/?apiKey=${deposit.apiKey}&currencyCode=${deposit.currencyCode}&walletAddress=${deposit.walletAddress}&externalCustomerId=${viewModel.user.publicKey}';
+              if (viewModel.user.email != null && viewModel.user.email != '') {
+                url = url + '&email=${viewModel.user.email}';
+              }
               return WebView(
-                initialUrl: 'https://studio.fusenet.io/?isMobile',
+                initialUrl: url,
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController webViewController) {
                   _controller.complete(webViewController);
                   _myController = webViewController;
-                },
-                // TODO(iskakaushik): Remove this when collection literals makes it to stable.
-                // ignore: prefer_collection_literals
-                javascriptChannels: <JavascriptChannel>[
-                  _toasterJavascriptChannel(context),
-                ].toSet(),
-                navigationDelegate: (NavigationRequest request) {
-                  if (request.url.startsWith('https://www.youtube.com/')) {
-                    print('blocking navigation to $request}');
-                    return NavigationDecision.prevent;
-                  }
-                  print('allowing navigation to $request');
-                  return NavigationDecision.navigate;
-                },
-                onPageFinished: (String url) {
-                  var injectedCode = """
-                    console.log('injecting webview')
-                    window.pk = '0x${viewModel.user.privateKey}'
-                    console.log('done injecting webview')
-                  """;
-                  print(injectedCode);
-                  _myController.evaluateJavascript(injectedCode);
-                  print('Page finished loading: $url');
-
-                  _myController.evaluateJavascript("document.getElementById('root').onclick = function(){ Toaster.postMessage('confirm'); };");
-                  
-                },
+                }
               );
             }),
           );
