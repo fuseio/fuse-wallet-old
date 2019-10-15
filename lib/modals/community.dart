@@ -1,3 +1,4 @@
+import './plugins.dart';
 
 class Community {
   String communityAddress;
@@ -5,8 +6,7 @@ class Community {
   String foreignTokenAddress;
   String foreignBridgeAddress;
   String homeBridgeAddress;
-  String joinBonusText;
-  double joinBonusAmount;
+  Plugins plugins;
 
   Community(
       {this.communityAddress,
@@ -14,8 +14,7 @@ class Community {
       this.foreignTokenAddress,
       this.foreignBridgeAddress,
       this.homeBridgeAddress,
-      this.joinBonusText,
-      this.joinBonusAmount});
+      this.plugins});
 
   static Community fromJson(dynamic json) => json != null ? Community(
       communityAddress: json["communityAddress"],
@@ -23,8 +22,7 @@ class Community {
       foreignTokenAddress: json["foreignTokenAddress"],
       foreignBridgeAddress: json["foreignBridgeAddress"],
       homeBridgeAddress: json["homeBridgeAddress"],
-      joinBonusText: json.containsKey('plugins') && json["plugins"].length > 0 && json["plugins"]["joinBonus"] != null ? json["plugins"]["joinBonus"]["joinInfo"]["message"] : "",
-      joinBonusAmount: json.containsKey('plugins') && json["plugins"].length > 0 && json["plugins"]["joinBonus"] != null ? double.parse(json["plugins"]["joinBonus"]["joinInfo"]["amount"]) : 0
+      plugins: Plugins.fromJson(json["plugins"])
       ) : null;
 
   static Community fromJsonState(dynamic json) => json != null ? Community(
@@ -33,8 +31,7 @@ class Community {
       foreignTokenAddress: json["foreignTokenAddress"],
       foreignBridgeAddress: json["foreignBridgeAddress"],
       homeBridgeAddress: json["homeBridgeAddress"],
-      joinBonusText: json["joinBonusText"],
-      joinBonusAmount: json["joinBonusAmount"]
+      plugins: Plugins.fromJsonState(json["plugins"])
       ) : null;
 
   dynamic toJson() => {
@@ -42,6 +39,7 @@ class Community {
         'homeTokenAddress': homeTokenAddress,
         'foreignTokenAddress': foreignTokenAddress,
         'foreignBridgeAddress': foreignBridgeAddress,
-        'homeBridgeAddress': homeBridgeAddress
+        'homeBridgeAddress': homeBridgeAddress,
+        'plugins': plugins.toJson()
       };
 }

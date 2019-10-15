@@ -261,9 +261,9 @@ ThunkAction switchCommunityCall(BuildContext context, _tokenAddress, _env, _orig
     store.dispatch(new WalletLoadedAction());
     // store.dispatch(initWalletCall(context));
     //store.dispatch(new SwitchCommunityAction(communityAddress));
-
-    if (isFirstTime && store.state.walletState.community.joinBonusAmount > 0) {
-      store.dispatch(addPendingTransaction(store.state.walletState.community.joinBonusAmount, "", store.state.userState.user.publicKey));
+    dynamic joinBonus = store.state.walletState.community.plugins.joinBonus;
+    if (isFirstTime && joinBonus != null && joinBonus.isActive) {
+      store.dispatch(addPendingTransaction(joinBonus.amount, "", store.state.userState.user.publicKey));
       new Future.delayed(Duration(seconds: 3), () {
        showDialog(
            context: globals.scaffoldKey.currentContext,
