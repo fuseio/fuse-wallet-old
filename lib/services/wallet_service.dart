@@ -62,7 +62,7 @@ Future fundNative(accountAddress, env) async {
   });
 }
 
-Future fundToken(accountAddress, tokenAddress, env, originNetwork) async {
+Future fundToken(accountAddress, tokenAddress, env, originNetwork, privateKey) async {
   print("requesting token funding of $tokenAddress for account $accountAddress ");
   var body = '{ "accountAddress": "$accountAddress", "tokenAddress": "$tokenAddress", "originNetwork": "$originNetwork" }';
 
@@ -70,7 +70,40 @@ Future fundToken(accountAddress, tokenAddress, env, originNetwork) async {
     "Content-Type": "application/json"
   }).then((http.Response response) {
     print('token funding of $tokenAddress for account $accountAddress succeeded');
+
+    joinCommunity(accountAddress, tokenAddress, privateKey);
   });
+}
+
+Future joinCommunity(accountAddress, communityAddress, privateKey) async {
+  var httpClient = new Client();
+  var ethClient = new web3dart.Web3Client(_URL, httpClient);
+
+  var credentials = web3dart.Credentials.fromPrivateKeyHex(privateKey);
+  var contractABI = web3dart.ContractABI.parseFromJSON(_ABI_EXTRACT, "community");
+  var contract = new web3dart.DeployedContract(
+  contractABI, new web3dart.EthereumAddress(communityAddress), ethClient, credentials);
+
+  var joinFn = contract.findFunctionsByName("join").first;
+  accountAddress = cleanAddress(accountAddress);
+
+  try {
+  var response = await new web3dart.Transaction(
+  keys: credentials,
+  maximumGas: 100000,
+  gasPrice: web3dart.EtherAmount.fromUnitAndValue(web3dart.EtherUnit.gwei, 1))
+  .prepareForPaymentCall(
+  contract,
+  joinFn,
+  [],
+  web3dart.EtherAmount.zero())
+  .send(ethClient, chainId: 122);
+
+  } catch (e) {
+  return e.toString();
+  }
+
+
 }
 
 Future getCommunity(tokenAddress, env, originNetwork) async {

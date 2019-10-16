@@ -76,9 +76,8 @@ Future joinCommunity(Store store) async {
 Future fundTokenCall(Store store, env, originNetwork) async {
   var tokenAddress = store.state.walletState.tokenAddress;
   var publicKey = store.state.userState.user.publicKey;
-  await fundToken(publicKey, tokenAddress, env, originNetwork);
-
-
+  var privateKey = store.state.userState.user.privateKey;
+  await fundToken(publicKey, tokenAddress, env, originNetwork, privateKey);
 }
 
 Future loadBalances(Store store) async {
