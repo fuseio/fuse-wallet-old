@@ -37,7 +37,7 @@ dependencies:
   country_code_picker: ^1.1.5
   #firebase_auth: ^0.11.0
   local_auth: ^0.4.0+1
-  webview_flutter: ^0.3.10+3
+  webview_flutter: 0.3.13
   #flutter_webview_plugin: ^0.3.7
   #flutter_beacon: ^0.2.2
   #beacon_broadcast: ^0.2.1
