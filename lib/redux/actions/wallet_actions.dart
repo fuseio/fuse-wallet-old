@@ -76,9 +76,8 @@ Future joinCommunity(Store store) async {
 Future fundTokenCall(Store store, env, originNetwork) async {
   var tokenAddress = store.state.walletState.tokenAddress;
   var publicKey = store.state.userState.user.publicKey;
-  await fundToken(publicKey, tokenAddress, env, originNetwork);
-
-
+  var privateKey = store.state.userState.user.privateKey;
+  await fundToken(publicKey, tokenAddress, env, originNetwork, privateKey);
 }
 
 Future loadBalances(Store store) async {
@@ -92,7 +91,9 @@ Future loadBalance(Store store) async {
   if (publicKey != "" && tokenAddress != "") {
     try {
       var balance = await getBalance(publicKey, tokenAddress);
-      store.dispatch(new BalanceLoadedAction(balance));
+      if (balance != store.state.walletState.balance) {
+        store.dispatch(new BalanceLoadedAction(balance));
+      }
     } catch (e) {
       print(e);
       print('Balance could not be loaded for account $publicKey, tokenAddress: $tokenAddress');
@@ -114,7 +115,9 @@ Future loadTransactions(Store store) async {
           list.pendingTransactions = store.state.walletState.transactions.pendingTransactions;
         }
       }
-      store.dispatch(new TransactionsLoadedAction(list));
+      if (list.transactions.length != store.state.walletState.transactions.transactions.length) {
+        store.dispatch(new TransactionsLoadedAction(list));
+      }
     } catch (e) {
         print(e);
         print('Transactions list could not be loaded for account $publicKey, tokenAddress: $tokenAddress');
