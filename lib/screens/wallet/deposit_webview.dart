@@ -8,19 +8,35 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/redux/state/app_state.dart';
 import 'package:fusewallet/modals/views/drawer_viewmodel.dart';
+import 'package:fusewallet/modals/plugins.dart';
 
 class DepositWebView extends StatefulWidget {
+  DepositPlugin depositPlugin;
+
   @override
   _DepositWebViewState createState() => _DepositWebViewState();
+
+
+  DepositWebView({Key key, this.depositPlugin}) : super(key: key);
 }
 
+
 class _DepositWebViewState extends State<DepositWebView> {
+
+  MoonpayPlugin depositPlugin;
+
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 
       WebViewController _myController;
 
   TextEditingController address = new TextEditingController(text: 'https://buy-staging.moonpay.io');
+
+  @override
+  void initState() {
+    address.value = address.value.copyWith(text: widget.depositPlugin.widgetUrl);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,12 +107,8 @@ class _DepositWebViewState extends State<DepositWebView> {
             // We're using a Builder here so we have a context that is below the Scaffold
             // to allow calling Scaffold.of(context) so we can show a snackbar.
             body: Builder(builder: (BuildContext context) {
-              dynamic deposit = viewModel.community.plugins.deposit;
-              
-              dynamic url = 'https://buy-staging.moonpay.io/?apiKey=${deposit.apiKey}&currencyCode=${deposit.currencyCode}&walletAddress=${deposit.walletAddress}&externalCustomerId=${viewModel.user.publicKey}';
-              if (viewModel.user.email != null && viewModel.user.email != '') {
-                url = url + '&email=${viewModel.user.email}';
-              }
+              dynamic depositPlugin = widget.depositPlugin;
+              dynamic url = depositPlugin.generateUrl(viewModel.user);
               return WebView(
                 initialUrl: url,
                 javascriptMode: JavascriptMode.unrestricted,

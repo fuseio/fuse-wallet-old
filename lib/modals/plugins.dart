@@ -1,3 +1,4 @@
+import './user.dart';
 
 class JoinBonusPlugin {
 
@@ -30,63 +31,153 @@ class JoinBonusPlugin {
   ) : null;
 }
 
-class DepositPlugin {
-    String provider;
-    String apiKey;
-    String currencyCode;
-    String walletAddress;
-    bool isActive;
+abstract class DepositPlugin {
+  String provider;
+  bool isActive;
+  String widgetUrl;
 
-    DepositPlugin({
+  final String type = 'deposit';
+
+  DepositPlugin(
       this.provider,
-      this.apiKey,
-      this.currencyCode,
-      this.walletAddress,
-      this.isActive
-    });
+      this.isActive,
+      this.widgetUrl,
+    );
+    
 
-    static DepositPlugin fromJson(dynamic json) => json != null ? DepositPlugin(
+  String generateUrl (User user) {
+    return this.widgetUrl;
+  }
+
+  dynamic toJson() => {
+    'provider': provider,
+    'isActive': isActive,
+    'type': type
+  };
+}
+
+
+class MoonpayPlugin extends DepositPlugin {
+
+    MoonpayPlugin ({
+      provider,
+      isActive,
+      widgetUrl}) : super(provider, isActive, widgetUrl)  {
+      }
+
+    static MoonpayPlugin fromJson(dynamic json) => json != null ? MoonpayPlugin(
       provider: json['provider'],
-      apiKey: json['apiKey'],
-      currencyCode: json['currencyCode'],
-      walletAddress: json['walletAddress'],
-      isActive: json["isActive"] || true
+      widgetUrl: json['widgetUrl'],
+      isActive: json["isActive"] || true,
     ) : null;
 
-    static DepositPlugin fromJsonState(dynamic json) => DepositPlugin.fromJson(json);
+    static MoonpayPlugin fromJsonState(dynamic json) => MoonpayPlugin.fromJson(json);
 
-    dynamic toJson() => {
-      'provider': provider,
-      'apiKey': apiKey,
-      'currencyCode': currencyCode,
-      'walletAddress': walletAddress,
-      'isActive': isActive
-    };
+    String generateUrl (User user) {
+      String url = this.widgetUrl;
+      url += 'externalCustomerId=${user.publicKey}';
+      if (user.email != null && user.email != '') {
+        url = url + '&email=${user.email}';
+      }
+      return url;
+    }
+}
 
-    
+class CarbonPlugin extends DepositPlugin {
+
+    CarbonPlugin ({
+      provider,
+      isActive,
+      widgetUrl}) : super(provider, isActive, widgetUrl);
+
+    static CarbonPlugin fromJson(dynamic json) => json != null ? CarbonPlugin(
+      provider: json['provider'],
+      widgetUrl: json['widgetUrl'],
+      isActive: json["isActive"] || true,
+    ) : null;
+
+    static CarbonPlugin fromJsonState(dynamic json) => CarbonPlugin.fromJson(json);
+}
+
+class WyrePlugin extends DepositPlugin {
+
+    WyrePlugin ({
+      provider,
+      isActive,
+      widgetUrl}) : super(provider, isActive, widgetUrl);
+
+    static WyrePlugin fromJson(dynamic json) => json != null ? WyrePlugin(
+      provider: json['provider'],
+      widgetUrl: json['widgetUrl'],
+      isActive: json["isActive"] || true,
+    ) : null;
+
+    static WyrePlugin fromJsonState(dynamic json) => WyrePlugin.fromJson(json);
+}
+
+class CoindirectPlugin extends DepositPlugin {
+
+    CoindirectPlugin ({
+      provider,
+      isActive,
+      widgetUrl}) : super(provider, isActive, widgetUrl);
+
+    static CoindirectPlugin fromJson(dynamic json) => json != null ? CoindirectPlugin(
+      provider: json['provider'],
+      widgetUrl: json['widgetUrl'],
+      isActive: json["isActive"] || true,
+    ) : null;
+
+    static CoindirectPlugin fromJsonState(dynamic json) => CoindirectPlugin.fromJson(json);
 }
 
 class Plugins {
   JoinBonusPlugin joinBonus;
-  DepositPlugin deposit;
+  MoonpayPlugin moonpay;
+  CarbonPlugin carbon;
+  WyrePlugin wyre;
+  CoindirectPlugin coindirect;
 
   Plugins({
     this.joinBonus,
-    this.deposit,
+    this.moonpay,
+    this.carbon,
+    this.wyre,
+    this.coindirect
   });
 
   static Plugins fromJson(dynamic json) => json != null ? Plugins(
       joinBonus: JoinBonusPlugin.fromJson(json["joinBonus"]),
-      deposit: DepositPlugin.fromJson(json["deposit"]),
+      moonpay: MoonpayPlugin.fromJson(json["moonpay"]),
+      carbon: CarbonPlugin.fromJson(json["carbon"]),
+      wyre: WyrePlugin.fromJson(json["wyre"]),
+      coindirect: CoindirectPlugin.fromJson(json["coindirect"]),
       ) : {};
 
-  static Plugins fromJsonState(dynamic json) => json != null ? Plugins(
-      joinBonus: JoinBonusPlugin.fromJsonState(json['joinBonus']),
-      deposit: DepositPlugin.fromJsonState(json['joinBonus']),
-      ) : null;
+  static Plugins fromJsonState(dynamic json) => Plugins.fromJson(json);
 
   dynamic toJson() => {
         'joinBonus': joinBonus != null ? joinBonus.toJson() : null,
-        'deposit': deposit != null ? deposit.toJson() : null
+        'moonpay': moonpay != null ? moonpay.toJson() : null,
+        'carbon': carbon != null ? carbon.toJson() : null,
+        'wyre': wyre != null ? wyre.toJson() : null,
+        'coindirect': wyre != null ? coindirect.toJson() : null,
       };
+    
+  List getDepositPlugins() {
+    List depositPlugins = [];
+    if (this.moonpay != null && this.moonpay.isActive) {
+        depositPlugins.add(this.moonpay);
+    }
+    if (this.carbon != null && this.carbon.isActive) {
+      depositPlugins.add(this.carbon);
+    }
+    if (this.wyre != null && this.wyre.isActive) {
+      depositPlugins.add(this.wyre);
+    }
+    if (this.coindirect != null && this.coindirect.isActive) {
+      depositPlugins.add(this.coindirect);
+    }
+    return depositPlugins;
+  }
 }

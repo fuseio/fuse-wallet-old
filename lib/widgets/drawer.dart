@@ -8,6 +8,7 @@ import 'package:fusewallet/screens/wallet/protect_wallet.dart';
 import 'package:fusewallet/screens/wallet/switch_community.dart';
 import 'package:fusewallet/screens/wallet/studio_webview.dart';
 import 'package:fusewallet/screens/wallet/deposit_webview.dart';
+import 'package:intl/intl.dart';
 //import 'package:local_auth/local_auth.dart';
 
 import 'package:fusewallet/splash.dart';
@@ -118,17 +119,20 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               },
             ),
           ];
-
-          bool isDepositPluginActive = viewModel.community != null && viewModel.community.plugins.deposit != null && viewModel.community.plugins.deposit.isActive;  
-          if (isDepositPluginActive) {
-            widgets.add(Divider());
+          dynamic plugins = viewModel.community != null ? viewModel.community.plugins.getDepositPlugins() : [];
+          for (dynamic plugin in plugins) {
+                widgets.add(Divider());
             widgets.add(ListTile(
               title: Text(
-                'Buy',
+                'Buy with ${toBeginningOfSentenceCase(plugin.provider)}',
                 style: TextStyle(fontSize: 16),
               ),
               onTap: () {
-                openPage(context, DepositWebView());
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DepositWebView(depositPlugin: plugin)),
+                );
+                // openPage(context, DepositWebView(builder: (context) => ));
               },
             ));
           }
