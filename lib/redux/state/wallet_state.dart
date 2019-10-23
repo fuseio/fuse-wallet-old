@@ -63,9 +63,9 @@ class WalletState {
   //int get hashCode => isLoading.hashCode ^ user.hashCode;
 
   static WalletState fromJson(dynamic json) =>
-      WalletState(balance: json["balance"], transactions: TransactionList.fromJsonState(json["transactions"]), tokenAddress: json["tokenAddress"], environment: json["environment"], originNetwork: json["originNetwork"], community:  Community.fromJsonState(json["community"]), token:  Token.fromJson(json["token"]), isLoading: false);
+      WalletState(balance: json["balance"], transactions: TransactionList.fromJsonState(json["transactions"]), tokenAddress: json["tokenAddress"], environment: json["environment"], originNetwork: json["originNetwork"], sendAddress: json["sendAddress"], community:  Community.fromJsonState(json["community"]), token:  Token.fromJson(json["token"]), isLoading: false);
 
-  dynamic toJson() => {'balance': balance, 'community': community, 'transactions': transactions, 'token': token, 'tokenAddress': tokenAddress};
+  dynamic toJson() => {'balance': balance, 'community': community, 'transactions': transactions, 'token': token, 'tokenAddress': tokenAddress, 'sendAddress': sendAddress};
 }
 
 class Nullable<T> {
