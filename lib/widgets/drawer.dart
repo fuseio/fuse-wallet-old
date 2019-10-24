@@ -124,7 +124,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 widgets.add(Divider());
             widgets.add(ListTile(
               title: Text(
-                'Buy with ${toBeginningOfSentenceCase(plugin.provider)}',
+                'Top up with ${toBeginningOfSentenceCase(plugin.name)}',
                 style: TextStyle(fontSize: 16),
               ),
               onTap: () {

@@ -32,14 +32,14 @@ class JoinBonusPlugin {
 }
 
 abstract class DepositPlugin {
-  String provider;
+  String name;
   bool isActive;
   String widgetUrl;
 
   final String type = 'deposit';
 
   DepositPlugin(
-      this.provider,
+      this.name,
       this.isActive,
       this.widgetUrl,
     );
@@ -50,7 +50,7 @@ abstract class DepositPlugin {
   }
 
   dynamic toJson() => {
-    'provider': provider,
+    'name': name,
     'isActive': isActive,
     'type': type
   };
@@ -60,13 +60,13 @@ abstract class DepositPlugin {
 class MoonpayPlugin extends DepositPlugin {
 
     MoonpayPlugin ({
-      provider,
+      name,
       isActive,
-      widgetUrl}) : super(provider, isActive, widgetUrl)  {
+      widgetUrl}) : super(name, isActive, widgetUrl)  {
       }
 
     static MoonpayPlugin fromJson(dynamic json) => json != null ? MoonpayPlugin(
-      provider: json['provider'],
+      name: json['name'],
       widgetUrl: json['widgetUrl'],
       isActive: json["isActive"] || true,
     ) : null;
@@ -86,12 +86,12 @@ class MoonpayPlugin extends DepositPlugin {
 class CarbonPlugin extends DepositPlugin {
 
     CarbonPlugin ({
-      provider,
+      name,
       isActive,
-      widgetUrl}) : super(provider, isActive, widgetUrl);
+      widgetUrl}) : super(name, isActive, widgetUrl);
 
     static CarbonPlugin fromJson(dynamic json) => json != null ? CarbonPlugin(
-      provider: json['provider'],
+      name: json['name'],
       widgetUrl: json['widgetUrl'],
       isActive: json["isActive"] || true,
     ) : null;
@@ -102,12 +102,12 @@ class CarbonPlugin extends DepositPlugin {
 class WyrePlugin extends DepositPlugin {
 
     WyrePlugin ({
-      provider,
+      name,
       isActive,
-      widgetUrl}) : super(provider, isActive, widgetUrl);
+      widgetUrl}) : super(name, isActive, widgetUrl);
 
     static WyrePlugin fromJson(dynamic json) => json != null ? WyrePlugin(
-      provider: json['provider'],
+      name: json['name'],
       widgetUrl: json['widgetUrl'],
       isActive: json["isActive"] || true,
     ) : null;
@@ -118,12 +118,12 @@ class WyrePlugin extends DepositPlugin {
 class CoindirectPlugin extends DepositPlugin {
 
     CoindirectPlugin ({
-      provider,
+      name,
       isActive,
-      widgetUrl}) : super(provider, isActive, widgetUrl);
+      widgetUrl}) : super(name, isActive, widgetUrl);
 
     static CoindirectPlugin fromJson(dynamic json) => json != null ? CoindirectPlugin(
-      provider: json['provider'],
+      name: json['name'],
       widgetUrl: json['widgetUrl'],
       isActive: json["isActive"] || true,
     ) : null;
@@ -134,12 +134,12 @@ class CoindirectPlugin extends DepositPlugin {
 class RampPlugin extends DepositPlugin {
 
     RampPlugin ({
-      provider,
+      name,
       isActive,
-      widgetUrl}) : super(provider, isActive, widgetUrl);
+      widgetUrl}) : super(name, isActive, widgetUrl);
 
     static RampPlugin fromJson(dynamic json) => json != null ? RampPlugin(
-      provider: json['provider'],
+      name: json['name'],
       widgetUrl: json['widgetUrl'],
       isActive: json["isActive"] || true,
     ) : null;
