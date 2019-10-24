@@ -13,39 +13,6 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fusewallet/logic/globals.dart' as globals;
 
-//ThunkAction openWalletCall(BuildContext context, { bool firstTime = false }) {
-//  return (Store store) async {
-    //var localAuth = LocalAuthentication();
-    //bool didAuthenticate =
-    //await localAuth.authenticateWithBiometrics(localizedReason: 'Please authenticate to open the wallet');
-
-//    openPageReplace(context, WalletPage());
-//  };
-//}
-
-// ThunkAction initWalletCall(BuildContext context) {
-//   return (Store store) async {
-
-//     var isFirstTime = store.state.walletState.community == null;
-        
-//     await loadCommunity(store);
-    
-//     /// Show bonus dialog
-//     if (isFirstTime && store.state.walletState.community != null) {
-//       new Future.delayed(Duration.zero, () {
-//         showDialog(
-//             context: context,
-//             builder: (BuildContext context) {
-//               return BonusDialog();
-//             });
-
-//       });
-//     }
-
-//     store.dispatch(new WalletLoadedAction());
-//   };
-// }
-
 ThunkAction loadBalancesCall(BuildContext context) {
   return (Store store) async {
     await loadBalances(store);
@@ -57,20 +24,15 @@ Future loadCommunity(Store store, tokenAddress, env, originNetwork) async {
   var commmunity = await getCommunity(tokenAddress, env, originNetwork);
   store.dispatch(new TokenLoadedAction(tokenAddress, token, env, originNetwork));
   store.dispatch(new CommunityLoadedAction(tokenAddress, commmunity));
-  
+
   loadBalances(store);
   new Timer.periodic(Duration(seconds: 3), (timer) {
     try {
       loadBalances(store);
     } catch (e) {
-
+      print(e);
     }
   });
-}
-
-Future joinCommunity(Store store) async {
-  // var tokenAddress = store.state.walletState.community.communityA;
-
 }
 
 Future fundTokenCall(Store store, env, originNetwork) async {
@@ -78,6 +40,37 @@ Future fundTokenCall(Store store, env, originNetwork) async {
   var publicKey = store.state.userState.user.publicKey;
   var privateKey = store.state.userState.user.privateKey;
   await fundToken(publicKey, tokenAddress, env, originNetwork, privateKey);
+}
+
+Future joinCommunityCall(Store store) async {
+  var communityAddress = store.state.walletState.community.communityAddress;
+  var publicKey = store.state.userState.user.publicKey;
+  var privateKey = store.state.userState.user.privateKey;
+
+  print('joinCommunityCall - communityAddress: $communityAddress, accountAddress: $publicKey');
+
+  var tries = 1;
+  new Timer.periodic(Duration(seconds: 5), (timer) {
+    try {
+      getFuseNativeBalance(publicKey).then((balance) {
+        if (balance == "0") {
+        tries++;
+        if (tries > 3) {
+          timer.cancel();
+          print('Cannot get fuse native balance for account $publicKey');
+        }
+      } else {
+        joinCommunity(publicKey, communityAddress, privateKey);
+        timer.cancel();
+      }
+      });
+    } catch (e) {
+      print(e);
+      print('Cannot join account $publicKey to community $communityAddress');
+    }
+  });
+
+  await joinCommunity(publicKey, communityAddress, privateKey);
 }
 
 Future loadBalances(Store store) async {
@@ -163,17 +156,10 @@ ThunkAction sendTransactionCall(BuildContext context) {
         if (ret == "000") {
           Navigator.of(context).pop(true);
           Navigator.of(context).pop(true);
-          
-          //new Future.delayed(Duration(seconds: 1), () {
-            //sendSuccessBottomSheet(globals.scaffoldKey.currentContext);
-          //});
-
           store.dispatch(addPendingTransaction(store.state.walletState.sendAmount, store.state.userState.user.publicKey, ""));
-
         } else {
           Scaffold.of(context).showSnackBar(new SnackBar(
-            content: new Text(ret),
-            //duration: new Duration(seconds: 5),
+            content: new Text(ret)
           ));
         }
         store.dispatch(new TransactionSentAction());
@@ -211,23 +197,8 @@ ThunkAction loadBusinessesCall() {
   };
 }
 
-// ThunkAction switchCommunityCall(BuildContext context, communityAddress) {
-//   return (Store store) async {
-
-//     store.dispatch(new LogoutAction());
-//     store.dispatch(new CommunityLoadedAction(communityAddress, null));
-//     store.dispatch(initWalletCall(context));
-//     //store.dispatch(new SwitchCommunityAction(communityAddress));
-//     return true;
-//   };
-// }
-
 ThunkAction switchCommunityCall(BuildContext context, _tokenAddress, _env, _originNetwork) {
   return (Store store) async {
-    // store.dispatch(new LogoutAction());
-    // store.dispatch(new TokenLoadedAction(tokenAddress, null));
-    // store.dispatch(new CommunityLoadedAction(tokenAddress, null));
-
     var isFirstTime = store.state.walletState.community == null;
     var tokenAddress = store.state.walletState.tokenAddress;
     var env = store.state.walletState.environment;
@@ -240,7 +211,7 @@ ThunkAction switchCommunityCall(BuildContext context, _tokenAddress, _env, _orig
     if (_env != null) {
       env = _env;
     }
-    
+
     if (_originNetwork != null) {
       originNetwork = _originNetwork;
     }
@@ -258,12 +229,13 @@ ThunkAction switchCommunityCall(BuildContext context, _tokenAddress, _env, _orig
     }
 
     await loadCommunity(store, tokenAddress, env, originNetwork);
-    // await joinCommunity(store);
+
     fundTokenCall(store, env, originNetwork);
 
+    // joinCommunityCall(store);
+
     store.dispatch(new WalletLoadedAction());
-    // store.dispatch(initWalletCall(context));
-    //store.dispatch(new SwitchCommunityAction(communityAddress));
+
     dynamic joinBonus = store.state.walletState.community.plugins.joinBonus;
     if (isFirstTime && joinBonus != null && joinBonus.isActive) {
       store.dispatch(addPendingTransaction(joinBonus.amount, "", store.state.userState.user.publicKey));
