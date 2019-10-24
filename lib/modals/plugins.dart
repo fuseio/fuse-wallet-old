@@ -131,19 +131,37 @@ class CoindirectPlugin extends DepositPlugin {
     static CoindirectPlugin fromJsonState(dynamic json) => CoindirectPlugin.fromJson(json);
 }
 
+class RampPlugin extends DepositPlugin {
+
+    RampPlugin ({
+      provider,
+      isActive,
+      widgetUrl}) : super(provider, isActive, widgetUrl);
+
+    static RampPlugin fromJson(dynamic json) => json != null ? RampPlugin(
+      provider: json['provider'],
+      widgetUrl: json['widgetUrl'],
+      isActive: json["isActive"] || true,
+    ) : null;
+
+    static RampPlugin fromJsonState(dynamic json) => RampPlugin.fromJson(json);
+}
+
 class Plugins {
   JoinBonusPlugin joinBonus;
   MoonpayPlugin moonpay;
   CarbonPlugin carbon;
   WyrePlugin wyre;
   CoindirectPlugin coindirect;
+  RampPlugin ramp;
 
   Plugins({
     this.joinBonus,
     this.moonpay,
     this.carbon,
     this.wyre,
-    this.coindirect
+    this.coindirect,
+    this.ramp
   });
 
   static Plugins fromJson(dynamic json) => json != null ? Plugins(
@@ -152,6 +170,7 @@ class Plugins {
       carbon: CarbonPlugin.fromJson(json["carbon"]),
       wyre: WyrePlugin.fromJson(json["wyre"]),
       coindirect: CoindirectPlugin.fromJson(json["coindirect"]),
+      ramp: RampPlugin.fromJson(json["ramp"]),
       ) : {};
 
   static Plugins fromJsonState(dynamic json) => Plugins.fromJson(json);
@@ -161,7 +180,8 @@ class Plugins {
         'moonpay': moonpay != null ? moonpay.toJson() : null,
         'carbon': carbon != null ? carbon.toJson() : null,
         'wyre': wyre != null ? wyre.toJson() : null,
-        'coindirect': wyre != null ? coindirect.toJson() : null,
+        'coindirect': coindirect != null ? coindirect.toJson() : null,
+        'ramp': ramp != null ? ramp.toJson() : null,
       };
     
   List getDepositPlugins() {
@@ -177,6 +197,9 @@ class Plugins {
     }
     if (this.coindirect != null && this.coindirect.isActive) {
       depositPlugins.add(this.coindirect);
+    }
+    if (this.ramp != null && this.ramp.isActive) {
+      depositPlugins.add(this.ramp);
     }
     return depositPlugins;
   }

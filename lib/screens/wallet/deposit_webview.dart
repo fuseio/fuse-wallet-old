@@ -30,7 +30,7 @@ class _DepositWebViewState extends State<DepositWebView> {
 
       WebViewController _myController;
 
-  TextEditingController address = new TextEditingController(text: 'https://buy-staging.moonpay.io');
+  TextEditingController address = new TextEditingController();
 
   @override
   void initState() {
