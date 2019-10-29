@@ -71,7 +71,8 @@ Future fundToken(accountAddress, tokenAddress, env, originNetwork, privateKey) a
   }).then((http.Response response) {
     print('token funding of $tokenAddress for account $accountAddress succeeded');
 
-    joinCommunity(accountAddress, tokenAddress, privateKey);
+    // Crashing the appp
+    // joinCommunity(accountAddress, tokenAddress, privateKey);
   });
 }
 

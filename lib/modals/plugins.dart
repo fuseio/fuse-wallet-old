@@ -13,8 +13,8 @@ class JoinBonusPlugin {
   });
 
   static JoinBonusPlugin fromJson(dynamic json) => json != null ? JoinBonusPlugin(
-    message: json["joinInfo"]["message"],
-    amount: double.parse(json["joinInfo"]["amount"]),
+    message: json["joinInfo"] != null ? json["joinInfo"]["message"] : null,
+    amount: json["joinInfo"] != null ? double.parse(json["joinInfo"]["amount"]) : null,
     isActive: json["isActive"] || false
     ) : null;
 
