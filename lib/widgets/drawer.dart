@@ -132,7 +132,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   context,
                   MaterialPageRoute(builder: (context) => DepositWebView(depositPlugin: plugin)),
                 );
-                // openPage(context, DepositWebView(builder: (context) => ));
               },
             ));
           }

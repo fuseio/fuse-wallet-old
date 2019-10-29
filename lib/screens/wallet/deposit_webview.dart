@@ -23,8 +23,6 @@ class DepositWebView extends StatefulWidget {
 
 class _DepositWebViewState extends State<DepositWebView> {
 
-  MoonpayPlugin depositPlugin;
-
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 

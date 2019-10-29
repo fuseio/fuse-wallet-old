@@ -13,7 +13,7 @@ import 'package:http/http.dart' as http;
 import "package:web3dart/src/utils/numbers.dart" as numbers;
 import 'package:http/http.dart';
 
-const DEFAULT_TOKEN_ADDRESS = '0xb9bB65B958EA30752bb4b4745Ab0BEce2Ca9aDB8';
+const DEFAULT_TOKEN_ADDRESS = '0xBf5D6570a8B0245fADf2f2111e2AB6F4342fE62C';
 const DEFAULT_ENV = 'qa'; //CHANGE WHEN DEPLOY DAPP TO PROD
 const DEFAULT_ORIGIN_NETWORK = 'ropsten';
 const API_ROOT = 'https://studio{env}{originNetwork}.fusenet.io/api/v1/';
