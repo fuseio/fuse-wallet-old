@@ -75,7 +75,7 @@ class MoonpayPlugin extends DepositPlugin {
 
     String generateUrl (User user) {
       String url = this.widgetUrl;
-      url += 'externalCustomerId=${user.publicKey}';
+      url += '&externalCustomerId=${user.publicKey}';
       if (user.email != null && user.email != '') {
         url = url + '&email=${user.email}';
       }
