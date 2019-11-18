@@ -259,6 +259,7 @@ ThunkAction switchCommunityCall(BuildContext context, _tokenAddress, _env, _orig
 
     await loadCommunity(store, tokenAddress, env, originNetwork);
     // await joinCommunity(store);
+    await getPeriodicStream(store.state.userState.user, store.state.walletState.community.communityAddress, tokenAddress, env, originNetwork);
     fundTokenCall(store, env, originNetwork);
 
     store.dispatch(new WalletLoadedAction());

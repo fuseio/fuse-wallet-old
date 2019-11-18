@@ -7,11 +7,12 @@ import 'package:fusewallet/modals/community.dart';
 import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/modals/user.dart';
 import 'package:fusewallet/modals/token.dart';
-import 'package:web3dart/web3dart.dart' as web3dart;
+// import 'package:web3dart/web3dart.dart' as web3dart;
 import 'crypto_service.dart';
 import 'package:http/http.dart' as http;
-import "package:web3dart/src/utils/numbers.dart" as numbers;
+// import "package:web3dart/src/utils/numbers.dart" as numbers;
 import 'package:http/http.dart';
+import 'package:wallet_core/wallet_core.dart';
 
 const DEFAULT_TOKEN_ADDRESS = '0xBf5D6570a8B0245fADf2f2111e2AB6F4342fE62C';
 const DEFAULT_ENV = 'qa'; //CHANGE WHEN DEPLOY DAPP TO PROD
@@ -35,7 +36,6 @@ parseFunderAPIRoot(String path, env) {
   return _path;
 }
 
-
 Future generateWallet(User user) async {
   if (user == null) {
     user = new User();
@@ -49,6 +49,51 @@ Future generateWallet(User user) async {
   fundNative(user.publicKey, DEFAULT_ENV);
 
   return user;
+}
+
+Future getPeriodicStream(User user, communityAddress, tokenAddress, env, originNetwork) async {
+  Timer interval(Duration duration, func) {
+    Timer function() {
+      Timer timer = new Timer(duration, function);
+
+      func(timer);
+
+      return timer;
+    }
+
+    return new Timer(duration, function);
+  }
+
+  interval(new Duration(seconds: 5), (timer) async {
+    Web3 web3Client = new Web3(approvalCallback);
+    await web3Client.setCredentials(user.privateKey);
+    EtherAmount balanceOfNative = await web3Client.getBalance(address: user.publicKey);
+    if (balanceOfNative.getValueInUnit(EtherUnit.ether) > 0) {
+      timer.cancel();
+      print('joinCommunity joinCommunity joinCommunity');
+      List<dynamic> a = await joinCommunity(user.publicKey, communityAddress, user.privateKey);
+      print(a);
+      if (a.contains('000')) {
+        String hash = a.last;
+        print(hash);
+        await sendTransactionHash(env, originNetwork, hash, 'Community', 'home');
+        print(a);
+      }
+    }
+  });
+}
+
+Future<bool> approvalCallback() async {
+  return true;
+}
+
+Future sendTransactionHash(env, originNetwork, transactionHash, abiName, bridgeType) async {
+  var body = '{ "abiName": "Community", "bridgeType": "home" }';
+  return await http.post(Uri.encodeFull(parseAPIRoot(API_ROOT, env, originNetwork) + "receipts/$transactionHash"), body: body, headers: {
+    "Content-Type": "application/json"
+  }).then((http.Response response) {
+    print('send transactionHash $transactionHash succeeded');
+  });
 }
 
 Future fundNative(accountAddress, env) async {
@@ -76,35 +121,15 @@ Future fundToken(accountAddress, tokenAddress, env, originNetwork, privateKey) a
   });
 }
 
-Future joinCommunity(accountAddress, communityAddress, privateKey) async {
-  var httpClient = new Client();
-  var ethClient = new web3dart.Web3Client(_URL, httpClient);
-
-  var credentials = web3dart.Credentials.fromPrivateKeyHex(privateKey);
-  var contractABI = web3dart.ContractABI.parseFromJSON(_ABI_EXTRACT, "community");
-  var contract = new web3dart.DeployedContract(
-  contractABI, new web3dart.EthereumAddress(communityAddress), ethClient, credentials);
-
-  var joinFn = contract.findFunctionsByName("join").first;
-  accountAddress = cleanAddress(accountAddress);
-
+Future<List<dynamic>> joinCommunity(accountAddress, communityAddress, privateKey) async {
   try {
-  var response = await new web3dart.Transaction(
-  keys: credentials,
-  maximumGas: 100000,
-  gasPrice: web3dart.EtherAmount.fromUnitAndValue(web3dart.EtherUnit.gwei, 1))
-  .prepareForPaymentCall(
-  contract,
-  joinFn,
-  [],
-  web3dart.EtherAmount.zero())
-  .send(ethClient, chainId: 122);
-
+    Web3 web3Client = new Web3(approvalCallback);
+    await web3Client.setCredentials(privateKey);
+    String hash = await web3Client.join(communityAddress);
+    return ["000", hash];
   } catch (e) {
-  return e.toString();
+    return [e];
   }
-
-
 }
 
 Future getCommunity(tokenAddress, env, originNetwork) async {
@@ -182,31 +207,12 @@ const String _ABI_EXTRACT =
     '[ { "constant": true, "inputs": [], "name": "name", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_spender", "type": "address" }, { "name": "_value", "type": "uint256" } ], "name": "approve", "outputs": [ { "name": "success", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "_tokenContract", "type": "address" } ], "name": "withdrawAltcoinTokens", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_from", "type": "address" }, { "name": "_to", "type": "address" }, { "name": "_amount", "type": "uint256" } ], "name": "transferFrom", "outputs": [ { "name": "success", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "withdraw", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_value", "type": "uint256" } ], "name": "burn", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_participant", "type": "address" }, { "name": "_amount", "type": "uint256" } ], "name": "adminClaimAirdrop", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_addresses", "type": "address[]" }, { "name": "_amount", "type": "uint256" } ], "name": "adminClaimAirdropMultiple", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "name": "_owner", "type": "address" } ], "name": "balanceOf", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [ { "name": "", "type": "string" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "finishDistribution", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_tokensPerEth", "type": "uint256" } ], "name": "updateTokensPerEth", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "name": "_to", "type": "address" }, { "name": "_amount", "type": "uint256" } ], "name": "transfer", "outputs": [ { "name": "success", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": false, "inputs": [], "name": "getTokens", "outputs": [], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": true, "inputs": [], "name": "minContribution", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "distributionFinished", "outputs": [ { "name": "", "type": "bool" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "tokenAddress", "type": "address" }, { "name": "who", "type": "address" } ], "name": "getTokenBalance", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "tokensPerEth", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [ { "name": "_owner", "type": "address" }, { "name": "_spender", "type": "address" } ], "name": "allowance", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "totalDistributed", "outputs": [ { "name": "", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "name": "newOwner", "type": "address" } ], "name": "transferOwnership", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "_from", "type": "address" }, { "indexed": true, "name": "_to", "type": "address" }, { "indexed": false, "name": "_value", "type": "uint256" } ], "name": "Transfer", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "_owner", "type": "address" }, { "indexed": true, "name": "_spender", "type": "address" }, { "indexed": false, "name": "_value", "type": "uint256" } ], "name": "Approval", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "to", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" } ], "name": "Distr", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [], "name": "DistrFinished", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "_owner", "type": "address" }, { "indexed": false, "name": "_amount", "type": "uint256" }, { "indexed": false, "name": "_balance", "type": "uint256" } ], "name": "Airdrop", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "_tokensPerEth", "type": "uint256" } ], "name": "TokensPerEthUpdated", "type": "event", "stateMutability": "view" }, { "anonymous": false, "inputs": [ { "indexed": true, "name": "burner", "type": "address" }, { "indexed": false, "name": "value", "type": "uint256" } ], "name": "Burn", "type": "event", "stateMutability": "view" } ]';
 
 Future sendTransaction(address, amount, tokenAddress, privateKey) async {
-  var httpClient = new Client();
-  var ethClient = new web3dart.Web3Client(_URL, httpClient);
-
-  var credentials = web3dart.Credentials.fromPrivateKeyHex(privateKey);
-  var contractABI = web3dart.ContractABI.parseFromJSON(_ABI_EXTRACT, "cln");
-  var contract = new web3dart.DeployedContract(
-      contractABI, new web3dart.EthereumAddress(tokenAddress), ethClient, credentials);
-
-  var getKittyFn = contract.findFunctionsByName("transfer").first;
-  address = cleanAddress(address);
-  var n = BigInt.parse(numbers.strip0x(address), radix: 16);
-
   try {
-      var response = await new web3dart.Transaction(
-          keys: credentials,
-          maximumGas: 100000,
-          gasPrice: web3dart.EtherAmount.fromUnitAndValue(web3dart.EtherUnit.gwei, 3))
-      .prepareForPaymentCall(
-          contract,
-          getKittyFn,
-          [n, BigInt.from(amount) * BigInt.from(1000000000000000000)],
-          web3dart.EtherAmount.zero())
-      .send(ethClient, chainId: 122);
-
-      return "000";
+    Web3 web3Client = new Web3(approvalCallback);
+    await web3Client.setCredentials(privateKey);
+    String hash = await web3Client.tokenTransfer(tokenAddress, address, amount);
+    print('hash hash hash hash $hash');
+    return "000";
   } catch (e) {
     return e.toString();
   }
