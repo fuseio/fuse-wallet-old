@@ -130,6 +130,15 @@ ThunkAction generateWalletCall() {
   };
 }
 
+ThunkAction generateWalletFromBackupCall(context, mnemonic) {
+  return(Store store) async {
+    store.dispatch(new StartLoadingAction());
+    var user = await generateWallet(store.state.userState.user, mnemonic: mnemonic);
+    store.dispatch(new UpdateUserAction(user));
+    openPage(context, new WalletPage());
+  };
+}
+
 ThunkAction setProtectMethodCall(method, { code = ""}) {
   return (Store store) async {
     store.dispatch(new SetProtectMethodAction(method, code));

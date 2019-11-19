@@ -36,11 +36,11 @@ parseFunderAPIRoot(String path, env) {
   return _path;
 }
 
-Future generateWallet(User user) async {
+Future generateWallet(User user, {String mnemonic}) async {
   if (user == null) {
     user = new User();
   }
-  String mnemonic = generateMnemonic();
+  mnemonic = mnemonic ?? generateMnemonic();
   user.mnemonic = mnemonic.split(" ");
   user.privateKey = await compute(getPrivateKeyFromMnemonic, mnemonic);
   user.publicKey = await getPublickKey(user.privateKey);

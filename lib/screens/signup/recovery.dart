@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:core';
 import 'package:flutter/services.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:fusewallet/logic/common.dart';
+import 'package:fusewallet/modals/views/signin_viewmodel.dart';
+import 'package:fusewallet/redux/state/app_state.dart';
 import 'package:fusewallet/screens/wallet/wallet.dart';
 import 'package:fusewallet/widgets/widgets.dart';
 
@@ -27,8 +30,10 @@ class _RecoveryPageState extends State<RecoveryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    CustomScaffold(
+    return StoreConnector<AppState, SignInViewModel>(converter: (store) {
+      return SignInViewModel.fromStore(store);
+    }, builder: (_, viewModel) {
+    return CustomScaffold(
       title:"Recover your wallet",
     children: <Widget>[
       
@@ -81,13 +86,13 @@ class _RecoveryPageState extends State<RecoveryPage> {
             onPressed: () async {
               if (_formKey.currentState.validate()) {
                 //await WalletLogic.setMnemonic(wordsController.text);
-                openPageReplace(context, WalletPage());
+                viewModel.generateWalletFromBackup(context, wordsController.text);
+                // openPageReplace(context, WalletPage());
               }
             },
           )),
         
     ]);
-
+  });
   }
-
 }
