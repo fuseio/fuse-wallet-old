@@ -584,7 +584,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 2.4;
-				FLUTTER_BUILD_NUMBER = 49;
+				FLUTTER_BUILD_NUMBER = 50;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
