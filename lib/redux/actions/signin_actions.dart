@@ -114,10 +114,18 @@ ThunkAction create3boxAccountCall() {
           window.pk = '0x${store.state.userState.user.privateKey}';
           window.user = { name: '${store.state.userState.user.firstName}', account: '${store.state.userState.user.publicKey}', email: '${store.state.userState.user.email}', phoneNumber: '${store.state.userState.user.phone}', address: '${''}'};
         </script>
-        <script src='https://3box.fusenet.io/main.js'></script>
+        <script src='https://3box.fuse.io/main.js'></script>
         <body></body>
       </html>''';
       _webView.loadHTML(html, baseUrl: "https://beta.3box.io");
+      String firstName = store.state.userState.user.firstName;
+      String account = store.state.userState.user.publicKey;
+      String email = store.state.userState.user.email;
+      saveUserToDb('', '', account, firstName, email);
+      saveUserToDb('qa', '', account, firstName, email);
+      createUserProfile('', '', account, firstName);
+      createUserProfile('qa', '', account, firstName);
+      createUserProfile('qa', 'ropsten', account, firstName);
     };
 }
 

@@ -19,8 +19,8 @@ class Business {
       address: json['metadata'] != null ? json['metadata']['address'] : "", //json['address'],
       description: json['metadata'] != null ? json['metadata']['description'] : "", //json['description'],
       id: json['_id'], //json['id'],
-      image: json["metadata"]['image'] != null ? "" + ("https://ipfs-proxy-qa.fusenet.io/api/image/" + json["metadata"]['image']) : 'https://cdn3.iconfinder.com/data/icons/abstract-1/512/no_image-512.png',
-      coverPhoto: json["metadata"]['coverPhoto'] != null ? "" + ("https://ipfs-proxy-qa.fusenet.io/api/image/" + json["metadata"]['coverPhoto']) : 'https://cdn3.iconfinder.com/data/icons/abstract-1/512/no_image-512.png',
+      image: json["metadata"]['image'] != null ? "" + ("https://ipfs-proxy-qa.fuse.io/api/image/" + json["metadata"]['image']) : 'https://cdn3.iconfinder.com/data/icons/abstract-1/512/no_image-512.png',
+      coverPhoto: json["metadata"]['coverPhoto'] != null ? "" + ("https://ipfs-proxy-qa.fuse.io/api/image/" + json["metadata"]['coverPhoto']) : 'https://cdn3.iconfinder.com/data/icons/abstract-1/512/no_image-512.png',
       name: json['name'] ?? ""
     );
   }
