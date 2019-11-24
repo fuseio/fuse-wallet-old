@@ -21,6 +21,20 @@ const API_ROOT = 'https://studio{env}{originNetwork}.fuse.io/api/v1/';
 const EXPLORER_ROOT = 'https://explorer.fuse.io/api?';
 const API_FUNDER = 'https://funder{env}.fuse.io/api';
 
+Web3 web3Client;
+
+Future getWeb3Instance(privateKey) async {
+  if (web3Client != null) {
+    return web3Client;
+  }
+
+  if (privateKey != null)  {
+    web3Client = new Web3(approvalCallback);
+    await web3Client.setCredentials(privateKey);
+    return web3Client;
+  }
+}
+
 parseAPIRoot(String path, env, originNetwork) {
   var _path = path;
   _path = _path.replaceAll("{env}", env == 'qa' ? '-qa' : '');
@@ -40,10 +54,11 @@ Future generateWallet(User user) async {
   if (user == null) {
     user = new User();
   }
-  String mnemonic = generateMnemonic();
+  String mnemonic = Web3.generateMnemonic();
   user.mnemonic = mnemonic.split(" ");
-  user.privateKey = await compute(getPrivateKeyFromMnemonic, mnemonic);
-  user.publicKey = await getPublickKey(user.privateKey);
+  user.privateKey = Web3.privateKeyFromMnemonic(mnemonic);
+  Web3 web3 = await getWeb3Instance(user.privateKey);
+  user.publicKey = await web3.getAddress();
 
   //Call funder
   fundNative(user.publicKey, DEFAULT_ENV);
@@ -65,9 +80,8 @@ Future getPeriodicStream(User user, communityAddress, tokenAddress, env, originN
   }
 
   interval(new Duration(seconds: 5), (timer) async {
-    Web3 web3Client = new Web3(approvalCallback);
-    await web3Client.setCredentials(user.privateKey);
-    EtherAmount balanceOfNative = await web3Client.getBalance(address: user.publicKey);
+    Web3 web3Client = await getWeb3Instance(user.privateKey);
+    EtherAmount balanceOfNative = await web3Client.getBalance();
     if (balanceOfNative.getValueInUnit(EtherUnit.ether) > 0) {
       timer.cancel();
       print('joinCommunity joinCommunity joinCommunity');
@@ -165,8 +179,7 @@ Future fundToken(accountAddress, tokenAddress, env, originNetwork, privateKey) a
 
 Future<List<dynamic>> joinCommunity(accountAddress, communityAddress, privateKey) async {
   try {
-    Web3 web3Client = new Web3(approvalCallback);
-    await web3Client.setCredentials(privateKey);
+    Web3 web3Client = await getWeb3Instance(privateKey);
     String hash = await web3Client.join(communityAddress);
     return ["000", hash];
   } catch (e) {
