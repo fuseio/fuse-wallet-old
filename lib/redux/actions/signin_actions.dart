@@ -122,8 +122,11 @@ ThunkAction create3boxAccountCall() {
       String account = store.state.userState.user.publicKey;
       String email = store.state.userState.user.email;
       saveUserToDb('', '', account, firstName, email);
+      saveUserToDb('', 'ropsten', account, firstName, email);
       saveUserToDb('qa', '', account, firstName, email);
+      saveUserToDb('qa', 'ropsten', account, firstName, email);
       createUserProfile('', '', account, firstName);
+      createUserProfile('', 'ropsten', account, firstName);
       createUserProfile('qa', '', account, firstName);
       createUserProfile('qa', 'ropsten', account, firstName);
     };
