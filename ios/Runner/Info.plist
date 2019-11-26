@@ -87,5 +87,7 @@
             </array>
         </dict>
     </array>
+    <key>NSBluetoothPeripheralUsageDescription</key>
+    <string>Bluetooth is used to create a beacon for receiving funds.</string>
 </dict>
 </plist>
