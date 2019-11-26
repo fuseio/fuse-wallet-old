@@ -51,6 +51,7 @@ dependencies:
   #flutter_inappbrowser: ^1.2.1
   share: ^0.6.2+1
   interactive_webview: ^0.1.2
+  beacon_broadcast: ^0.2.1
     
 dev_dependencies:
   flutter_test:

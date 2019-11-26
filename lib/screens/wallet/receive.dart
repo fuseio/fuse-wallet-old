@@ -6,6 +6,8 @@ import 'package:fusewallet/widgets/widgets.dart';
 import 'dart:core';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:fusewallet/generated/i18n.dart';
+import 'package:beacon_broadcast/beacon_broadcast.dart';
+
 
 class ReceivePage extends StatefulWidget {
   ReceivePage({Key key, this.title}) : super(key: key);
@@ -31,6 +33,14 @@ class _ReceivePageState extends State<ReceivePage> {
 
   @override
   Widget build(BuildContext _context) {
+    final BeaconBroadcast beaconBroadcast = BeaconBroadcast();
+
+
+    beaconBroadcast
+        .setUUID('39ED98FF-2900-441A-802F-9C398FC199D2')
+        .setMajorId(1)
+        .setMinorId(100)
+        .start();
     final scaffoldState = new GlobalKey<ScaffoldState>();
 
     return Scaffold(
