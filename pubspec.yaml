@@ -7,7 +7,7 @@ description: A new Flutter project.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org. 
-version: 2.3.5+52
+version: 2.3.5+54
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -20,7 +20,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   # web3dart: ^0.4.5
-  wallet_core: ^0.0.1+21
+  wallet_core: ^0.0.1+23
   barcode_scan: ^1.0.0
   shared_preferences: ^0.5.1+1
   qr_flutter:
@@ -47,7 +47,7 @@ dependencies:
   redux_persist: "^0.8.2"
   redux_persist_flutter: ^0.8.2
   virtual_keyboard: ^0.1.4
-  pin_code_text_field: ^1.4.0
+  pin_code_text_field: 1.4.0
   #flutter_inappbrowser: ^1.2.1
   share: ^0.6.2+1
   interactive_webview: ^0.1.2

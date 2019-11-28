@@ -38,7 +38,7 @@ class _FuseStudioWebViewState extends State<FuseStudioWebView> {
 
       WebViewController _myController;
 
-  TextEditingController address = new TextEditingController(text: 'https://studio.fusenet.io/');
+  TextEditingController address = new TextEditingController(text: 'https://studio.fuse.io/');
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +110,7 @@ class _FuseStudioWebViewState extends State<FuseStudioWebView> {
             // to allow calling Scaffold.of(context) so we can show a snackbar.
             body: Builder(builder: (BuildContext context) {
               return WebView(
-                initialUrl: 'https://studio.fusenet.io/?isMobile',
+                initialUrl: 'https://studio.fuse.io/?isMobile',
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController webViewController) {
                   _controller.complete(webViewController);
