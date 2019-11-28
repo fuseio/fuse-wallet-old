@@ -16,6 +16,7 @@ class SignInViewModel {
   final Function(BuildContext, String) signInWithPhoneNumber;
   final Function(BuildContext, String, String, String) signUp;
   final Function() generateWallet;
+  final Function(BuildContext, String) generateWalletFromBackup;
   final Function() logout;
   final Function(BuildContext) openWallet;
   final Function(String, String) setProtectMethod;
@@ -30,6 +31,7 @@ class SignInViewModel {
     this.signInWithPhoneNumber,
     this.signUp,
     this.generateWallet,
+    this.generateWalletFromBackup,
     this.logout,
     this.openWallet,
     this.setProtectMethod,
@@ -54,6 +56,9 @@ class SignInViewModel {
       },
       generateWallet: () {
         store.dispatch(generateWalletCall());
+      },
+      generateWalletFromBackup: (context, mnemonic) {
+        store.dispatch(generateWalletFromBackupCall(context, mnemonic));
       },
       logout: () {
         store.dispatch(logoutUserCall());

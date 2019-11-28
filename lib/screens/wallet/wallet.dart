@@ -138,7 +138,7 @@ class _WalletPageState extends State<WalletPage> {
                                                   fontWeight: FontWeight.w300)),
                                           new TextSpan(
                                               text: ' ' +
-                                                  viewModel.user.firstName,
+                                                  (viewModel.user?.firstName ?? ""),
                                               style: TextStyle(
                                                   fontSize: 42,
                                                   color: Colors.white,

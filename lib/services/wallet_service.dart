@@ -50,7 +50,7 @@ parseFunderAPIRoot(String path, env) {
   return _path;
 }
 
-Future generateWallet(User user) async {
+Future generateWallet(User user, {String mnemonic}) async {
   if (user == null) {
     user = new User();
   }
