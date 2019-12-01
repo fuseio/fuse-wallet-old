@@ -93,10 +93,10 @@ class _MyAppState extends State<MyApp> {
           child: new StoreProvider<AppState> (
             store: store,
             child: new MaterialApp(
-              title: 'Fuse Wallet',
+              title: 'Paywise Points',
               //navigatorKey: Keys.navKey,
               theme: getTheme(),
-              home: SplashScreen(), //WalletPage(title: 'Fuse Wallet'),
+              home: SplashScreen(), //WalletPage(title: 'Paywise Points'),
               localizationsDelegates: [
                 i18n,
                 GlobalMaterialLocalizations.delegate,

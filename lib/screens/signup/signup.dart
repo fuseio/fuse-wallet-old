@@ -161,8 +161,23 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 const SizedBox(height: 16.0),
                 Center(
-                  child: PrimaryButton(
-                    label: "NEXT",
+                  child: FlatButton(
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.all(new Radius.circular(30.0))
+                    ),
+                    color: Theme.of(context).primaryColor,
+                    padding: EdgeInsets.only(
+                                            top: 15,
+                                            bottom: 15,
+                                            left: 50,
+                                            right: 50),
+                    child: Text(
+                      "Next",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                    ),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         viewModel.signUp(
@@ -173,6 +188,18 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                     },
                   ),
+                  // child: PrimaryButton(
+                  //   label: "NEXT",
+                  //   onPressed: () async {
+                  //     if (_formKey.currentState.validate()) {
+                  //       viewModel.signUp(
+                  //           context,
+                  //           firstNameController.text.trim(),
+                  //           lastNameController.text.trim(),
+                  //           emailController.text.trim());
+                  //     }
+                  //   },
+                  // ),
                 ),
                 const SizedBox(height: 16.0),
                 Center(

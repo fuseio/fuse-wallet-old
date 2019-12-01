@@ -12,11 +12,11 @@ ThemeData getTheme() {
     textSelectionColor: Colors.black12,
     cursorColor: const Color(0xFF05283e),
     toggleableActiveColor: const Color(0xFF05283e),
-    primaryColorLight: const Color(0xFF99FAAA),
-    primaryColorDark: const Color(0xFFFAE83E),
+    primaryColorLight: const Color(0xFF05283e), // 0xFF99FAAA
+    primaryColorDark: const Color(0xFF05283e), // 0xFFFAE83E
     textTheme: TextTheme(
         body1: new TextStyle(color: const Color(0xFF05283e)),
-        button: new TextStyle(color: const Color(0xFF05283e))
+        button: new TextStyle(color: Colors.white)
         ),
     inputDecorationTheme: InputDecorationTheme(
         border: const OutlineInputBorder(

@@ -27,10 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   bool isOpen = false;
 
   var _pages = <Widget>[
-    Image.asset('images/slide1.png', width: 160),
-    Image.asset('images/slide2.png', width: 160),
-    Image.asset('images/slide3.png', width: 160),
-    Image.asset('images/slide4.png', width: 160)
+    Image.asset('images/paywise.png', width: 160),
   ];
   logon() async {
     //WalletLogic.init();
@@ -151,19 +148,20 @@ class _SplashScreenState extends State<SplashScreen> {
                 flex: 20,
                 child: Container(
                     decoration: BoxDecoration(
+                      color: Colors.white
                       // Box decoration takes a gradient
-                      gradient: LinearGradient(
-                        // Where the linear gradient begins and ends
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        // Add one stop for each color. Stops should increase from 0 to 1
-                        //stops: [0.1, 0.5, 0.7, 0.9],
-                        colors: [
-                          // Colors are easy thanks to Flutter's Colors class.
-                          Theme.of(context).primaryColorLight,
-                          Theme.of(context).primaryColorDark,
-                        ],
-                      ),
+                      // gradient: LinearGradient(
+                      //   // Where the linear gradient begins and ends
+                      //   begin: Alignment.topLeft,
+                      //   end: Alignment.bottomRight,
+                      //   // Add one stop for each color. Stops should increase from 0 to 1
+                      //   //stops: [0.1, 0.5, 0.7, 0.9],
+                      //   colors: [
+                      //     // Colors are easy thanks to Flutter's Colors class.
+                      //     Theme.of(context).primaryColorLight,
+                      //     Theme.of(context).primaryColorDark,
+                      //   ],
+                      // ),
                     ),
                     //alignment: FractionalOffset(0.5, 0.5),
                     child: !(store.state.userState.isUserLogged ?? true)
@@ -223,7 +221,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                         child: Text(
                                           "Create a new wallet",
                                           style: TextStyle(
-                                              color: const Color(0xFFfae83e),
+                                              color: Colors.white,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500),
                                         ),

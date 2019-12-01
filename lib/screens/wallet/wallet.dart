@@ -53,7 +53,7 @@ class _WalletPageState extends State<WalletPage> {
                 children: <Widget>[
                   Expanded(
                     flex: 20,
-                    child: Container(
+                    child: Container( 
                         decoration: BoxDecoration(
                           // Box decoration takes a gradient
                           gradient: LinearGradient(
@@ -79,7 +79,8 @@ class _WalletPageState extends State<WalletPage> {
                 appBar: AppBar(
                   title: InkWell(
                     child: Image.asset(
-                      'images/' + globals.walletLogo,
+                      'images/paywise-logo.png',
+                      // 'images/' + globals.walletLogo,
                       width: 95.0,
                       gaplessPlayback: true,
                     ),
@@ -112,7 +113,7 @@ class _WalletPageState extends State<WalletPage> {
                             height: 260.0,
                             alignment: Alignment.bottomLeft,
                             padding: EdgeInsets.all(20.0),
-                            color: Theme.of(context).primaryColor,
+                            color: Colors.white, // Theme.of(context).primaryColor,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
@@ -134,14 +135,14 @@ class _WalletPageState extends State<WalletPage> {
                                               text: I18n.of(context).welcome,
                                               style: TextStyle(
                                                   fontSize: 42,
-                                                  color: Colors.white,
+                                                  color: Theme.of(context).primaryColor,
                                                   fontWeight: FontWeight.w300)),
                                           new TextSpan(
                                               text: ' ' +
-                                                  viewModel.user.firstName,
+                                                  (viewModel.user?.firstName ?? ""),
                                               style: TextStyle(
                                                   fontSize: 42,
-                                                  color: Colors.white,
+                                                  color: Theme.of(context).primaryColor,
                                                   fontWeight: FontWeight.bold)),
                                         ],
                                       ),
@@ -168,7 +169,7 @@ class _WalletPageState extends State<WalletPage> {
                                               child: Text(
                                                   I18n.of(context).balance,
                                                   style: TextStyle(
-                                                      color: Colors.white,
+                                                      color: Theme.of(context).primaryColor,
                                                       fontSize: 14.0)),
                                               padding:
                                                   EdgeInsets.only(bottom: 6.0),
@@ -210,7 +211,7 @@ class _WalletPageState extends State<WalletPage> {
                                                             .toString(),
                                                         style: new TextStyle(
                                                             fontSize: 32,
-                                                            color: Colors.white,
+                                                            color: Theme.of(context).primaryColor,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .bold)),
@@ -219,7 +220,7 @@ class _WalletPageState extends State<WalletPage> {
                                                             viewModel.token?.symbol.toString(),
                                                         style: new TextStyle(
                                                             fontSize: 18,
-                                                            color: Colors.white,
+                                                            color: Theme.of(context).primaryColor,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .normal,
