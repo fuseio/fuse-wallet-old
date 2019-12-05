@@ -75,7 +75,6 @@ class _WalletPageState extends State<WalletPage> {
                 ],
               )))
             : new Scaffold(
-                key: globals.scaffoldKey,
                 appBar: AppBar(
                   title: InkWell(
                     child: Image.asset(
