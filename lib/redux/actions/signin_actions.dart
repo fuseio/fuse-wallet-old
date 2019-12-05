@@ -99,6 +99,8 @@ ThunkAction signUpCall(BuildContext context, String firstName, String lastName, 
     _user.phone = "";
     store.dispatch(new UpdateUserAction(_user));
 
+    store.dispatch(generateWalletCall());
+
     openPage(context, new Backup1Page());
     return true;
   };
