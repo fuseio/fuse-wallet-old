@@ -28,7 +28,7 @@ class User {
       phone: json["phone"],
       privateKey: json["privateKey"],
       publicKey: json["publicKey"],
-      //mnemonic: (jsonDecode(json["mnemonic"]) as List<dynamic>).cast<String>(),
+      mnemonic: List<String>.from(jsonDecode(json["mnemonic"]) as List<dynamic>),
       ) : null;
 
   dynamic toJson() => {

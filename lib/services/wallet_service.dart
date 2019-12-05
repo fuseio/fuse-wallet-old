@@ -263,6 +263,10 @@ const String _ABI_EXTRACT =
 
 Future sendTransaction(address, amount, tokenAddress, privateKey) async {
   try {
+    print('address: ${address}');
+    print('amount: ${amount}');
+    print('tokenAddress: ${tokenAddress}');
+    print('privateKey: ${privateKey}');
     Web3 web3Client = new Web3(approvalCallback);
     await web3Client.setCredentials(privateKey);
     String hash = await web3Client.tokenTransfer(tokenAddress, address, amount);
