@@ -133,7 +133,7 @@ class BusinessesListViewState extends State<BusinessesListView> {
                                           viewModel.businesses[index].address),
                                       onTap: () {
                                         openPage(
-                                            globals.scaffoldKey.currentContext,
+                                            context,
                                             new BusinessPage(
                                               business:
                                                   viewModel.businesses[index],
@@ -157,9 +157,8 @@ class BusinessesListViewState extends State<BusinessesListView> {
                                         onPressed: () {
                                           viewModel.sendAddress(viewModel.businesses[index].account);
                                           openPage(
-                                              globals
-                                                  .scaffoldKey.currentContext,
-                                              new SendAmountPage());
+                                              context,
+                                              new SendAmountPage(useSavedAddress: true,));
                                         },
                                       ),
                                     );

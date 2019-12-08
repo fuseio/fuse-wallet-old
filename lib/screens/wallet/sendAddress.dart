@@ -21,7 +21,8 @@ Future scan() async {
 }
 
 class SendAddressPage extends StatefulWidget {
-  SendAddressPage({Key key}) : super(key: key);
+  SendAddressPage({Key key, this.useSavedAddress}) : super(key: key);
+  final bool useSavedAddress;
 
   @override
   _SendAddressPageState createState() => _SendAddressPageState();
@@ -45,21 +46,21 @@ class _SendAddressPageState extends State<SendAddressPage> {
             backgroundColor: Theme.of(context).canvasColor,
           ),
           backgroundColor: const Color(0xFFF8F8F8),
-          body: SendAddressForm());
+          body: SendAddressForm(useSavedAddress: widget.useSavedAddress));
   }
 }
 
 class SendAddressForm extends StatefulWidget {
-  SendAddressForm({Key key, this.address}) : super(key: key);
+  SendAddressForm({Key key, this.address, this.useSavedAddress}) : super(key: key);
 
   final String address;
+  final bool useSavedAddress;
 
   @override
   _SendAddressFormState createState() => _SendAddressFormState();
 }
 
 class _SendAddressFormState extends State<SendAddressForm> {
-
   @override
   void initState() {
     super.initState();
@@ -71,7 +72,9 @@ class _SendAddressFormState extends State<SendAddressForm> {
       return WalletViewModel.fromStore(store);
     }, builder: (_, viewModel) {
 
-      final addressController = TextEditingController(text: viewModel.walletState.sendAddress);
+      print('useSavedAddress useSavedAddress useSavedAddress useSavedAddress');
+      print(widget.useSavedAddress);
+      final addressController = widget.useSavedAddress ? TextEditingController(text: viewModel.walletState.sendAddress) : TextEditingController();
 
       Future openCameraScan(openPage) async {
         viewModel.sendAddress(await BarcodeScanner.scan());

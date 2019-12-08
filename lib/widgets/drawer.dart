@@ -75,16 +75,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             //   },
             // ),
             // Divider(),
-            ListTile(
-              title: Text(
-                'Protect your wallet',
-                style: TextStyle(fontSize: 16),
-              ),
-              onTap: () {
-                openPage(context, ProtectWalletPage());
-              },
-            ),
-            Divider(),
+            // ListTile(
+            //   title: Text(
+            //     'Protect your wallet',
+            //     style: TextStyle(fontSize: 16),
+            //   ),
+            //   onTap: () {
+            //     openPage(context, ProtectWalletPage());
+            //   },
+            // ),
+            // Divider(),
             ListTile(
               title: Text(
                 'Back up wallet',
@@ -106,18 +106,18 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             // ),
             // Divider(),
             // new LanguageSelector(),
-            Divider(),
-            ListTile(
-              title: Text(
-                'Log out',
-                style: TextStyle(fontSize: 16),
-              ),
-              onTap: () async {
-                Navigator.of(context).pop();
-                viewModel.logout();
-                openPageReplace(context, SplashScreen());
-              },
-            ),
+            // Divider(),
+            // ListTile(
+            //   title: Text(
+            //     'Log out',
+            //     style: TextStyle(fontSize: 16),
+            //   ),
+            //   onTap: () async {
+            //     Navigator.of(context).pop();
+            //     viewModel.logout();
+            //     openPageReplace(context, SplashScreen());
+            //   },
+            // ),
           ];
           dynamic plugins = viewModel.community != null ? viewModel.community.plugins.getDepositPlugins() : [];
           for (dynamic plugin in plugins) {

@@ -165,7 +165,7 @@ Widget bottomBar(context) {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           bottomBarItem("send.png", I18n.of(context).send, () {
-            openPage(context, new SendAmountPage());
+            openPage(context, new SendAmountPage(useSavedAddress: false,));
           }),
           bottomBarItem("buy.png", I18n.of(context).buy, () {
             openPage(context, new BuyPage());

@@ -51,9 +51,6 @@ class _Backup1PageState extends State<Backup1Page> {
             ),
           ),
           new StoreConnector<AppState, SignInViewModel>(
-              onInit: (store) {
-                store.dispatch(generateWalletCall());
-              },
               converter: (store) {
                 return SignInViewModel.fromStore(store);
               },
