@@ -65,26 +65,26 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 color: Theme.of(context).primaryColor,
               ),
             ),
-            ListTile(
-              title: Text(
-                'Switch community',
-                style: TextStyle(fontSize: 16),
-              ),
-              onTap: () {
-                openPage(context, SwitchCommunityPage());
-              },
-            ),
-            Divider(),
-            ListTile(
-              title: Text(
-                'Protect your wallet',
-                style: TextStyle(fontSize: 16),
-              ),
-              onTap: () {
-                openPage(context, ProtectWalletPage());
-              },
-            ),
-            Divider(),
+            // ListTile(
+            //   title: Text(
+            //     'Switch community',
+            //     style: TextStyle(fontSize: 16),
+            //   ),
+            //   onTap: () {
+            //     openPage(context, SwitchCommunityPage());
+            //   },
+            // ),
+            // Divider(),
+            // ListTile(
+            //   title: Text(
+            //     'Protect your wallet',
+            //     style: TextStyle(fontSize: 16),
+            //   ),
+            //   onTap: () {
+            //     openPage(context, ProtectWalletPage());
+            //   },
+            // ),
+            // Divider(),
             ListTile(
               title: Text(
                 'Back up wallet',
@@ -94,30 +94,30 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 openPage(context, Backup1Page());
               },
             ),
-            Divider(),
-            ListTile(
-              title: Text(
-                'Fuse studio',
-                style: TextStyle(fontSize: 16),
-              ),
-              onTap: () {
-                openPage(context, FuseStudioWebView());
-              },
-            ),
-            Divider(),
-            new LanguageSelector(),
-            Divider(),
-            ListTile(
-              title: Text(
-                'Log out',
-                style: TextStyle(fontSize: 16),
-              ),
-              onTap: () async {
-                Navigator.of(context).pop();
-                viewModel.logout();
-                openPageReplace(context, SplashScreen());
-              },
-            ),
+            // Divider(),
+            // ListTile(
+            //   title: Text(
+            //     'Fuse studio',
+            //     style: TextStyle(fontSize: 16),
+            //   ),
+            //   onTap: () {
+            //     openPage(context, FuseStudioWebView());
+            //   },
+            // ),
+            // Divider(),
+            // new LanguageSelector(),
+            // Divider(),
+            // ListTile(
+            //   title: Text(
+            //     'Log out',
+            //     style: TextStyle(fontSize: 16),
+            //   ),
+            //   onTap: () async {
+            //     Navigator.of(context).pop();
+            //     viewModel.logout();
+            //     openPageReplace(context, SplashScreen());
+            //   },
+            // ),
           ];
           dynamic plugins = viewModel.community != null ? viewModel.community.plugins.getDepositPlugins() : [];
           for (dynamic plugin in plugins) {

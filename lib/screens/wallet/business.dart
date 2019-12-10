@@ -94,7 +94,7 @@ class _BusinessPageState extends State<BusinessPage> {
               onPressed: () {
                 //widget.business.account
                 openPage(globals.scaffoldKey.currentContext,
-                    new SendAmountPage());
+                    new SendAmountPage(useSavedAddress: true,));
               },
             )),
           ),

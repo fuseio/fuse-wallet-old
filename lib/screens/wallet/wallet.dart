@@ -42,7 +42,7 @@ class _WalletPageState extends State<WalletPage> {
 
         Future openCameraScan() async {
           viewModel.sendAddress(await BarcodeScanner.scan());
-          openPage(context, new SendAmountPage());
+          openPage(context, new SendAmountPage(useSavedAddress: true,));
         }
         return viewModel.user == null ||
                 viewModel.community == null ||
@@ -76,9 +76,10 @@ class _WalletPageState extends State<WalletPage> {
               )))
             : new Scaffold(
                 appBar: AppBar(
+                  backgroundColor: Theme.of(context).primaryColor,
                   title: InkWell(
                     child: Image.asset(
-                      'images/' + globals.walletLogo,
+                      'images/seedbed.png',
                       width: 95.0,
                       gaplessPlayback: true,
                     ),

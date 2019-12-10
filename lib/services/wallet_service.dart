@@ -8,15 +8,14 @@ import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/modals/user.dart';
 import 'package:fusewallet/modals/token.dart';
 // import 'package:web3dart/web3dart.dart' as web3dart;
-import 'crypto_service.dart';
 import 'package:http/http.dart' as http;
 // import "package:web3dart/src/utils/numbers.dart" as numbers;
 import 'package:http/http.dart';
 import 'package:wallet_core/wallet_core.dart';
 
-const DEFAULT_TOKEN_ADDRESS = '0xBf5D6570a8B0245fADf2f2111e2AB6F4342fE62C';
-const DEFAULT_ENV = 'qa'; //CHANGE WHEN DEPLOY DAPP TO PROD
-const DEFAULT_ORIGIN_NETWORK = 'ropsten';
+const DEFAULT_TOKEN_ADDRESS = '0xdEA44f90D7DA36af93E2989759b78F28686d91Fb';
+const DEFAULT_ENV = ''; //CHANGE WHEN DEPLOY DAPP TO PROD
+const DEFAULT_ORIGIN_NETWORK = '';
 const API_ROOT = 'https://studio{env}{originNetwork}.fuse.io/api/v1/';
 const EXPLORER_ROOT = 'https://explorer.fuse.io/api?';
 const API_FUNDER = 'https://funder{env}.fuse.io/api';
@@ -217,6 +216,8 @@ Future getToken(tokenAddress, env, originNetwork) async {
     }
     var token = Token.fromJson(obj["data"]);
     print('Done fetching token data for $tokenAddress');
+    print('token token token token');
+    print(obj["data"]);
     return token;
   });
 }

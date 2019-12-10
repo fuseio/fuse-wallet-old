@@ -20,25 +20,22 @@ void main() async {
   var storage = new FlutterSecureStorage();
   final persistor = Persistor<AppState>(
     //storage: FlutterStorage(key: "app6"),
-    storage: SecureStorage(storage= storage),
+    storage: SecureStorage(storage = storage),
     serializer: JsonSerializer<AppState>(AppState.fromJson),
   );
 
   var initialState;
   try {
     initialState = await persistor.load();
-  }
-  catch (e) {
+  } catch (e) {
     print(e);
     initialState = null;
   }
-  
-  final store = Store<AppState>(
-      appReducer,
+
+  final store = Store<AppState>(appReducer,
       initialState: initialState ?? new AppState.initial(),
-      middleware: [thunkMiddleware, persistor.createMiddleware()]
-  );
-  
+      middleware: [thunkMiddleware, persistor.createMiddleware()]);
+
   runApp(new MyApp(
     store: store,
   ));
@@ -56,7 +53,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Store<AppState> store;
- _MyAppState(this. store);
+  _MyAppState(this.store);
 
   final i18n = I18n.delegate;
 
@@ -67,7 +64,7 @@ class _MyAppState extends State<MyApp> {
     middleware: createStoreMiddleware(),
   );
   */
-  
+
   void onLocaleChange(Locale locale) {
     setState(() {
       I18n.locale = locale;
@@ -83,29 +80,27 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    
-
     //I18n.onLocaleChanged = onLocaleChange;
 
     return new Column(
       children: <Widget>[
         new Expanded(
-          child: new StoreProvider<AppState> (
+          child: new StoreProvider<AppState>(
             store: store,
             child: new MaterialApp(
-              title: 'Fuse Wallet',
-              //navigatorKey: Keys.navKey,
+              title: 'Seedbed Wallet',
               theme: getTheme(),
-              home: SplashScreen(), //WalletPage(title: 'Fuse Wallet'),
+              home: SplashScreen(),
               localizationsDelegates: [
                 i18n,
                 GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
               ],
               supportedLocales: i18n.supportedLocales,
-              localeResolutionCallback: i18n.resolution(fallback: new Locale("en", "US")),
+              localeResolutionCallback:
+                  i18n.resolution(fallback: new Locale("en", "US")),
               //locale:  new Locale("he"),
-              ),
+            ),
           ),
         ),
         //globals.showBottomBar ? bottomBar() : Divider()

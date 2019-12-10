@@ -4,19 +4,19 @@ ThemeData getTheme() {
   return ThemeData(
     fontFamily: 'NunitoSans', //'Source',  //'Gotham',
     brightness: Brightness.light,
-    primaryColor: const Color(0xFF05283e),
+    primaryColor: const Color(0xFF585E47),
     accentColor: const Color(0xFFA8EB8C),
     canvasColor: const Color(0xFFF8F8F8),
     scaffoldBackgroundColor: Colors.white,
     textSelectionHandleColor: const Color(0xFF05283e),
     textSelectionColor: Colors.black12,
     cursorColor: const Color(0xFF05283e),
-    toggleableActiveColor: const Color(0xFF05283e),
-    primaryColorLight: const Color(0xFF99FAAA),
-    primaryColorDark: const Color(0xFFFAE83E),
+    toggleableActiveColor: const Color(0xFF05283e),  // 0xFF585E47
+    primaryColorLight: const Color(0xFF585E47), // GREEN
+    primaryColorDark: const Color(0xFFB84E3E),// BROWN
     textTheme: TextTheme(
         body1: new TextStyle(color: const Color(0xFF05283e)),
-        button: new TextStyle(color: const Color(0xFF05283e))
+        button: new TextStyle(color: Colors.white)
         ),
     inputDecorationTheme: InputDecorationTheme(
         border: const OutlineInputBorder(
