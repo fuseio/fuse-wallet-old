@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:698826184039:android:2becd900ee517d9a",
         "android_client_info": {
-          "package_name": "io.fusenet.fusewallet"
+          "package_name": "io.fuse.seedbed"
         }
       },
       "oauth_client": [
