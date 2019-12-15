@@ -141,7 +141,7 @@ class RampPlugin extends DepositPlugin {
     static RampPlugin fromJson(dynamic json) => json != null ? RampPlugin(
       name: json['name'],
       widgetUrl: json['widgetUrl'],
-      isActive: json["isActive"] || true,
+      isActive: json["isActive"] || false,
     ) : null;
 
     static RampPlugin fromJsonState(dynamic json) => RampPlugin.fromJson(json);
