@@ -122,7 +122,7 @@ class BusinessesListViewState extends State<BusinessesListView> {
                                         )),
                                       ),
                                       title: Text(
-                                        viewModel.businesses[index].name,
+                                        viewModel.businesses[index].name ?? '',
                                         style: TextStyle(
                                             color:
                                                 Theme.of(context).primaryColor,
@@ -130,7 +130,7 @@ class BusinessesListViewState extends State<BusinessesListView> {
                                             fontWeight: FontWeight.w900),
                                       ),
                                       subtitle: Text(
-                                          viewModel.businesses[index].address),
+                                          viewModel.businesses[index].address ?? ''),
                                       onTap: () {
                                         openPage(
                                             context,

@@ -54,13 +54,13 @@ class _BusinessPageState extends State<BusinessPage> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(bottom: 10),
-                  child: Text(widget.business.name,
+                  child: Text(widget.business.name ?? '',
                       style: TextStyle(
                           //color: const Color(0xFFFFFFFF),
                           fontSize: 24,
                           fontWeight: FontWeight.bold)),
                 ),
-                Text(widget.business.address,
+                Text(widget.business.address ?? '',
                     style: TextStyle(
                         //color: const Color(0xFFFFFFFF),
                         fontSize: 14,
@@ -70,7 +70,7 @@ class _BusinessPageState extends State<BusinessPage> {
           ),
           Padding(
             padding: EdgeInsets.all(20),
-            child: Text(widget.business.description,
+            child: Text(widget.business.description ?? '',
                 style: TextStyle(
                     color: const Color(0xFF666666),
                     height: 1.3,
@@ -93,7 +93,7 @@ class _BusinessPageState extends State<BusinessPage> {
               ),
               onPressed: () {
                 //widget.business.account
-                openPage(globals.scaffoldKey.currentContext,
+                openPage(context,
                     new SendAmountPage(useSavedAddress: true,));
               },
             )),
