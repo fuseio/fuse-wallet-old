@@ -1,4 +1,4 @@
-package com.example.fusewallet;
+package io.fuse.paywise;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

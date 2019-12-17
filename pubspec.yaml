@@ -7,7 +7,7 @@ description: A new Flutter project.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org. 
-version: 2.3.5+53
+version: 2.3.5+54
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -27,7 +27,7 @@ dependencies:
     git:
       url: git://github.com/lukef/qr.flutter.git
   flutter_secure_storage: ^3.1.2
-  intl: ^0.15.7
+  intl: ^0.16.0
   absinthe_socket: ^0.0.2
   bip39: ^1.0.3
   bip32: ^1.0.5
@@ -37,7 +37,7 @@ dependencies:
 #      ref: master
   country_code_picker: ^1.1.5
   #firebase_auth: ^0.11.0
-  local_auth: ^0.4.0+1
+  local_auth: ^0.6.1
   webview_flutter: 0.3.13
   #flutter_webview_plugin: ^0.3.7
   #flutter_beacon: ^0.2.2
