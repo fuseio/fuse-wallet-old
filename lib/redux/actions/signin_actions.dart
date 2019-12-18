@@ -135,16 +135,16 @@ ThunkAction create3boxAccountCall() {
 ThunkAction generateWalletCall() {
   return (Store store) async {
     store.dispatch(new StartLoadingAction());
-    var user = await generateWallet(store.state.userState.user);
+    var user = await generateWallet(store.state.userState.user, null);
     store.dispatch(new UpdateUserAction(user));
     store.dispatch(create3boxAccountCall());
   };
 }
 
-ThunkAction generateWalletFromBackupCall(context, mnemonic) {
+ThunkAction generateWalletFromBackupCall(context, words) {
   return(Store store) async {
     store.dispatch(new StartLoadingAction());
-    var user = await generateWallet(store.state.userState.user, mnemonic: mnemonic);
+    var user = await generateWallet(store.state.userState.user, words);
     store.dispatch(new UpdateUserAction(user));
     openPage(context, new WalletPage());
   };

@@ -85,7 +85,7 @@ class _RecoveryPageState extends State<RecoveryPage> {
             label: "NEXT",
             onPressed: () async {
               if (_formKey.currentState.validate()) {
-                viewModel.generateWalletFromBackup(context, wordsController.text);
+                viewModel.generateWalletFromBackup(context, wordsController.text.toLowerCase());
               }
             },
           )),

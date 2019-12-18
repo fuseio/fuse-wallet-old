@@ -47,11 +47,11 @@ parseFunderAPIRoot(String path, env) {
   return _path;
 }
 
-Future generateWallet(User user, {String mnemonic}) async {
+Future generateWallet(User user, words) async {
   if (user == null) {
     user = new User();
   }
-  String mnemonic = Web3.generateMnemonic();
+  String mnemonic = words ?? Web3.generateMnemonic();
   user.mnemonic = mnemonic.split(" ");
   user.privateKey = Web3.privateKeyFromMnemonic(mnemonic);
   Web3 web3 = await getWeb3Instance(user.privateKey);

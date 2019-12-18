@@ -22,7 +22,7 @@ class Community {
       foreignTokenAddress: json["foreignTokenAddress"],
       foreignBridgeAddress: json["foreignBridgeAddress"],
       homeBridgeAddress: json["homeBridgeAddress"],
-      plugins: Plugins.fromJson(json["plugins"])
+      plugins: Plugins.fromJson(json["plugins"] ?? {})
       ) : null;
 
   static Community fromJsonState(dynamic json) => json != null ? Community(

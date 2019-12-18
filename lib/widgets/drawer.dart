@@ -55,7 +55,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         Image.asset('images/avatar.png', width: 70),
                   ),
                   Text(
-                    viewModel.user.firstName + " " + viewModel.user.lastName,
+                    '${viewModel.user.firstName ?? ""} ${viewModel.user.lastName ?? ""}',
                     style: TextStyle(
                         color: const Color(0xFF787878), fontSize: 16),
                   )
