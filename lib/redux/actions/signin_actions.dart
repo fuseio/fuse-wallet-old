@@ -14,7 +14,7 @@ import 'package:redux_thunk/redux_thunk.dart';
 ThunkAction loadUserState(BuildContext context) {
   return (Store store) async {
 
-    var _isLogged = store.state.userState.user != null && store.state.userState.user.firstName != null;
+    var _isLogged = store.state.userState.user != null && store.state.userState.user.privateKey != null && store.state.userState.user.publicKey != null;
 
     store.dispatch(new LoadUserAction(_isLogged));
     if (_isLogged) {
