@@ -17,6 +17,7 @@ class WalletState {
   final List<Business> businesses;
   final String sendAddress;
   final double sendAmount;
+  final String sendToBusinessAddress;
 
   WalletState({
     @required this.balance,
@@ -29,14 +30,27 @@ class WalletState {
     this.isLoading,
     this.businesses,
     this.sendAddress,
-    this.sendAmount
+    this.sendAmount,
+    this.sendToBusinessAddress
   });
 
   factory WalletState.initial() {
     return new WalletState(isLoading: false, balance: "0", transactions: null, tokenAddress: "", environment: "", originNetwork: "", community: null, token: null, businesses: null, sendAddress: "", sendAmount: 0);
   }
 
-  WalletState copyWith({String balance, Nullable<TransactionList> transactions, String tokenAddress, String environment, String originNetwork, Nullable<Community> community, bool isLoading, List<Business> businesses, String sendAddress, double sendAmount, String sendStep, Nullable<Token> token}) {
+  WalletState copyWith({
+    String balance,
+    Nullable<TransactionList> transactions,
+    String tokenAddress,
+    String environment,
+    String originNetwork, Nullable<Community> community,
+    bool isLoading,
+    List<Business> businesses,
+    String sendAddress,
+    double sendAmount,
+    String sendStep,
+    Nullable<Token> token,
+    String sendToBusinessAddress}) {
     return new WalletState(
         balance: balance ?? this.balance,
         transactions: transactions == null ? this.transactions : transactions.value,
@@ -48,7 +62,8 @@ class WalletState {
         isLoading: isLoading ?? this.isLoading,
         businesses: businesses ?? this.businesses,
         sendAddress: sendAddress ?? this.sendAddress,
-        sendAmount: sendAmount ?? this.sendAmount);
+        sendAmount: sendAmount ?? this.sendAmount,
+        sendToBusinessAddress: sendToBusinessAddress ?? this.sendToBusinessAddress);
   }
 
   @override

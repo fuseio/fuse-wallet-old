@@ -10,9 +10,7 @@ import 'package:virtual_keyboard/virtual_keyboard.dart';
 import 'package:fusewallet/logic/globals.dart' as globals;
 
 class SendAmountPage extends StatefulWidget {
-  SendAmountPage({Key key, this.useSavedAddress}) : super(key: key);
-
-  final bool useSavedAddress;
+  SendAmountPage({Key key}) : super(key: key);
 
   @override
   _SendAmountPageState createState() => _SendAmountPageState();
@@ -36,7 +34,7 @@ class _SendAmountPageState extends State<SendAmountPage> {
             backgroundColor: Theme.of(context).canvasColor,
           ),
           backgroundColor: const Color(0xFFF8F8F8),
-          body: SendAmountForm(useSavedAddress: widget.useSavedAddress));
+          body: SendAmountForm());
   }
 }
 
@@ -83,10 +81,9 @@ class _SendCompletePageState extends State<SendCompletePage> {
 }
 
 class SendAmountForm extends StatefulWidget {
-  SendAmountForm({Key key, this.address, this.useSavedAddress}) : super(key: key);
+  SendAmountForm({Key key, this.address}) : super(key: key);
 
   final String address;
-  final bool useSavedAddress;
 
   @override
   _SendAmountFormState createState() => _SendAmountFormState();
@@ -210,7 +207,7 @@ class _SendAmountFormState extends State<SendAmountForm> {
               ));
             } else {
               viewModel.sendAmount(double.parse(amountText));
-              openPage(context, new SendAddressPage(useSavedAddress: widget.useSavedAddress));
+              openPage(context, new SendAddressPage());
             }
           },
           preload: false,

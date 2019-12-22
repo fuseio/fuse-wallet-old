@@ -41,8 +41,9 @@ class _WalletPageState extends State<WalletPage> {
       builder: (_, viewModel) {
 
         Future openCameraScan() async {
-          viewModel.sendAddress(await BarcodeScanner.scan());
-          openPage(context, new SendAmountPage(useSavedAddress: true,));
+          final address = await BarcodeScanner.scan();
+          viewModel.sendAddress(address);
+          openPage(context, new SendAmountPage());
         }
         return viewModel.user == null ||
                 viewModel.community == null ||

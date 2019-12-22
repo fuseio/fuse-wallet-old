@@ -21,8 +21,7 @@ Future scan() async {
 }
 
 class SendAddressPage extends StatefulWidget {
-  SendAddressPage({Key key, this.useSavedAddress}) : super(key: key);
-  final bool useSavedAddress;
+  SendAddressPage({Key key}) : super(key: key);
 
   @override
   _SendAddressPageState createState() => _SendAddressPageState();
@@ -46,15 +45,14 @@ class _SendAddressPageState extends State<SendAddressPage> {
             backgroundColor: Theme.of(context).canvasColor,
           ),
           backgroundColor: const Color(0xFFF8F8F8),
-          body: SendAddressForm(useSavedAddress: widget.useSavedAddress));
+          body: SendAddressForm());
   }
 }
 
 class SendAddressForm extends StatefulWidget {
-  SendAddressForm({Key key, this.address, this.useSavedAddress}) : super(key: key);
+  SendAddressForm({Key key, this.address}) : super(key: key);
 
   final String address;
-  final bool useSavedAddress;
 
   @override
   _SendAddressFormState createState() => _SendAddressFormState();
@@ -72,15 +70,13 @@ class _SendAddressFormState extends State<SendAddressForm> {
       return WalletViewModel.fromStore(store);
     }, builder: (_, viewModel) {
 
-      print('useSavedAddress useSavedAddress useSavedAddress useSavedAddress');
-      print(widget.useSavedAddress);
-      final addressController = widget.useSavedAddress ? TextEditingController(text: viewModel.walletState.sendAddress) : TextEditingController();
+      final addressController = viewModel.walletState.sendToBusinessAddress != null && viewModel.walletState.sendToBusinessAddress != ''
+        ? TextEditingController(text: viewModel.walletState.sendToBusinessAddress)
+        : TextEditingController(text: viewModel.walletState.sendAddress);
 
-      Future openCameraScan(openPage) async {
-        viewModel.sendAddress(await BarcodeScanner.scan());
-        if (openPage) {
-          openPage(globals.scaffoldKey.currentContext, new SendAddressPage());
-        }
+      Future openCameraScan() async {
+        final String address = await BarcodeScanner.scan();
+        viewModel.sendAddress(address);
       }
 
       return Container(
@@ -139,7 +135,7 @@ class _SendAddressFormState extends State<SendAddressForm> {
                         child: InkWell(
                           child: Image.asset('images/scan.png', width: 28.0),
                           onTap: () {
-                            openCameraScan(false);
+                            openCameraScan();
                           },
                         ),
                         padding: EdgeInsets.only(bottom: 14, right: 20),

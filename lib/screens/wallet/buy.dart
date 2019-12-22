@@ -155,10 +155,11 @@ class BusinessesListViewState extends State<BusinessesListView> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         onPressed: () {
-                                          viewModel.sendAddress(viewModel.businesses[index].account);
+                                          viewModel.sendAddress('');
+                                          viewModel.sendToBusinsessAddress(viewModel.businesses[index].account);
                                           openPage(
                                               context,
-                                              new SendAmountPage(useSavedAddress: true,));
+                                              new SendAmountPage());
                                         },
                                       ),
                                     );

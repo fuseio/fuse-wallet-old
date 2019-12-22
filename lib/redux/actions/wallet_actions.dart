@@ -7,7 +7,7 @@ import 'package:fusewallet/modals/token.dart';
 import 'package:fusewallet/modals/transactions.dart';
 import 'package:fusewallet/services/wallet_service.dart';
 import 'package:fusewallet/widgets/bonusDialog.dart';
-import 'package:fusewallet/widgets/widgets.dart';
+// import 'package:fusewallet/widgets/widgets.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:flutter/widgets.dart';
@@ -15,9 +15,9 @@ import 'package:fusewallet/logic/globals.dart' as globals;
 
 //ThunkAction openWalletCall(BuildContext context, { bool firstTime = false }) {
 //  return (Store store) async {
-    //var localAuth = LocalAuthentication();
-    //bool didAuthenticate =
-    //await localAuth.authenticateWithBiometrics(localizedReason: 'Please authenticate to open the wallet');
+//var localAuth = LocalAuthentication();
+//bool didAuthenticate =
+//await localAuth.authenticateWithBiometrics(localizedReason: 'Please authenticate to open the wallet');
 
 //    openPageReplace(context, WalletPage());
 //  };
@@ -27,9 +27,9 @@ import 'package:fusewallet/logic/globals.dart' as globals;
 //   return (Store store) async {
 
 //     var isFirstTime = store.state.walletState.community == null;
-        
+
 //     await loadCommunity(store);
-    
+
 //     /// Show bonus dialog
 //     if (isFirstTime && store.state.walletState.community != null) {
 //       new Future.delayed(Duration.zero, () {
@@ -55,22 +55,20 @@ ThunkAction loadBalancesCall(BuildContext context) {
 Future loadCommunity(Store store, tokenAddress, env, originNetwork) async {
   var token = await getToken(tokenAddress, env, originNetwork);
   var commmunity = await getCommunity(tokenAddress, env, originNetwork);
-  store.dispatch(new TokenLoadedAction(tokenAddress, token, env, originNetwork));
+  store
+      .dispatch(new TokenLoadedAction(tokenAddress, token, env, originNetwork));
   store.dispatch(new CommunityLoadedAction(tokenAddress, commmunity));
-  
+
   loadBalances(store);
   new Timer.periodic(Duration(seconds: 3), (timer) {
     try {
       loadBalances(store);
-    } catch (e) {
-
-    }
+    } catch (e) {}
   });
 }
 
 Future joinCommunity(Store store) async {
   // var tokenAddress = store.state.walletState.community.communityA;
-
 }
 
 Future fundTokenCall(Store store, env, originNetwork) async {
@@ -96,7 +94,8 @@ Future loadBalance(Store store) async {
       }
     } catch (e) {
       print(e);
-      print('Balance could not be loaded for account $publicKey, tokenAddress: $tokenAddress');
+      print(
+          'Balance could not be loaded for account $publicKey, tokenAddress: $tokenAddress');
       store.dispatch(new BalanceLoadedAction('0'));
     }
   }
@@ -109,20 +108,26 @@ Future loadTransactions(Store store) async {
     try {
       var list = await getTransactions(publicKey, tokenAddress);
       if (store.state.walletState.transactions != null) {
-        if (list.transactions.length != store.state.walletState.transactions.transactions.length) {
+        if (list.transactions.length !=
+            store.state.walletState.transactions.transactions.length) {
           list.pendingTransactions = new List<Transaction>();
         } else {
-          list.pendingTransactions = store.state.walletState.transactions.pendingTransactions;
+          list.pendingTransactions =
+              store.state.walletState.transactions.pendingTransactions;
         }
       }
-      if (list.transactions.length != store.state.walletState.transactions.transactions.length) {
+      if (list.transactions.length !=
+          store.state.walletState.transactions.transactions.length) {
         store.dispatch(new TransactionsLoadedAction(list));
       }
     } catch (e) {
-        print(e);
-        print('Transactions list could not be loaded for account $publicKey, tokenAddress: $tokenAddress');
-        var list = new TransactionList(transactions: new List<Transaction>(), pendingTransactions: new List<Transaction>());
-        store.dispatch(new TransactionsLoadedAction(list));
+      print(e);
+      print(
+          'Transactions list could not be loaded for account $publicKey, tokenAddress: $tokenAddress');
+      var list = new TransactionList(
+          transactions: new List<Transaction>(),
+          pendingTransactions: new List<Transaction>());
+      store.dispatch(new TransactionsLoadedAction(list));
     }
   }
 }
@@ -134,13 +139,21 @@ ThunkAction sendAmountCall(amount) {
   };
 }
 
+ThunkAction sendToBusinessAddressCall(address) {
+  return (Store store) async {
+    store.dispatch(new SendToBusinessAddressAction(address));
+    return true;
+  };
+}
+
 ThunkAction sendAddressCall(address) {
+  print('address address address address address');
+  print(address);
   return (Store store) async {
     store.dispatch(new SendAddressAction(address));
     return true;
   };
 }
-
 
 ThunkAction sendTransactionCall(BuildContext context) {
   return (Store store) async {
@@ -158,26 +171,30 @@ ThunkAction sendTransactionCall(BuildContext context) {
     }
 
     store.dispatch(new StartLoadingAction());
-    sendTransaction(cleanAddress(store.state.walletState.sendAddress), store.state.walletState.sendAmount, store.state.walletState.tokenAddress, store.state.userState.user.privateKey)
-      .then((ret) {
-        if (ret == "000") {
-          Navigator.of(context).pop(true);
-          Navigator.of(context).pop(true);
-          
-          //new Future.delayed(Duration(seconds: 1), () {
-            //sendSuccessBottomSheet(globals.scaffoldKey.currentContext);
-          //});
+    sendTransaction(
+            cleanAddress(store.state.walletState.sendAddress),
+            store.state.walletState.sendAmount,
+            store.state.walletState.tokenAddress,
+            store.state.userState.user.privateKey)
+        .then((ret) {
+      if (ret == "000") {
+        store.dispatch(new ResetAddresses());
+        Navigator.of(context).pop(true);
+        Navigator.of(context).pop(true);
+        //new Future.delayed(Duration(seconds: 1), () {
+        //sendSuccessBottomSheet(globals.scaffoldKey.currentContext);
+        //});
 
-          store.dispatch(addPendingTransaction(store.state.walletState.sendAmount, store.state.userState.user.publicKey, ""));
-
-        } else {
-          Scaffold.of(context).showSnackBar(new SnackBar(
-            content: new Text(ret),
-            //duration: new Duration(seconds: 5),
-          ));
-        }
-        store.dispatch(new TransactionSentAction());
-      });
+        store.dispatch(addPendingTransaction(store.state.walletState.sendAmount,
+            store.state.userState.user.publicKey, ""));
+      } else {
+        Scaffold.of(context).showSnackBar(new SnackBar(
+          content: new Text(ret),
+          //duration: new Duration(seconds: 5),
+        ));
+      }
+      store.dispatch(new TransactionSentAction());
+    });
     return true;
   };
 }
@@ -186,16 +203,17 @@ ThunkAction addPendingTransaction(amount, from, to) {
   return (Store store) async {
     TransactionList transactions = store.state.walletState.transactions;
     if (transactions == null) {
-      transactions = new TransactionList(transactions: new List<Transaction>(), pendingTransactions: new List<Transaction>());
+      transactions = new TransactionList(
+          transactions: new List<Transaction>(),
+          pendingTransactions: new List<Transaction>());
     }
     transactions.pendingTransactions.add(Transaction(
-      from: from,
-      to: to,
-      tokenSymbol: store.state.walletState.token.symbol,
-      pending: true,
-      date: DateTime.now(),
-      amount: amount
-    ));
+        from: from,
+        to: to,
+        tokenSymbol: store.state.walletState.token.symbol,
+        pending: true,
+        date: DateTime.now(),
+        amount: amount));
     store.dispatch(new TransactionsLoadedAction(transactions));
     return true;
   };
@@ -204,7 +222,11 @@ ThunkAction addPendingTransaction(amount, from, to) {
 ThunkAction loadBusinessesCall() {
   return (Store store) async {
     store.dispatch(new StartLoadingAction());
-    getBusinesses(store.state.walletState.community.communityAddress, store.state.walletState.environment, store.state.walletState.originNetwork).then((list) {
+    getBusinesses(
+            store.state.walletState.community.communityAddress,
+            store.state.walletState.environment,
+            store.state.walletState.originNetwork)
+        .then((list) {
       store.dispatch(new BusinessesLoadedAction(list));
     });
     return true;
@@ -222,7 +244,8 @@ ThunkAction loadBusinessesCall() {
 //   };
 // }
 
-ThunkAction switchCommunityCall(BuildContext context, _tokenAddress, _env, _originNetwork) {
+ThunkAction switchCommunityCall(
+    BuildContext context, _tokenAddress, _env, _originNetwork) {
   return (Store store) async {
     // store.dispatch(new LogoutAction());
     // store.dispatch(new TokenLoadedAction(tokenAddress, null));
@@ -240,7 +263,7 @@ ThunkAction switchCommunityCall(BuildContext context, _tokenAddress, _env, _orig
     if (_env != null) {
       env = _env;
     }
-    
+
     if (_originNetwork != null) {
       originNetwork = _originNetwork;
     }
@@ -259,21 +282,30 @@ ThunkAction switchCommunityCall(BuildContext context, _tokenAddress, _env, _orig
 
     await loadCommunity(store, tokenAddress, env, originNetwork);
     // await joinCommunity(store);
-    await getPeriodicStream(store.state.userState.user, store.state.walletState.community.communityAddress, tokenAddress, env, originNetwork);
+    await getPeriodicStream(
+        store.state.userState.user,
+        store.state.walletState.community.communityAddress,
+        tokenAddress,
+        env,
+        originNetwork);
     fundTokenCall(store, env, originNetwork);
 
     store.dispatch(new WalletLoadedAction());
     // store.dispatch(initWalletCall(context));
     //store.dispatch(new SwitchCommunityAction(communityAddress));
     dynamic joinBonus = store.state.walletState.community.plugins.joinBonus;
-    if (isFirstTime && joinBonus != null && joinBonus.isActive && joinBonus.amount > 0) {
-      store.dispatch(addPendingTransaction(joinBonus.amount, "", store.state.userState.user.publicKey));
+    if (isFirstTime &&
+        joinBonus != null &&
+        joinBonus.isActive &&
+        joinBonus.amount > 0) {
+      store.dispatch(addPendingTransaction(
+          joinBonus.amount, "", store.state.userState.user.publicKey));
       new Future.delayed(Duration(seconds: 3), () {
-       showDialog(
-           context: globals.scaffoldKey.currentContext,
-           builder: (BuildContext context) {
-             return BonusDialog();
-           });
+        showDialog(
+            context: globals.scaffoldKey.currentContext,
+            builder: (BuildContext context) {
+              return BonusDialog();
+            });
       });
     }
 
@@ -309,7 +341,8 @@ class TokenLoadedAction {
   final String environment;
   final String originNetwork;
 
-  TokenLoadedAction(this.tokenAddress, this.token, this.environment, this.originNetwork);
+  TokenLoadedAction(
+      this.tokenAddress, this.token, this.environment, this.originNetwork);
 }
 
 class TransactionsLoadedAction {
@@ -348,6 +381,16 @@ class SendAmountAction {
   final double amount;
 
   SendAmountAction(this.amount);
+}
+
+class SendToBusinessAddressAction {
+  final String address;
+
+  SendToBusinessAddressAction(this.address);
+}
+
+class ResetAddresses {
+  ResetAddresses();
 }
 
 class SendAddressAction {
