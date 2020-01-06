@@ -96,7 +96,7 @@ class _WalletPageState extends State<WalletPage> {
                               tooltip: 'refresh',
                               onPressed: () async {
                                 //viewModel.loadBalances(context);
-                                Share.share('Hey, your friend shared with you the Fuse wallet: http://fuseio.app.link/PKSgcxA6KZ');
+                                Share.share('Hey, your friend shared with you the Fuse wallet: https://play.google.com/store/apps/details?id=io.fuse.paywise');
                               },
                             )),
                   ],
