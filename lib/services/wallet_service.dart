@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:wallet_core/wallet_core.dart';
 
-const DEFAULT_TOKEN_ADDRESS = '0x2e34dF3faafb66Fd902Eb2f21eecd4c93b398024';
+const DEFAULT_TOKEN_ADDRESS = '0x4790422d44A9B7DFC1130c6A0749A40caE174Ed1';
 const DEFAULT_ENV = ''; //CHANGE WHEN DEPLOY DAPP TO PROD
 const DEFAULT_ORIGIN_NETWORK = 'ropsten';
 const API_ROOT = 'https://studio{env}{originNetwork}.fuse.io/api/v1/';
