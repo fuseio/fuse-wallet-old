@@ -378,7 +378,7 @@ class SwitchCommunityAction {
 }
 
 class SendAmountAction {
-  final double amount;
+  final num amount;
 
   SendAmountAction(this.amount);
 }

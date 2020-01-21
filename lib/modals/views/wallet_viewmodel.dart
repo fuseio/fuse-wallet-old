@@ -23,7 +23,7 @@ class WalletViewModel {
   final Function(BuildContext) sendTransaction;
   final Function() loadBusinesses;
   final Function(BuildContext, String, String, String) switchCommunity;
-  final Function(double) sendAmount;
+  final Function(num) sendAmount;
   final Function(String) sendToBusinsessAddress;
   final Function(String) sendAddress;
   final Function() logoutWallet;

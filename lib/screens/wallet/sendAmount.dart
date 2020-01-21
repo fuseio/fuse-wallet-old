@@ -131,7 +131,7 @@ class _SendAmountFormState extends State<SendAmountForm> {
         if (double.parse(viewModel.balance) < double.parse(amountText)) {
           //amountText = viewModel.balance;
         }
-        viewModel.sendAmount(double.parse(amountText));
+        viewModel.sendAmount(num.parse(amountText));
       }
 
       return Container(
@@ -206,7 +206,7 @@ class _SendAmountFormState extends State<SendAmountForm> {
                 content: new Text("Please enter amount"),
               ));
             } else {
-              viewModel.sendAmount(double.parse(amountText));
+              viewModel.sendAmount(num.parse(amountText));
               openPage(context, new SendAddressPage());
             }
           },

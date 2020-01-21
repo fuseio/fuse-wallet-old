@@ -16,7 +16,7 @@ class WalletState {
   final bool isLoading;
   final List<Business> businesses;
   final String sendAddress;
-  final double sendAmount;
+  final num sendAmount;
   final String sendToBusinessAddress;
 
   WalletState({
@@ -47,7 +47,7 @@ class WalletState {
     bool isLoading,
     List<Business> businesses,
     String sendAddress,
-    double sendAmount,
+    num sendAmount,
     String sendStep,
     Nullable<Token> token,
     String sendToBusinessAddress}) {

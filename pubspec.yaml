@@ -23,7 +23,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   # web3dart: ^0.4.5
-  wallet_core: ^0.0.1+23
+  wallet_core: ^0.0.1+55
   barcode_scan: ^1.0.0
   shared_preferences: ^0.5.1+1
   qr_flutter:
